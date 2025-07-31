@@ -55,6 +55,7 @@ export type Database = {
           check_out_date: string
           created_at: string
           guest_id: string
+          guest_phone: string | null
           guests_count: number
           host_id: string
           id: string
@@ -70,6 +71,7 @@ export type Database = {
           check_out_date: string
           created_at?: string
           guest_id: string
+          guest_phone?: string | null
           guests_count?: number
           host_id: string
           id?: string
@@ -85,6 +87,7 @@ export type Database = {
           check_out_date?: string
           created_at?: string
           guest_id?: string
+          guest_phone?: string | null
           guests_count?: number
           host_id?: string
           id?: string
@@ -278,7 +281,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_date_availability: {
+        Args: { p_property_id: string; p_check_in: string; p_check_out: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
