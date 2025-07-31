@@ -4,38 +4,38 @@ import { Search, Menu, User } from "lucide-react";
 const Header = () => {
   return (
     <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200/50 sticky top-0 z-50">
-      <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-sm">
-            <span className="text-white font-bold text-xl">B</span>
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+            <span className="text-white font-bold text-lg sm:text-xl">B</span>
           </div>
-          <span className="font-display text-2xl font-bold text-slate-900">BookDirect</span>
+          <span className="font-display text-xl sm:text-2xl font-bold text-slate-900">BookDirect</span>
         </div>
 
         {/* Navigation - Hidden on mobile */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium">
+        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             Browse Properties
           </a>
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium">
+          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             Host Your Property
           </a>
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium">
+          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             How It Works
           </a>
         </nav>
 
         {/* User Actions */}
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="hidden md:flex text-slate-600 hover:text-blue-600 font-medium">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <Button variant="ghost" size="sm" className="hidden lg:flex text-slate-600 hover:text-blue-600 font-medium whitespace-nowrap px-3">
             Become a Host
           </Button>
-          <Button className="btn-secondary flex items-center space-x-2 h-11">
+          <Button className="btn-secondary flex items-center space-x-2 h-10 sm:h-11 px-3 sm:px-4 min-h-[44px]">
             <User className="w-4 h-4" strokeWidth={1.5} />
-            <span className="hidden md:inline">Sign In</span>
+            <span className="hidden sm:inline">Sign In</span>
           </Button>
-          <Button variant="ghost" size="sm" className="md:hidden text-slate-600">
+          <Button variant="ghost" size="sm" className="lg:hidden text-slate-600 p-2 min-h-[44px] min-w-[44px]">
             <Menu className="w-5 h-5" strokeWidth={1.5} />
           </Button>
         </div>

@@ -170,43 +170,91 @@
 }
 
 @layer components {
-  /* Modern Button Styles */
+  /* Modern Button Styles - Mobile Optimized */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0;
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200;
     box-shadow: 0 4px 14px 0 hsl(var(--blue-600) / 0.25);
+    min-height: 48px; /* Touch target compliance */
   }
   
   .btn-primary:hover {
     box-shadow: 0 6px 20px 0 hsl(var(--blue-600) / 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
   }
 
   .btn-secondary {
-    @apply bg-white text-slate-700 border-2 border-slate-200 px-6 py-3 rounded-xl font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-200;
+    @apply bg-white text-slate-700 border-2 border-slate-200 px-4 sm:px-6 py-3 rounded-xl font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-200;
+    min-height: 44px; /* Touch target compliance */
   }
 
   /* Modern Card Styles */
   .card-modern {
-    @apply bg-white rounded-2xl shadow-sm border border-slate-200/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
 
   .card-property {
     @apply card-modern;
   }
 
-  /* Modern Input Styles */
+  /* Modern Input Styles - Mobile Enhanced */
   .input-modern {
-    @apply bg-white border-2 border-slate-200 rounded-lg px-4 py-3.5 text-base transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400;
+    @apply bg-white border-2 border-slate-200 rounded-lg px-4 py-3 sm:py-3.5 text-base transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400;
+    min-height: 48px; /* Touch target compliance */
   }
 
-  /* Hover Lift Effect */
+  /* Hover Lift Effect - Disabled on touch devices */
   .hover-lift {
-    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
+    @apply transition-all duration-200;
+  }
+
+  @media (hover: hover) {
+    .hover-lift:hover {
+      @apply -translate-y-1 shadow-lg;
+    }
   }
 
   /* Loading Skeleton */
   .loading-skeleton {
     @apply animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%];
     animation: loading 1.5s infinite;
+  }
+
+  /* Mobile-specific utilities */
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Touch-friendly spacing */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Mobile scroll improvements */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile-optimized text sizes */
+  @media (max-width: 640px) {
+    .mobile-text-lg {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+    
+    .mobile-text-xl {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
   }
 }
 
