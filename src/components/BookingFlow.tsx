@@ -165,6 +165,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
       const total = calculateTotal();
       if (!total) return;
       
+      // Create booking record first
       const { data: booking, error } = await supabase
         .from('bookings')
         .insert({
@@ -184,16 +185,36 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
 
       if (error) throw error;
 
-      setStep(4); // Success step
-      toast({
-        title: 'Booking Submitted!',
-        description: 'Your booking request has been sent to the host for approval.',
+      // Create Stripe payment session
+      const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-payment-session', {
+        body: {
+          bookingId: booking.id,
+          propertyId: property.id,
+          propertyTitle: property.title,
+          totalAmount: total.total,
+          guestName: bookingData.guestName,
+          guestEmail: bookingData.guestEmail,
+          checkIn: bookingData.checkIn?.toISOString().split('T')[0],
+          checkOut: bookingData.checkOut?.toISOString().split('T')[0]
+        }
       });
+
+      if (paymentError) throw paymentError;
+
+      // Redirect to Stripe Checkout
+      if (paymentData?.url) {
+        window.open(paymentData.url, '_blank');
+        setStep(4); // Show success step
+        toast({
+          title: 'Redirecting to Payment',
+          description: 'Please complete your payment in the new tab.',
+        });
+      }
     } catch (error) {
       console.error('Booking error:', error);
       toast({
         title: 'Booking Failed',
-        description: 'There was an error submitting your booking. Please try again.',
+        description: 'There was an error processing your booking. Please try again.',
         variant: 'destructive'
       });
     } finally {
@@ -380,22 +401,21 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
     </div>
   );
 
-  // Step 3: Payment (Placeholder)
+  // Step 3: Payment
   const renderStep3 = () => (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment</h2>
-        <p className="text-slate-600">Secure payment processing</p>
+        <p className="text-slate-600">Secure payment processing with Stripe</p>
       </div>
 
-      <Card className="p-6 border-2 border-blue-200 bg-blue-50">
-        <div className="flex items-center gap-3 text-blue-800 mb-3">
+      <Card className="p-6 border-2 border-green-200 bg-green-50">
+        <div className="flex items-center gap-3 text-green-800 mb-3">
           <CreditCard className="w-5 h-5" />
-          <span className="font-semibold">Payment Integration</span>
+          <span className="font-semibold">Secure Payment</span>
         </div>
-        <p className="text-blue-700 text-sm">
-          Payment processing will be integrated with Stripe in the next phase of development. 
-          For now, bookings will be submitted directly to the host for approval.
+        <p className="text-green-700 text-sm">
+          Your payment is processed securely through Stripe. You will be redirected to complete your payment after confirming this booking.
         </p>
       </Card>
 
@@ -418,12 +438,27 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
             <span>Guests</span>
             <span>{bookingData.guests}</span>
           </div>
+          <div className="flex justify-between">
+            <span>Guest</span>
+            <span>{bookingData.guestName}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Email</span>
+            <span>{bookingData.guestEmail}</span>
+          </div>
           <div className="border-t pt-2 flex justify-between font-semibold text-lg">
-            <span>Total</span>
+            <span>Total (CAD)</span>
             <span>${calculateTotal()?.total || 0}</span>
           </div>
         </div>
       </Card>
+
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-800 text-sm">
+          <strong>Important:</strong> By proceeding with payment, you agree to our terms and conditions. 
+          Your booking will be confirmed once payment is successfully processed.
+        </p>
+      </div>
     </div>
   );
 
@@ -435,9 +470,9 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
       </div>
       
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Booking Submitted!</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment Required!</h2>
         <p className="text-slate-600">
-          Your booking request has been sent to the host. You will receive an email confirmation shortly.
+          Please complete your payment in the new tab that opened. Your booking will be confirmed once payment is processed.
         </p>
       </div>
 
@@ -462,7 +497,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
           </div>
           <div className="flex justify-between">
             <span>Status</span>
-            <span className="text-yellow-600 font-medium">Pending Host Approval</span>
+            <span className="text-yellow-600 font-medium">Pending Payment</span>
           </div>
         </div>
       </Card>
