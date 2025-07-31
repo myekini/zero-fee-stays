@@ -176,7 +176,7 @@ All colors MUST be HSL.
     --sidebar-border: 51 65 85;         /* slate-700 */
     --sidebar-ring: 59 130 246;         /* blue-500 */
   }
-
+}
 
 @layer base {
   * {
