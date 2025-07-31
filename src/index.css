@@ -2,92 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* BookDirect Modern Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cal+Sans:wght@400;600&display=swap');
 
 @layer base {
   :root {
-    /* BookDirect Brand Colors - Primary Blue Palette */
-    --primary: 214 88% 51%;            /* #2563eb - blue-600 */
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 217 91% 60%;      /* blue-500 */
-    --primary-dark: 217 91% 41%;       /* blue-700 */
-    --primary-light: 214 100% 97%;     /* blue-50 */
+    /* Primary Blue Palette - Trust & Professionalism */
+    --blue-50: 239 100% 97%;        /* #eff6ff */
+    --blue-100: 219 100% 95%;       /* #dbeafe */
+    --blue-500: 217 91% 60%;        /* #3b82f6 */
+    --blue-600: 221 83% 53%;        /* #2563eb */
+    --blue-700: 224 76% 48%;        /* #1d4ed8 */
+    --blue-900: 224 76% 31%;        /* #1e3a8a */
+
+    /* Success Green - Confirmations */
+    --emerald-50: 151 81% 96%;      /* #ecfdf5 */
+    --emerald-500: 158 64% 52%;     /* #10b981 */
+    --emerald-600: 160 84% 39%;     /* #059669 */
+
+    /* Warning Amber - Attention */
+    --amber-50: 48 100% 96%;        /* #fffbeb */
+    --amber-500: 38 92% 50%;        /* #f59e0b */
+    --amber-600: 32 95% 44%;        /* #d97706 */
+
+    /* Neutral Slate - Clean Foundation */
+    --slate-50: 210 40% 98%;        /* #f8fafc */
+    --slate-100: 214 32% 91%;       /* #f1f5f9 */
+    --slate-200: 213 27% 84%;       /* #e2e8f0 */
+    --slate-400: 215 20% 65%;       /* #94a3b8 */
+    --slate-600: 215 25% 27%;       /* #475569 */
+    --slate-800: 215 28% 17%;       /* #1e293b */
+    --slate-900: 222 84% 5%;        /* #0f172a */
+
+    /* Design System Tokens */
+    --primary: var(--blue-600);
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: var(--blue-700);
+    --primary-light: var(--blue-50);
     
-    /* Secondary Emerald Palette */
-    --secondary: 158 64% 52%;          /* #10b981 - emerald-600 */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 158 65% 50%;    /* emerald-500 */
-    --secondary-dark: 160 84% 39%;     /* emerald-700 */
-    --secondary-light: 151 81% 96%;    /* emerald-50 */
+    --secondary: var(--slate-600);
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: var(--slate-800);
+    --secondary-light: var(--slate-100);
     
-    /* Success Colors */
-    --success: 158 64% 52%;            /* emerald-600 */
-    --success-foreground: 0 0% 98%;
+    --success: var(--emerald-500);
+    --success-foreground: 0 0% 100%;
     
-    /* Neutral Slate Palette */
-    --background: 0 0% 100%;           /* white */
-    --foreground: 222 84% 5%;          /* slate-900 */
+    --warning: var(--amber-500);
+    --warning-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Base Colors */
+    --background: 0 0% 100%;
+    --foreground: var(--slate-900);
     
     --card: 0 0% 100%;
-    --card-foreground: 215 28% 17%;    /* slate-800 */
+    --card-foreground: var(--slate-800);
+    
+    --muted: var(--slate-50);
+    --muted-foreground: var(--slate-600);
+    
+    --accent: var(--slate-100);
+    --accent-foreground: var(--slate-800);
     
     --popover: 0 0% 100%;
-    --popover-foreground: 215 28% 17%;
-    
-    --muted: 210 40% 98%;              /* slate-50 */
-    --muted-foreground: 215 16% 47%;   /* slate-500 */
-    
-    --accent: 210 40% 96%;             /* slate-100 */
-    --accent-foreground: 215 25% 27%;  /* slate-700 */
-    
-    /* Semantic Colors */
-    --destructive: 0 84% 60%;          /* rose-500 */
-    --destructive-foreground: 0 0% 98%;
-    
-    --warning: 38 92% 50%;             /* amber-500 */
-    --warning-foreground: 0 0% 98%;
-    
-    --info: 214 88% 51%;               /* blue-600 */
-    --info-foreground: 0 0% 98%;
+    --popover-foreground: var(--slate-800);
     
     /* Form Elements */
-    --border: 220 13% 91%;             /* slate-200 */
-    --input: 220 13% 91%;
-    --input-focus: 214 88% 51%;        /* blue-600 */
-    --ring: 214 88% 51%;
+    --border: var(--slate-200);
+    --input: var(--slate-200);
+    --ring: var(--blue-600);
     
-    /* Typography */
-    --text-primary: 222 84% 5%;        /* slate-900 */
-    --text-secondary: 215 25% 27%;     /* slate-700 */
-    --text-muted: 215 16% 47%;         /* slate-500 */
-    --text-light: 214 32% 91%;         /* slate-200 */
-
     /* Layout */
     --radius: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
     
-    /* Shadows */
+    /* Shadows - Modern & Subtle */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--blue-600)), hsl(var(--blue-700)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--blue-50)) 0%, 0 0% 100% 50%, hsl(var(--emerald-50)) 100%);
+    --gradient-card: linear-gradient(145deg, 0 0% 100%, hsl(var(--slate-50)));
     
     /* Transitions */
-    --transition-fast: 150ms cubic-bezier(0, 0, 0.2, 1);
-    --transition-normal: 200ms cubic-bezier(0, 0, 0.2, 1);
-    --transition-slow: 300ms cubic-bezier(0, 0, 0.2, 1);
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Sidebar */
-    --sidebar-background: 210 40% 98%;
-    --sidebar-foreground: 215 25% 27%;
-    --sidebar-primary: 214 88% 51%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 210 40% 96%;
-    --sidebar-accent-foreground: 215 25% 27%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 214 88% 51%;
+    --sidebar-background: var(--slate-50);
+    --sidebar-foreground: var(--slate-800);
+    --sidebar-primary: var(--blue-600);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: var(--slate-100);
+    --sidebar-accent-foreground: var(--slate-800);
+    --sidebar-border: var(--slate-200);
+    --sidebar-ring: var(--blue-600);
   }
 
   .dark {
@@ -134,7 +152,65 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  body {
+    @apply bg-background text-foreground font-normal;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cal Sans', 'Inter', system-ui, sans-serif;
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  /* Modern Button Styles */
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0;
+    box-shadow: 0 4px 14px 0 hsl(var(--blue-600) / 0.25);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px 0 hsl(var(--blue-600) / 0.35);
+  }
+
+  .btn-secondary {
+    @apply bg-white text-slate-700 border-2 border-slate-200 px-6 py-3 rounded-xl font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-200;
+  }
+
+  /* Modern Card Styles */
+  .card-modern {
+    @apply bg-white rounded-2xl shadow-sm border border-slate-200/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .card-property {
+    @apply card-modern;
+  }
+
+  /* Modern Input Styles */
+  .input-modern {
+    @apply bg-white border-2 border-slate-200 rounded-lg px-4 py-3.5 text-base transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400;
+  }
+
+  /* Hover Lift Effect */
+  .hover-lift {
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Loading Skeleton */
+  .loading-skeleton {
+    @apply animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%];
+    animation: loading 1.5s infinite;
+  }
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

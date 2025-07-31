@@ -85,11 +85,11 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
-			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
-				mono: ['ui-monospace', 'monospace'],
-				display: ['Cal Sans', 'Inter', 'sans-serif']
-			},
+		fontFamily: {
+			sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+			mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
+			display: ['Cal Sans', 'Inter', 'system-ui', 'sans-serif']
+		},
 			fontSize: {
 				xs: ['0.75rem', { lineHeight: '1' }],
 				sm: ['0.875rem', { lineHeight: '1.25' }],
