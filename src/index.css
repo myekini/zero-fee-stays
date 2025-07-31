@@ -8,57 +8,86 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* BookDirect Brand Colors */
+    /* BookDirect Brand Colors - Primary Blue Palette */
     --primary: 214 88% 51%;            /* #2563eb - blue-600 */
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 214 88% 46%;      /* darker blue for hover */
+    --primary-hover: 217 91% 60%;      /* blue-500 */
+    --primary-dark: 217 91% 41%;       /* blue-700 */
+    --primary-light: 214 100% 97%;     /* blue-50 */
     
-    --success: 158 64% 52%;            /* #10b981 - emerald-600 */
+    /* Secondary Emerald Palette */
+    --secondary: 158 64% 52%;          /* #10b981 - emerald-600 */
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 158 65% 50%;    /* emerald-500 */
+    --secondary-dark: 160 84% 39%;     /* emerald-700 */
+    --secondary-light: 151 81% 96%;    /* emerald-50 */
+    
+    /* Success Colors */
+    --success: 158 64% 52%;            /* emerald-600 */
     --success-foreground: 0 0% 98%;
     
-    /* Neutral Slate Colors */
-    --background: 0 0% 100%;
-    --foreground: 215 28% 17%;         /* slate-800 */
+    /* Neutral Slate Palette */
+    --background: 0 0% 100%;           /* white */
+    --foreground: 222 84% 5%;          /* slate-900 */
     
     --card: 0 0% 100%;
-    --card-foreground: 215 28% 17%;
+    --card-foreground: 215 28% 17%;    /* slate-800 */
     
     --popover: 0 0% 100%;
     --popover-foreground: 215 28% 17%;
     
-    --secondary: 210 40% 96%;          /* slate-50 */
-    --secondary-foreground: 215 25% 27%;  /* slate-700 */
-    
     --muted: 210 40% 98%;              /* slate-50 */
     --muted-foreground: 215 16% 47%;   /* slate-500 */
     
-    --accent: 210 40% 96%;
-    --accent-foreground: 215 25% 27%;
+    --accent: 210 40% 96%;             /* slate-100 */
+    --accent-foreground: 215 25% 27%;  /* slate-700 */
     
-    --destructive: 0 84% 60%;
+    /* Semantic Colors */
+    --destructive: 0 84% 60%;          /* rose-500 */
     --destructive-foreground: 0 0% 98%;
     
-    --border: 214 32% 91%;             /* slate-200 */
-    --input: 214 32% 91%;
+    --warning: 38 92% 50%;             /* amber-500 */
+    --warning-foreground: 0 0% 98%;
+    
+    --info: 214 88% 51%;               /* blue-600 */
+    --info-foreground: 0 0% 98%;
+    
+    /* Form Elements */
+    --border: 220 13% 91%;             /* slate-200 */
+    --input: 220 13% 91%;
+    --input-focus: 214 88% 51%;        /* blue-600 */
     --ring: 214 88% 51%;
+    
+    /* Typography */
+    --text-primary: 222 84% 5%;        /* slate-900 */
+    --text-secondary: 215 25% 27%;     /* slate-700 */
+    --text-muted: 215 16% 47%;         /* slate-500 */
+    --text-light: 214 32% 91%;         /* slate-200 */
 
+    /* Layout */
     --radius: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0, 0, 0.2, 1);
+    --transition-normal: 200ms cubic-bezier(0, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    /* Sidebar */
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 25% 27%;
+    --sidebar-primary: 214 88% 51%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 215 25% 27%;
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 214 88% 51%;
   }
 
   .dark {
