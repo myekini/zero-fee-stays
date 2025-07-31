@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Search as SearchIcon, Filter, MapPin, Calendar, Users, Wifi, Car, Coffee, Bath, Home, Building2, TreePine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -169,7 +170,8 @@ const Search = () => {
   };
 
   const PropertyCard = ({ property }: { property: Property }) => (
-    <Card className="card-property group cursor-pointer">
+    <Link to={`/property/${property.id}`}>
+      <Card className="card-property group cursor-pointer">
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={property.images[0]}
@@ -227,8 +229,9 @@ const Search = () => {
             </Badge>
           )}
         </div>
-      </div>
-    </Card>
+       </div>
+      </Card>
+    </Link>
   );
 
   if (loading) {
