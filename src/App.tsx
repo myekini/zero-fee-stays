@@ -10,6 +10,10 @@ import PropertyDetail from "./pages/PropertyDetail";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BookingSuccess from "./pages/BookingSuccess";
+import HostAuth from "./pages/HostAuth";
+import HostSignup from "./pages/HostSignup";
+import HostDashboard from "./pages/HostDashboard";
+import HostProperties from "./pages/HostProperties";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +29,10 @@ const App = () => (
             <Route path="/search" element={<Search />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/booking/success" element={<BookingSuccess />} />
+            <Route path="/host/auth" element={<HostAuth />} />
+            <Route path="/host/signup" element={<HostSignup />} />
+            <Route path="/host/dashboard" element={<HostDashboard />} />
+            <Route path="/host/properties" element={<HostProperties />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

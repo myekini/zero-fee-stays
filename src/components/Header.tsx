@@ -38,9 +38,11 @@ const Header = () => {
 
         {/* User Actions */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <Button variant="ghost" size="sm" className="hidden lg:flex text-slate-600 hover:text-blue-600 font-medium whitespace-nowrap px-3">
-            Become a Host
-          </Button>
+          <Link to="/host/auth">
+            <Button variant="ghost" size="sm" className="hidden lg:flex text-slate-600 hover:text-blue-600 font-medium whitespace-nowrap px-3">
+              Become a Host
+            </Button>
+          </Link>
           
           {user ? (
             <DropdownMenu>
@@ -60,7 +62,7 @@ const Header = () => {
                   My Bookings
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  Host Dashboard
+                  <Link to="/host/dashboard" className="w-full">Host Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={signOut}>
                   <LogOut className="w-4 h-4 mr-2" />
