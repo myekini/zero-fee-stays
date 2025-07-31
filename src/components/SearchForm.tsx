@@ -4,7 +4,7 @@ import { Calendar, MapPin, Users, Search } from "lucide-react";
 
 const SearchForm = () => {
   return (
-    <div className="bg-background rounded-2xl shadow-xl border border-border p-6 max-w-4xl mx-auto">
+    <div className="bg-background/95 backdrop-blur-md rounded-3xl shadow-2xl border border-border/50 p-8 max-w-5xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Location */}
         <div className="space-y-2">
@@ -56,9 +56,9 @@ const SearchForm = () => {
       </div>
 
       {/* Search Button */}
-      <div className="mt-6 flex justify-center">
-        <Button size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground px-12 h-12 rounded-xl">
-          <Search className="w-5 h-5 mr-2" />
+      <div className="mt-8 flex justify-center">
+        <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-secondary-hover text-primary-foreground px-16 h-14 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          <Search className="w-6 h-6 mr-3" />
           Search Properties
         </Button>
       </div>
