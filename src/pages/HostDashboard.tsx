@@ -22,6 +22,7 @@ import HostLayout from '@/components/HostLayout';
 import BookingManagement from '@/components/BookingManagement';
 import HostCalendar from '@/components/HostCalendar';
 import MessageCenter from '@/components/MessageCenter';
+import HostAnalytics from '@/components/HostAnalytics';
 
 interface DashboardStats {
   totalEarnings: number;
@@ -151,7 +152,7 @@ const HostDashboard: React.FC = () => {
     <HostLayout>
       <div className="space-y-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Dashboard</TabsTrigger>
             <TabsTrigger value="bookings">
               Bookings
@@ -165,6 +166,7 @@ const HostDashboard: React.FC = () => {
             <TabsTrigger value="messages">
               Messages
             </TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -330,6 +332,10 @@ const HostDashboard: React.FC = () => {
 
           <TabsContent value="messages">
             <MessageCenter />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <HostAnalytics />
           </TabsContent>
         </Tabs>
       </div>
