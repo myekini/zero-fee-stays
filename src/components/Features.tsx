@@ -42,29 +42,29 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-20 bg-surface">
+    <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Why Choose BookDirect?
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-lg text-muted-foreground">
             Experience the difference of a platform built for hosts and guests, not profit margins.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="property-card p-6 border-border bg-card group">
+            <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-border bg-card">
               <div className="flex items-start space-x-4">
-                <div className={`p-3 rounded-lg bg-surface ${feature.color} transition-transform duration-normal group-hover:scale-110`}>
-                  <feature.icon className="w-6 h-6" strokeWidth={1.5} />
+                <div className={`p-3 rounded-lg bg-background ${feature.color}`}>
+                  <feature.icon className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-card-foreground mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground">
                     {feature.description}
                   </p>
                 </div>
