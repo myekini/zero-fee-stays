@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, MapPin, Users, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SearchForm = () => {
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate('/search');
+  };
   return (
     <div className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-xl border border-slate-200/50 p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto hover-lift">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -57,7 +63,7 @@ const SearchForm = () => {
 
       {/* Search Button */}
       <div className="mt-6 sm:mt-8 lg:mt-10 flex justify-center">
-        <Button className="btn-primary w-full sm:w-auto h-12 sm:h-14 lg:h-16 px-8 sm:px-10 lg:px-12 text-base sm:text-lg rounded-xl sm:rounded-2xl min-h-[48px]">
+        <Button onClick={handleSearch} className="btn-primary w-full sm:w-auto h-12 sm:h-14 lg:h-16 px-8 sm:px-10 lg:px-12 text-base sm:text-lg rounded-xl sm:rounded-2xl min-h-[48px]">
           <Search className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" strokeWidth={1.5} />
           <span className="font-semibold">Search Properties</span>
         </Button>

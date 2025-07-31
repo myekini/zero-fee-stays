@@ -25,9 +25,9 @@ const Header = () => {
 
         {/* Navigation - Hidden on mobile */}
         <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
+          <Link to="/search" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             Browse Properties
-          </a>
+          </Link>
           <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             Host Your Property
           </a>
