@@ -1,7 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Search, Menu, User } from "lucide-react";
+import { Search, Menu, User, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200/50 sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
@@ -31,10 +41,42 @@ const Header = () => {
           <Button variant="ghost" size="sm" className="hidden lg:flex text-slate-600 hover:text-blue-600 font-medium whitespace-nowrap px-3">
             Become a Host
           </Button>
-          <Button className="btn-secondary flex items-center space-x-2 h-10 sm:h-11 px-3 sm:px-4 min-h-[44px]">
-            <User className="w-4 h-4" strokeWidth={1.5} />
-            <span className="hidden sm:inline">Sign In</span>
-          </Button>
+          
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="btn-secondary flex items-center space-x-2 h-10 sm:h-11 px-3 sm:px-4 min-h-[44px]">
+                  <User className="w-4 h-4" strokeWidth={1.5} />
+                  <span className="hidden sm:inline">
+                    {user.user_metadata?.first_name || user.email?.split('@')[0] || 'Account'}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  My Bookings
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Host Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/auth">
+              <Button className="btn-secondary flex items-center space-x-2 h-10 sm:h-11 px-3 sm:px-4 min-h-[44px]">
+                <User className="w-4 h-4" strokeWidth={1.5} />
+                <span className="hidden sm:inline">Sign In</span>
+              </Button>
+            </Link>
+          )}
+          
           <Button variant="ghost" size="sm" className="lg:hidden text-slate-600 p-2 min-h-[44px] min-w-[44px]">
             <Menu className="w-5 h-5" strokeWidth={1.5} />
           </Button>
