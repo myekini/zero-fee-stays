@@ -21,6 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 import HostLayout from '@/components/HostLayout';
 import BookingManagement from '@/components/BookingManagement';
 import HostCalendar from '@/components/HostCalendar';
+import MessageCenter from '@/components/MessageCenter';
 
 interface DashboardStats {
   totalEarnings: number;
@@ -161,7 +162,9 @@ const HostDashboard: React.FC = () => {
               )}
             </TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="messages">
+              Messages
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -326,16 +329,7 @@ const HostDashboard: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="messages">
-            <Card className="p-8 text-center">
-              <MessageSquare className="w-12 h-12 mx-auto mb-4 text-slate-400" />
-              <h3 className="text-lg font-medium text-slate-900 mb-2">Messages</h3>
-              <p className="text-slate-600 mb-4">
-                Guest messaging system coming soon. You'll be able to communicate with your guests directly from here.
-              </p>
-              <Button variant="outline">
-                Enable Notifications
-              </Button>
-            </Card>
+            <MessageCenter />
           </TabsContent>
         </Tabs>
       </div>

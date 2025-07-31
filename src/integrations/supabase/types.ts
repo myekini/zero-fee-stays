@@ -122,6 +122,159 @@ export type Database = {
           },
         ]
       }
+      message_templates: {
+        Row: {
+          content: string
+          created_at: string | null
+          host_id: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          subject: string | null
+          template_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          host_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          subject?: string | null
+          template_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          host_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          subject?: string | null
+          template_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_templates_host_id_fkey"
+            columns: ["host_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          booking_id: string | null
+          content: string
+          created_at: string | null
+          file_url: string | null
+          id: string
+          is_read: boolean | null
+          is_template: boolean | null
+          message_type: string | null
+          recipient_id: string
+          sender_id: string
+          template_type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          booking_id?: string | null
+          content: string
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_template?: boolean | null
+          message_type?: string | null
+          recipient_id: string
+          sender_id: string
+          template_type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          booking_id?: string | null
+          content?: string
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_template?: boolean | null
+          message_type?: string | null
+          recipient_id?: string
+          sender_id?: string
+          template_type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string | null
+          email_booking_confirmed: boolean | null
+          email_check_in_reminder: boolean | null
+          email_message_received: boolean | null
+          email_new_booking: boolean | null
+          email_review_request: boolean | null
+          id: string
+          push_notifications: boolean | null
+          sms_notifications: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email_booking_confirmed?: boolean | null
+          email_check_in_reminder?: boolean | null
+          email_message_received?: boolean | null
+          email_new_booking?: boolean | null
+          email_review_request?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email_booking_confirmed?: boolean | null
+          email_check_in_reminder?: boolean | null
+          email_message_received?: boolean | null
+          email_new_booking?: boolean | null
+          email_review_request?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
