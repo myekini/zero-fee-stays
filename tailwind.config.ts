@@ -34,6 +34,7 @@ export default {
 					500: '#3b82f6',
 					600: '#2563eb',
 					700: '#1d4ed8',
+					800: '#1e40af',
 					900: '#1e3a8a',
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
