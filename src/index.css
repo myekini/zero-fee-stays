@@ -216,7 +216,7 @@ All colors MUST be HSL.
   /* Modern Property Card */
   .property-card {
     @apply bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lift 
-           transition-all duration-normal hover:-translate-y-1 group;
+           transition-all duration-normal hover:-translate-y-1;
   }
   
   /* Modern Input Field */
