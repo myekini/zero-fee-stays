@@ -185,9 +185,14 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
 
       if (error) throw error;
 
-      // Create Stripe payment session
-      const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-payment-session', {
-        body: {
+      // Create Stripe payment session via Python API
+      const response = await fetch('http://localhost:8000/api/payments/create-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': window.location.origin
+        },
+        body: JSON.stringify({
           bookingId: booking.id,
           propertyId: property.id,
           propertyTitle: property.title,
@@ -196,10 +201,14 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
           guestEmail: bookingData.guestEmail,
           checkIn: bookingData.checkIn?.toISOString().split('T')[0],
           checkOut: bookingData.checkOut?.toISOString().split('T')[0]
-        }
+        })
       });
 
-      if (paymentError) throw paymentError;
+      if (!response.ok) {
+        throw new Error('Failed to create payment session');
+      }
+
+      const paymentData = await response.json();
 
       // Redirect to Stripe Checkout
       if (paymentData?.url) {

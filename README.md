@@ -1,54 +1,65 @@
-# Welcome to your Lovable project
+# BookDirect - Property Rental Platform
 
-## Project info
+A full-stack property rental platform with React frontend and Python FastAPI backend.
 
-**URL**: https://lovable.dev/projects/ab8c08d2-9740-47ff-99e7-1d6a8b440830
+## Project Structure
 
-## How can I edit this code?
+- **Frontend**: React + TypeScript + Tailwind CSS (in root directory)
+- **Backend**: Python FastAPI (payment API)
+- **Database**: Supabase (PostgreSQL)
+- **Payments**: Stripe integration
 
-There are several ways of editing your application.
+## Frontend Setup
 
 **Use Lovable**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/ab8c08d2-9740-47ff-99e7-1d6a8b440830) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+**Local Development**
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Python Backend Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The payment processing is handled by a separate Python FastAPI backend.
 
-**Use GitHub Codespaces**
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Copy environment variables
+cp .env.example .env
+
+# Update .env with your actual values
+# - Stripe secret key from https://dashboard.stripe.com/apikeys
+# - Supabase service role key from Supabase dashboard
+
+# Run the development server
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+## Backend API Endpoints
+
+- `POST /api/payments/create-session` - Create Stripe payment session
+- `POST /api/payments/verify-payment` - Verify payment status
+- `GET /health` - Health check
+
+## Environment Variables
+
+Create a `.env` file in the backend directory with:
+
+```env
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
+SUPABASE_URL=https://ihgzllefbkzqnomsviwh.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+```
 
 ## What technologies are used for this project?
 

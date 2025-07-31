@@ -41,11 +41,19 @@ const BookingSuccess: React.FC = () => {
 
   const verifyPayment = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('verify-payment', {
-        body: { sessionId }
+      const response = await fetch('http://localhost:8000/api/payments/verify-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to verify payment');
+      }
+
+      const data = await response.json();
 
       setPaymentStatus(data.paymentStatus);
       setBooking(data.booking);
