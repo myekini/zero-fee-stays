@@ -170,9 +170,9 @@
 }
 
 @layer components {
-  /* Modern Button Styles - Mobile Optimized */
+  /* Modern Button Styles - Mobile Optimized & Design System */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200;
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg;
     box-shadow: 0 4px 14px 0 hsl(var(--blue-600) / 0.25);
     min-height: 48px; /* Touch target compliance */
   }
@@ -187,7 +187,7 @@
   }
 
   .btn-secondary {
-    @apply bg-white text-slate-700 border-2 border-slate-200 px-4 sm:px-6 py-3 rounded-xl font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-200;
+    @apply bg-white text-slate-700 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 font-semibold py-3 px-6 rounded-lg transition-all duration-200;
     min-height: 44px; /* Touch target compliance */
   }
 
@@ -197,7 +197,11 @@
   }
 
   .card-property {
-    @apply card-modern;
+    @apply bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lift transition-all duration-300 hover:-translate-y-1;
+  }
+
+  .card-dashboard {
+    @apply bg-white border border-slate-200 rounded-lg p-6 shadow-sm;
   }
 
   /* Modern Input Styles - Mobile Enhanced */
@@ -255,6 +259,16 @@
       font-size: 1.25rem;
       line-height: 1.75rem;
     }
+    }
+  }
+
+  /* Input Styles from Design System */
+  .input-field {
+    @apply w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors;
+  }
+
+  .input-label {
+    @apply block text-sm font-medium text-slate-700 mb-2;
   }
 }
 

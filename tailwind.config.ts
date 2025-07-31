@@ -29,6 +29,12 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
+					50: '#eff6ff',
+					100: '#dbeafe',
+					500: '#3b82f6',
+					600: '#2563eb',
+					700: '#1d4ed8',
+					900: '#1e3a8a',
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
 					hover: 'hsl(var(--primary-hover))',
@@ -43,6 +49,9 @@ export default {
 					light: 'hsl(var(--secondary-light))'
 				},
 				success: {
+					50: '#ecfdf5',
+					500: '#10b981',
+					600: '#059669',
 					DEFAULT: 'hsl(var(--success))',
 					foreground: 'hsl(var(--success-foreground))'
 				},
@@ -73,6 +82,15 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				slate: {
+					50: '#f8fafc',
+					100: '#f1f5f9',
+					200: '#e2e8f0',
+					400: '#94a3b8',
+					600: '#475569',
+					800: '#1e293b',
+					900: '#0f172a',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -118,7 +136,9 @@ export default {
 			boxShadow: {
 				sm: 'var(--shadow-sm)',
 				md: 'var(--shadow-md)',
-				lg: 'var(--shadow-lg)'
+				lg: 'var(--shadow-lg)',
+				'soft': '0 4px 14px 0 rgba(0, 0, 0, 0.1)',
+				'lift': '0 8px 25px 0 rgba(0, 0, 0, 0.15)',
 			},
 			transitionDuration: {
 				fast: '150ms',
@@ -162,11 +182,43 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				fadeIn: {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' },
+				},
+				slideUp: {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' },
+				},
+				"fade-in": {
+					"0%": {
+						opacity: "0",
+						transform: "translateY(10px)"
+					},
+					"100%": {
+						opacity: "1",
+						transform: "translateY(0)"
+					}
+				},
+				"scale-in": {
+					"0%": {
+						transform: "scale(0.95)",
+						opacity: "0"
+					},
+					"100%": {
+						transform: "scale(1)",
+						opacity: "1"
+					}
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fadeIn 0.3s ease-in-out',
+				'slide-up': 'slideUp 0.3s ease-out',
+				"enter": "fade-in 0.3s ease-out",
+				"scale-in": "scale-in 0.2s ease-out",
 			}
 		}
 	},
