@@ -68,14 +68,14 @@ const MobileNavigation = () => {
   const quickActions = [
     {
       icon: Plus,
-      label: 'Add Property',
-      path: '/host/properties',
+      label: 'Admin Panel',
+      path: '/admin',
       color: 'bg-primary hover:bg-primary/90'
     },
     {
       icon: Calendar,
       label: 'Book Now',
-      path: '/search?action=book',
+      path: '/search',
       color: 'bg-secondary hover:bg-secondary/90'
     }
   ];

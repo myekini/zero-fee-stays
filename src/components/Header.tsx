@@ -28,22 +28,15 @@ const Header = () => {
           <Link to="/search" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             Browse Properties
           </Link>
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
-            Host Your Property
-          </a>
-          <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
+          <a href="#features" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
             How It Works
           </a>
+          <a href="#contact" className="text-slate-600 hover:text-blue-600 transition-colors duration-200 font-medium whitespace-nowrap">
+            Contact
+          </a>
         </nav>
-
         {/* User Actions */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <Link to="/host/auth">
-            <Button variant="ghost" size="sm" className="hidden lg:flex text-slate-600 hover:text-blue-600 font-medium whitespace-nowrap px-3">
-              Become a Host
-            </Button>
-          </Link>
-          
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -55,14 +48,14 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  Profile
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">Profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  My Bookings
+                <DropdownMenuItem asChild>
+                  <Link to="/search">My Bookings</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/host/dashboard" className="w-full">Host Dashboard</Link>
+                <DropdownMenuItem asChild>
+                  <Link to="/admin">Admin Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={signOut}>
                   <LogOut className="w-4 h-4 mr-2" />
