@@ -106,7 +106,14 @@
     --sidebar-accent-foreground: var(--slate-800);
     --sidebar-border: var(--slate-200);
     --sidebar-ring: var(--blue-600);
-  }
+/* Card Dashboard Styles */
+.card-dashboard {
+  @apply bg-card text-card-foreground shadow-sm border border-border rounded-lg transition-all duration-200 hover:shadow-md;
+}
+
+.card-dashboard:hover {
+  @apply border-border/80;
+}
 
   .dark {
     --background: 222.2 84% 4.9%;
