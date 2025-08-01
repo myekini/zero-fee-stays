@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Calendar, MessageSquare, DollarSign, Building, Settings, PlusCircle, BarChart3, TestTube, Rocket } from 'lucide-react';
+import { Home, Calendar, MessageSquare, DollarSign, Building, Settings, PlusCircle, BarChart3 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Sidebar,
@@ -21,8 +21,6 @@ const hostNavItems = [
   { title: 'Messages', url: '/host/messages', icon: MessageSquare },
   { title: 'Earnings', url: '/host/earnings', icon: DollarSign },
   { title: 'Analytics', url: '/host/analytics', icon: BarChart3 },
-  { title: 'Testing', url: '/testing', icon: TestTube },
-  { title: 'Deployment', url: '/deployment', icon: Rocket },
   { title: 'Settings', url: '/host/settings', icon: Settings },
 ];
 

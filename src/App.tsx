@@ -16,8 +16,6 @@ import HostAuth from "./pages/HostAuth";
 import HostSignup from "./pages/HostSignup";
 import HostDashboard from "./pages/HostDashboard";
 import HostProperties from "./pages/HostProperties";
-import Testing from "./pages/Testing";
-import Deployment from "./pages/Deployment";
 
 const queryClient = new QueryClient();
 
@@ -37,8 +35,6 @@ const App = () => (
             <Route path="/host/signup" element={<HostSignup />} />
             <Route path="/host/dashboard" element={<HostDashboard />} />
             <Route path="/host/properties" element={<HostProperties />} />
-            <Route path="/testing" element={<Testing />} />
-            <Route path="/deployment" element={<Deployment />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
