@@ -1,31 +1,72 @@
-const CACHE_NAME = 'bookdirect-v1';
+const CACHE_NAME = 'bookdirect-v2';
+const STATIC_CACHE = 'bookdirect-static-v2';
+const DYNAMIC_CACHE = 'bookdirect-dynamic-v2';
+
 const urlsToCache = [
   '/',
   '/manifest.json',
-  '/placeholder.svg'
+  '/placeholder.svg',
+  '/src/assets/hero-property.jpg',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cal+Sans:wght@400;600&display=swap'
+];
+
+// Assets to cache on first visit
+const DYNAMIC_CACHE_PATHS = [
+  '/search',
+  '/auth',
+  '/host/auth'
 ];
 
 // Install service worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+    Promise.all([
+      caches.open(STATIC_CACHE).then((cache) => cache.addAll(urlsToCache)),
+      caches.open(DYNAMIC_CACHE)
+    ])
   );
+  self.skipWaiting();
 });
 
 // Fetch events
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      })
-      .catch(() => {
-        // Return offline page for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
+
+        return fetch(event.request)
+          .then((response) => {
+            // Don't cache non-successful responses
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            const responseToCache = response.clone();
+            const url = event.request.url;
+
+            // Cache API responses and assets
+            if (url.includes('/api/') || url.includes('.js') || url.includes('.css') || url.includes('.jpg') || url.includes('.png')) {
+              caches.open(DYNAMIC_CACHE)
+                .then((cache) => {
+                  cache.put(event.request, responseToCache);
+                });
+            }
+
+            return response;
+          })
+          .catch(() => {
+            // Return offline page for navigation requests
+            if (event.request.mode === 'navigate') {
+              return caches.match('/') || new Response('Offline', { status: 503 });
+            }
+            // Return cached asset or empty response
+            return caches.match(event.request) || new Response('', { status: 503 });
+          });
       })
   );
 });
@@ -33,17 +74,95 @@ self.addEventListener('fetch', (event) => {
 // Activate service worker
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      // Clean up old caches
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (![STATIC_CACHE, DYNAMIC_CACHE].includes(cacheName)) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      }),
+      // Claim clients immediately
+      self.clients.claim()
+    ])
   );
 });
+
+// Background sync for bookings
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'booking-sync') {
+    event.waitUntil(syncBookings());
+  }
+});
+
+async function syncBookings() {
+  try {
+    // Get pending bookings from IndexedDB
+    const db = await openIndexedDB();
+    const pendingBookings = await getPendingBookings(db);
+    
+    for (const booking of pendingBookings) {
+      try {
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(booking.data)
+        });
+        
+        if (response.ok) {
+          await removePendingBooking(db, booking.id);
+          // Show success notification
+          self.registration.showNotification('Booking Confirmed', {
+            body: 'Your booking has been successfully processed!',
+            icon: '/placeholder.svg',
+            tag: 'booking-success'
+          });
+        }
+      } catch (error) {
+        console.error('Failed to sync booking:', error);
+      }
+    }
+  } catch (error) {
+    console.error('Background sync failed:', error);
+  }
+}
+
+function openIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('BookDirectDB', 1);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('pendingBookings')) {
+        db.createObjectStore('pendingBookings', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+  });
+}
+
+function getPendingBookings(db) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['pendingBookings'], 'readonly');
+    const store = transaction.objectStore('pendingBookings');
+    const request = store.getAll();
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+  });
+}
+
+function removePendingBooking(db, id) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['pendingBookings'], 'readwrite');
+    const store = transaction.objectStore('pendingBookings');
+    const request = store.delete(id);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve();
+  });
+}
 
 // Push notification handling
 self.addEventListener('push', (event) => {
