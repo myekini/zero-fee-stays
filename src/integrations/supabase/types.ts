@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_cache: {
+        Row: {
+          created_at: string
+          date: string
+          dimensions: Json | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metric_name: string
+          updated_at: string
+          value: number | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          dimensions?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metric_name: string
+          updated_at?: string
+          value?: number | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          dimensions?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metric_name?: string
+          updated_at?: string
+          value?: number | null
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_name: string
+          id: string
+          properties: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_name: string
+          id?: string
+          properties?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_name?: string
+          id?: string
+          properties?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       availability: {
         Row: {
           created_at: string
@@ -437,6 +500,17 @@ export type Database = {
       check_date_availability: {
         Args: { p_property_id: string; p_check_in: string; p_check_out: string }
         Returns: boolean
+      }
+      upsert_analytics_metric: {
+        Args: {
+          p_metric_name: string
+          p_value: number
+          p_dimensions?: Json
+          p_entity_id?: string
+          p_entity_type?: string
+          p_date?: string
+        }
+        Returns: string
       }
     }
     Enums: {
