@@ -305,9 +305,190 @@
   .input-label {
     @apply block text-sm font-medium text-slate-700 mb-2;
   }
+
+  /* Mobile-First Touch Optimizations */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .touch-target-lg {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Thumb-friendly areas (bottom third of screen) */
+  .thumb-zone {
+    @apply fixed bottom-0 left-0 right-0 z-50;
+  }
+
+  /* Prevent text selection on touch */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Smooth scrolling with momentum */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbars on mobile */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile gesture optimizations */
+  .swipe-container {
+    touch-action: pan-x;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .pinch-zoom {
+    touch-action: pinch-zoom;
+  }
+
+  /* Mobile-optimized button styles */
+  .btn-mobile {
+    @apply touch-target rounded-lg font-semibold transition-all duration-200 active:scale-95;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-mobile-primary {
+    @apply btn-mobile bg-primary text-primary-foreground hover:bg-primary/90;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-mobile-secondary {
+    @apply btn-mobile bg-secondary text-secondary-foreground hover:bg-secondary/90;
+  }
+
+  /* Mobile input optimizations */
+  .input-mobile {
+    @apply touch-target-lg rounded-lg border border-border bg-background px-4 py-3;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+    @apply text-base; /* Prevents zoom on iOS */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Mobile card optimizations */
+  .card-mobile {
+    @apply bg-card border border-border rounded-lg p-4 shadow-sm;
+    @apply active:bg-muted/50 transition-colors duration-200;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Floating elements positioning */
+  .floating-bottom-right {
+    @apply fixed bottom-4 right-4 z-40;
+  }
+
+  .floating-bottom-left {
+    @apply fixed bottom-4 left-4 z-40;
+  }
+
+  /* Mobile-specific animations */
+  .mobile-fade-in {
+    animation: mobileSlideUp 0.3s ease-out forwards;
+  }
+
+  .mobile-slide-up {
+    animation: mobileSlideUp 0.3s ease-out forwards;
+  }
+
+  /* Mobile navigation optimizations */
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm;
+    @apply border-t border-border safe-area-pb;
+  }
+
+  .mobile-nav-item {
+    @apply flex flex-col items-center gap-1 touch-target rounded-lg;
+    @apply transition-all duration-200 active:scale-95;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Pull-to-refresh optimizations */
+  .pull-refresh {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Image gallery optimizations */
+  .image-gallery {
+    @apply flex overflow-x-auto scrollbar-hide snap-x snap-mandatory;
+    scroll-padding: 1rem;
+  }
+
+  .image-gallery-item {
+    @apply flex-shrink-0 snap-center w-full;
+  }
+
+  /* Mobile modal optimizations */
+  .modal-mobile {
+    @apply fixed inset-0 z-50 bg-background;
+    @apply animate-in slide-in-from-bottom duration-300;
+  }
+
+  /* Haptic feedback simulation */
+  .haptic-light {
+    @apply active:scale-95 transition-transform duration-75;
+  }
+
+  .haptic-medium {
+    @apply active:scale-90 transition-transform duration-100;
+  }
+
+  .haptic-heavy {
+    @apply active:scale-85 transition-transform duration-150;
+  }
 }
 
 @keyframes loading {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes mobileSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
