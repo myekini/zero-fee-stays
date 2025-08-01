@@ -12,6 +12,7 @@ import PropertyDetail from "./pages/PropertyDetail";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BookingSuccess from "./pages/BookingSuccess";
+import AdminAnalytics from "./pages/AdminAnalytics";
 import HostAuth from "./pages/HostAuth";
 import HostSignup from "./pages/HostSignup";
 import HostDashboard from "./pages/HostDashboard";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/host/signup" element={<HostSignup />} />
             <Route path="/host/dashboard" element={<HostDashboard />} />
             <Route path="/host/properties" element={<HostProperties />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
