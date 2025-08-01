@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format, differenceInDays } from 'date-fns';
 import AvailabilityCalendar from './AvailabilityCalendar';
 import { supabase } from '@/integrations/supabase/client';
+import { emailService, type BookingEmailData } from '@/lib/email-service';
 
 interface Property {
   id: string;
@@ -185,6 +186,51 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
 
       if (error) throw error;
 
+      // Prepare email data for notifications
+      const emailData: BookingEmailData = {
+        booking: {
+          id: booking.id,
+          checkIn: bookingData.checkIn?.toISOString().split('T')[0] || '',
+          checkOut: bookingData.checkOut?.toISOString().split('T')[0] || '',
+          numGuests: bookingData.guests,
+          totalAmount: total.total,
+          guestName: bookingData.guestName,
+          guestEmail: bookingData.guestEmail,
+          guestPhone: bookingData.guestPhone,
+          specialRequests: bookingData.specialRequests || undefined
+        },
+        property: {
+          id: property.id,
+          name: property.title,
+          address: 'Beautiful location in Canada', // Default address for demo
+          host: {
+            name: 'BookDirect Admin',
+            email: 'admin@bookdirect.ca',
+            phone: '+1-416-555-0123'
+          }
+        }
+      };
+
+      // Send email notifications (don't block the payment flow if emails fail)
+      try {
+        console.log('📧 Sending booking notification emails...');
+        const emailResults = await emailService.sendBookingEmails(emailData, 'admin@bookdirect.ca');
+        
+        if (emailResults.guestEmail.success) {
+          console.log('✅ Guest confirmation email sent successfully');
+        } else {
+          console.warn('⚠️ Guest confirmation email failed:', emailResults.guestEmail.error);
+        }
+
+        if (emailResults.adminEmail.success) {
+          console.log('✅ Admin notification email sent successfully');
+        } else {
+          console.warn('⚠️ Admin notification email failed:', emailResults.adminEmail.error);
+        }
+      } catch (emailError) {
+        console.warn('⚠️ Email sending failed but continuing with booking:', emailError);
+      }
+
       // Create Stripe payment session via Python API
       const response = await fetch('http://localhost:8000/api/payments/create-session', {
         method: 'POST',
@@ -215,8 +261,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ property, onClose }) => {
         window.open(paymentData.url, '_blank');
         setStep(4); // Show success step
         toast({
-          title: 'Redirecting to Payment',
-          description: 'Please complete your payment in the new tab.',
+          title: 'Booking Created Successfully! 📧',
+          description: 'Confirmation emails sent. Please complete your payment in the new tab.',
         });
       }
     } catch (error) {

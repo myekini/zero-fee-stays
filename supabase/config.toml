@@ -28,6 +28,12 @@ inspector_port = 8000
 [functions.hello-world]
 verify_jwt = false
 
+[functions.email-service]
+verify_jwt = false
+
+[functions.send-email-notification]
+verify_jwt = false
+
 [functions.create-payment-session]
 verify_jwt = false
 
