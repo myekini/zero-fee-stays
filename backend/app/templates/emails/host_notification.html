@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Booking Request - {{ app_name }}</title>
+    <style>
+      body {
+        font-family: "Arial", "Helvetica", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8fafc;
+        color: #374151;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      .header {
+        background: linear-gradient(135deg, #1a5f4a 0%, #d4a574 100%);
+        padding: 40px 30px;
+        text-align: center;
+      }
+      .header h1 {
+        color: #ffffff;
+        font-size: 28px;
+        margin: 0;
+        font-weight: bold;
+      }
+      .notification-badge {
+        background-color: #f59e0b;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 10px;
+        display: inline-block;
+      }
+      .content {
+        padding: 40px 30px;
+      }
+      .urgent-alert {
+        background-color: #fef3c7;
+        border: 2px solid #f59e0b;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 24px 0;
+        text-align: center;
+      }
+      .urgent-alert h3 {
+        color: #92400e;
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .booking-details {
+        background-color: #f3f4f6;
+        border-radius: 12px;
+        padding: 24px;
+        margin: 24px 0;
+        border-left: 4px solid #f59e0b;
+      }
+      .property-info {
+        background-color: #ffffff;
+        border: 2px solid #f59e0b;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .property-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+      .property-address {
+        color: #6b7280;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      .guest-info {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .guest-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 12px;
+      }
+      .guest-detail {
+        color: #374151;
+        margin: 4px 0;
+      }
+      .booking-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 20px 0;
+      }
+      .booking-item {
+        background-color: #f8fafc;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .booking-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .booking-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1a5f4a;
+      }
+      .revenue-amount {
+        background-color: #10b981;
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .revenue-label {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .revenue-value {
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .special-requests {
+        background-color: #fef3c7;
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .special-requests h4 {
+        color: #92400e;
+        margin: 0 0 8px 0;
+        font-size: 16px;
+      }
+      .special-requests p {
+        color: #92400e;
+        margin: 0;
+        line-height: 1.6;
+      }
+      .action-buttons {
+        text-align: center;
+        margin: 32px 0;
+      }
+      .action-button {
+        display: inline-block;
+        padding: 16px 24px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 0 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .approve-button {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+      }
+      .decline-button {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+      }
+      .action-button:hover {
+        opacity: 0.9;
+      }
+      .footer {
+        background-color: #f9fafb;
+        padding: 30px;
+        text-align: center;
+        border-top: 1px solid #e5e7eb;
+      }
+      .footer p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #6b7280;
+      }
+      .social-links {
+        margin: 20px 0;
+      }
+      .social-links a {
+        display: inline-block;
+        margin: 0 8px;
+        color: #6b7280;
+        text-decoration: none;
+      }
+      @media (max-width: 600px) {
+        .container {
+          width: 100% !important;
+        }
+        .header,
+        .content,
+        .footer {
+          padding: 20px 15px !important;
+        }
+        .header h1 {
+          font-size: 24px !important;
+        }
+        .booking-grid {
+          grid-template-columns: 1fr;
+        }
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .action-button {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>HiddyStays</h1>
+        <div class="notification-badge">🔔 New Booking Request!</div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <div
+          style="
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 24px;
+            line-height: 1.6;
+          "
+        >
+          <p>Hi {{ host_name }},</p>
+          <p>
+            You have a new booking request for your property! Please review the
+            details below and respond promptly.
+          </p>
+        </div>
+
+        <!-- Urgent Alert -->
+        <div class="urgent-alert">
+          <h3>ACTION REQUIRED: Please review and respond promptly</h3>
+        </div>
+
+        <!-- Property Information -->
+        <div class="property-info">
+          <div class="property-name">{{ booking.property_name }}</div>
+          <div class="property-address">{{ booking.property_address }}</div>
+        </div>
+
+        <!-- Guest Information -->
+        <div class="guest-info">
+          <div class="guest-title">👤 Guest Information</div>
+          <div class="guest-detail">Name: {{ booking.guest_name }}</div>
+          <div class="guest-detail">Email: {{ booking.guest_email }}</div>
+          <div class="guest-detail">
+            Phone: {{ booking.guest_phone or 'Not provided' }}
+          </div>
+        </div>
+
+        <!-- Booking Details -->
+        <div class="booking-details">
+          <div class="booking-grid">
+            <div class="booking-item">
+              <div class="booking-label">Check-in</div>
+              <div class="booking-value">{{ booking.check_in_date }}</div>
+            </div>
+            <div class="booking-item">
+              <div class="booking-label">Check-out</div>
+              <div class="booking-value">{{ booking.check_out_date }}</div>
+            </div>
+            <div class="booking-item">
+              <div class="booking-label">Guests</div>
+              <div class="booking-value">{{ booking.num_guests }}</div>
+            </div>
+          </div>
+
+          <div class="revenue-amount">
+            <div class="revenue-label">Your Revenue</div>
+            <div class="revenue-value">${{ booking.total_amount }} CAD</div>
+          </div>
+        </div>
+
+        <!-- Special Requests -->
+        {% if booking.special_requests %}
+        <div class="special-requests">
+          <h4>📝 Special Requests</h4>
+          <p>{{ booking.special_requests }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <a
+            href="{{ app_url }}/admin/bookings/{{ booking.id }}/approve"
+            class="action-button approve-button"
+          >
+            ✅ Approve Booking
+          </a>
+          <a
+            href="{{ app_url }}/admin/bookings/{{ booking.id }}/decline"
+            class="action-button decline-button"
+          >
+            ❌ Decline Booking
+          </a>
+        </div>
+
+        <!-- Next Steps -->
+        <div
+          style="
+            background-color: #eff6ff;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+          "
+        >
+          <h3 style="color: #1e40af; margin-bottom: 16px">What's Next?</h3>
+          <ul style="color: #374151; line-height: 1.6; padding-left: 20px">
+            <li>Review the guest's information and special requests</li>
+            <li>Check your calendar for availability</li>
+            <li>Approve or decline the booking within 24 hours</li>
+            <li>Contact the guest directly if you have questions</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p><strong>HiddyStays</strong></p>
+        <p>Built by hosts, for hosts - Zero platform fees, maximum value</p>
+
+        <div class="social-links">
+          <a href="{{ app_url }}/admin">Manage all bookings</a> |
+          <a href="mailto:{{ support_email }}">Contact support</a>
+        </div>
+
+        <p style="font-size: 12px; color: #9ca3af">
+          Booking ID: {{ booking.id }}<br />
+          Manage all your bookings in your HiddyStays admin dashboard.
+        </p>
+
+        <p style="font-size: 12px; color: #9ca3af">
+          © {{ year }} HiddyStays. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -188,4 +188,124 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+// Enhanced convenience functions for different toast types
+const showToast = {
+  success: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "success",
+    })
+  },
+  error: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "destructive",
+    })
+  },
+  warning: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "warning",
+    })
+  },
+  info: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "info",
+    })
+  },
+  // HiddyStays brand variants
+  sage: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "sage",
+    })
+  },
+  sand: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "sand",
+    })
+  },
+  terracotta: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "terracotta",
+    })
+  },
+  // Booking-specific toasts
+  bookingSuccess: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "success",
+    })
+  },
+  bookingError: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "destructive",
+    })
+  },
+  paymentSuccess: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "success",
+    })
+  },
+  paymentError: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "destructive",
+    })
+  },
+  // Auth-specific toasts
+  authSuccess: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "success",
+    })
+  },
+  authError: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "destructive",
+    })
+  },
+  // Network/connection toasts
+  networkError: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "destructive",
+    })
+  },
+  offline: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "warning",
+    })
+  },
+  online: (title: string, description?: string) => {
+    return toast({
+      title,
+      description,
+      variant: "success",
+    })
+  },
+}
+
+export { useToast, toast, showToast }

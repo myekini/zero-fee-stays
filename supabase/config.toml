@@ -9,21 +9,22 @@ max_rows = 1000
 
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["https://ihgzllefbkzqnomsviwh.supabase.co"]
+site_url = "http://localhost:8080"
+additional_redirect_urls = [
+  "https://ihgzllefbkzqnomsviwh.supabase.co",
+  "http://localhost:8080",
+  "http://localhost:8081", 
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:8080/auth/callback",
+  "http://localhost:8081/auth/callback",
+  "https://ihgzllefbkzqnomsviwh.supabase.co/auth/v1/callback"
+]
 jwt_expiry = 3600
-inactivity_timeout = 0
-refresh_token_rotation_enabled = true
-secure_session_cookie = false
 enable_signup = true
 
 [db]
 shadow_port = 54320
-import_maps = ["deno.land/x/postgres@v0.17.0/mod.ts"]
-
-[edge_functions]
-enabled = true
-inspector_port = 8000
 
 [functions.hello-world]
 verify_jwt = false
@@ -45,9 +46,6 @@ verify_jwt = false
 
 [storage]
 enabled = true
-bucket_limit = 100
-max_file_size_limit = 52428800
-image_transformation_enabled = true
 
 [studio]
 enabled = true

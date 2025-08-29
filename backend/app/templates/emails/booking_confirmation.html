@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation - {{ app_name }}</title>
+    <style>
+      body {
+        font-family: "Arial", "Helvetica", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8fafc;
+        color: #374151;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      .header {
+        background: linear-gradient(135deg, #1a5f4a 0%, #d4a574 100%);
+        padding: 40px 30px;
+        text-align: center;
+      }
+      .header h1 {
+        color: #ffffff;
+        font-size: 28px;
+        margin: 0;
+        font-weight: bold;
+      }
+      .success-badge {
+        background-color: #10b981;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 10px;
+        display: inline-block;
+      }
+      .content {
+        padding: 40px 30px;
+      }
+      .booking-details {
+        background-color: #f3f4f6;
+        border-radius: 12px;
+        padding: 24px;
+        margin: 24px 0;
+        border-left: 4px solid #1a5f4a;
+      }
+      .property-info {
+        background-color: #ffffff;
+        border: 2px solid #1a5f4a;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .property-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+      .property-address {
+        color: #6b7280;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      .booking-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 20px 0;
+      }
+      .booking-item {
+        background-color: #f8fafc;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .booking-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .booking-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1a5f4a;
+      }
+      .total-amount {
+        background-color: #10b981;
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .total-label {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .total-value {
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .host-contact {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .host-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 12px;
+      }
+      .host-info {
+        color: #374151;
+        margin: 4px 0;
+      }
+      .action-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #1a5f4a 0%, #e07a5f 100%);
+        color: #ffffff;
+        padding: 16px 32px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 16px 0;
+        box-shadow: 0 4px 12px rgba(26, 95, 74, 0.3);
+      }
+      .action-button:hover {
+        opacity: 0.9;
+      }
+      .footer {
+        background-color: #f9fafb;
+        padding: 30px;
+        text-align: center;
+        border-top: 1px solid #e5e7eb;
+      }
+      .footer p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #6b7280;
+      }
+      .social-links {
+        margin: 20px 0;
+      }
+      .social-links a {
+        display: inline-block;
+        margin: 0 8px;
+        color: #6b7280;
+        text-decoration: none;
+      }
+      @media (max-width: 600px) {
+        .container {
+          width: 100% !important;
+        }
+        .header,
+        .content,
+        .footer {
+          padding: 20px 15px !important;
+        }
+        .header h1 {
+          font-size: 24px !important;
+        }
+        .booking-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>HiddyStays</h1>
+        <div class="success-badge">✅ Booking Confirmed!</div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <div
+          style="
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 24px;
+            line-height: 1.6;
+          "
+        >
+          <p>Hi {{ user_name }},</p>
+          <p>
+            Great news! Your booking has been confirmed. Here are all the
+            details you need for your upcoming stay:
+          </p>
+        </div>
+
+        <!-- Property Information -->
+        <div class="property-info">
+          <div class="property-name">{{ booking.property_name }}</div>
+          <div class="property-address">{{ booking.property_address }}</div>
+        </div>
+
+        <!-- Booking Details -->
+        <div class="booking-details">
+          <div class="booking-grid">
+            <div class="booking-item">
+              <div class="booking-label">Check-in</div>
+              <div class="booking-value">{{ booking.check_in_date }}</div>
+            </div>
+            <div class="booking-item">
+              <div class="booking-label">Check-out</div>
+              <div class="booking-value">{{ booking.check_out_date }}</div>
+            </div>
+            <div class="booking-item">
+              <div class="booking-label">Guests</div>
+              <div class="booking-value">{{ booking.num_guests }}</div>
+            </div>
+          </div>
+
+          <div class="total-amount">
+            <div class="total-label">Total Amount</div>
+            <div class="total-value">${{ booking.total_amount }} CAD</div>
+          </div>
+        </div>
+
+        <!-- Host Contact Information -->
+        <div class="host-contact">
+          <div class="host-title">👤 Your Host</div>
+          <div class="host-info">Name: {{ booking.host_name }}</div>
+          <div class="host-info">Email: {{ booking.host_email }}</div>
+          <div class="host-info">
+            Phone: {{ booking.host_phone or 'Available via platform' }}
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div style="text-align: center; margin: 32px 0">
+          <a
+            href="{{ app_url }}/booking/{{ booking.id }}"
+            class="action-button"
+          >
+            View Booking Details
+          </a>
+        </div>
+
+        <!-- Next Steps -->
+        <div
+          style="
+            background-color: #eff6ff;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+          "
+        >
+          <h3 style="color: #1e40af; margin-bottom: 16px">What's Next?</h3>
+          <ul style="color: #374151; line-height: 1.6; padding-left: 20px">
+            <li>Your host will contact you with check-in instructions</li>
+            <li>Save your booking details for easy access</li>
+            <li>Contact your host directly for any questions</li>
+            <li>Enjoy your stay with zero platform fees!</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p><strong>HiddyStays</strong></p>
+        <p>Built by hosts, for hosts - Zero platform fees, maximum value</p>
+
+        <div class="social-links">
+          <a href="{{ app_url }}">Visit our website</a> |
+          <a href="mailto:{{ support_email }}">Contact support</a>
+        </div>
+
+        <p style="font-size: 12px; color: #9ca3af">
+          Booking ID: {{ booking.id }}<br />
+          This email confirms your reservation with HiddyStays.
+        </p>
+
+        <p style="font-size: 12px; color: #9ca3af">
+          © {{ year }} HiddyStays. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

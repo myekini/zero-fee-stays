@@ -7,15 +7,20 @@ import { AuthProvider } from "@/hooks/useAuth";
 import MobileNavigation from "@/components/MobileNavigation";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Index from "./pages/Index";
-import Search from "./pages/Search";
+import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import BookingSuccess from "./pages/BookingSuccess";
-import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import Saved from "./pages/Saved";
+import HostDashboard from "./pages/HostDashboard";
+import Bookings from "./pages/Bookings";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -28,14 +33,61 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/properties" element={<Properties />} />
+            <Route path="/search" element={<Properties />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/booking/success" element={<BookingSuccess />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/saved" element={<Saved />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute>
+                  <Messages />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/saved"
+              element={
+                <ProtectedRoute>
+                  <Saved />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/host-dashboard"
+              element={
+                <ProtectedRoute requiredRole="host">
+                  <HostDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bookings"
+              element={
+                <ProtectedRoute>
+                  <Bookings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

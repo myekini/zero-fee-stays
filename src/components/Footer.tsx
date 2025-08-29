@@ -1,72 +1,183 @@
-import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Mail,
+  MapPin,
+  Phone,
+  Mail as MailIcon,
+} from "lucide-react";
+import Logo from "@/components/ui/Logo";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-background py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">B</span>
-              </div>
-              <span className="text-xl font-bold">BookDirect</span>
+              <Logo size="sm" variant="white" type="full" />
             </div>
-            <p className="text-background/80">
-              The zero-fee vacation rental platform connecting hosts and guests directly.
+            <p className="text-slate-300 leading-relaxed text-sm">
+              Connect directly with local hosts, keep 100% of your savings, and
+              experience authentic hospitality that transforms every journey.
             </p>
             <div className="flex space-x-4">
-              <Facebook className="w-5 h-5 text-background/60 hover:text-background cursor-pointer" />
-              <Twitter className="w-5 h-5 text-background/60 hover:text-background cursor-pointer" />
-              <Instagram className="w-5 h-5 text-background/60 hover:text-background cursor-pointer" />
-              <Mail className="w-5 h-5 text-background/60 hover:text-background cursor-pointer" />
+              <a
+                href="#"
+                className="w-10 h-10 bg-slate-700 hover:bg-hiddy-coral rounded-full flex items-center justify-center transition-all duration-300"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-slate-700 hover:bg-hiddy-coral rounded-full flex items-center justify-center transition-all duration-300"
+              >
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-slate-700 hover:bg-hiddy-coral rounded-full flex items-center justify-center transition-all duration-300"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="mailto:hello@hiddystays.com"
+                className="w-10 h-10 bg-slate-700 hover:bg-hiddy-coral rounded-full flex items-center justify-center transition-all duration-300"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
-          {/* For Guests */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">For Guests</h3>
-            <ul className="space-y-2 text-background/80">
-              <li><a href="#" className="hover:text-background">Search Properties</a></li>
-              <li><a href="#" className="hover:text-background">How to Book</a></li>
-              <li><a href="#" className="hover:text-background">Guest Reviews</a></li>
-              <li><a href="#" className="hover:text-background">Travel Insurance</a></li>
-            </ul>
-          </div>
-
-          {/* For Hosts */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">For Hosts</h3>
-            <ul className="space-y-2 text-background/80">
-              <li><a href="#" className="hover:text-background">List Your Property</a></li>
-              <li><a href="#" className="hover:text-background">Host Dashboard</a></li>
-              <li><a href="#" className="hover:text-background">Pricing Tools</a></li>
-              <li><a href="#" className="hover:text-background">Host Community</a></li>
+          {/* Quick Links */}
+          <div className="space-y-6">
+            <h3 className="font-semibold text-lg text-white">Quick Links</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/properties"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Browse Properties
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/host-dashboard"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Become a Host
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/bookings"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  My Bookings
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  My Profile
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Support */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Support</h3>
-            <ul className="space-y-2 text-background/80">
-              <li><a href="#" className="hover:text-background">Help Center</a></li>
-              <li><a href="#" className="hover:text-background">Contact Us</a></li>
-              <li><a href="#" className="hover:text-background">Safety</a></li>
-              <li><a href="#" className="hover:text-background">Terms of Service</a></li>
+          <div className="space-y-6">
+            <h3 className="font-semibold text-lg text-white">Support</h3>
+            <ul className="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Safety Guidelines
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Trust & Safety
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-300 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  Contact Support
+                </a>
+              </li>
             </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <h3 className="font-semibold text-lg text-white">Contact</h3>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <MailIcon className="w-4 h-4 text-hiddy-coral" />
+                <span className="text-slate-300 text-sm">
+                  hello@hiddystays.com
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="w-4 h-4 text-hiddy-coral" />
+                <span className="text-slate-300 text-sm">
+                  +1 (555) 123-4567
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <MapPin className="w-4 h-4 text-hiddy-coral" />
+                <span className="text-slate-300 text-sm">Global Community</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-background/60 text-sm">
-            © 2024 BookDirect. All rights reserved.
+        <div className="mt-16 pt-8 border-t border-slate-700 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-slate-400 text-sm">
+            © 2024 HiddyStays. All rights reserved.
           </p>
-          <div className="flex space-x-6 text-sm text-background/60 mt-4 md:mt-0">
-            <a href="#" className="hover:text-background">Privacy Policy</a>
-            <a href="#" className="hover:text-background">Terms</a>
-            <a href="#" className="hover:text-background">Cookies</a>
+          <div className="flex space-x-8 text-sm text-slate-400 mt-4 md:mt-0">
+            <a
+              href="#"
+              className="hover:text-white transition-colors duration-300"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="#"
+              className="hover:text-white transition-colors duration-300"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="#"
+              className="hover:text-white transition-colors duration-300"
+            >
+              Cookie Policy
+            </a>
           </div>
         </div>
       </div>
