@@ -15,6 +15,27 @@ class SupabaseService(BaseService[Dict[str, Any]]):
         super().__init__()
         self.logger = get_logger(__name__)
     
+    async def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a new resource - not implemented for SupabaseService"""
+        raise NotImplementedError("Create method not implemented for SupabaseService")
+    
+    async def get_by_id(self, id: str) -> Optional[Dict[str, Any]]:
+        """Get resource by ID - not implemented for SupabaseService"""
+        raise NotImplementedError("Get by ID method not implemented for SupabaseService")
+    
+    async def update(self, id: str, data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Update a resource - not implemented for SupabaseService"""
+        raise NotImplementedError("Update method not implemented for SupabaseService")
+    
+    async def delete(self, id: str) -> bool:
+        """Delete a resource - not implemented for SupabaseService"""
+        raise NotImplementedError("Delete method not implemented for SupabaseService")
+    
+    async def list(self, filters: Optional[Dict[str, Any]] = None, 
+                   pagination: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """List resources - not implemented for SupabaseService"""
+        raise NotImplementedError("List method not implemented for SupabaseService")
+    
     @property
     def client(self):
         """Get Supabase service client"""

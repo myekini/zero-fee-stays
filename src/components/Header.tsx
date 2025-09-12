@@ -97,9 +97,11 @@ const Header = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/bookings">My Bookings</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/host-dashboard">Host Dashboard</Link>
-                  </DropdownMenuItem>
+                  {hasPermission("host") && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/host-dashboard">Host Dashboard</Link>
+                    </DropdownMenuItem>
+                  )}
                   {hasPermission("admin") && (
                     <>
                       <DropdownMenuSeparator />
@@ -208,13 +210,15 @@ const Header = () => {
                     >
                       My Bookings
                     </Link>
-                    <Link
-                      to="/host-dashboard"
-                      className="block py-3 px-4 text-slate-700 hover:text-hiddy-coral hover:bg-slate-50 rounded-lg transition-all duration-200"
-                      onClick={toggleMobileMenu}
-                    >
-                      Host Dashboard
-                    </Link>
+                    {hasPermission("host") && (
+                      <Link
+                        to="/host-dashboard"
+                        className="block py-3 px-4 text-slate-700 hover:text-hiddy-coral hover:bg-slate-50 rounded-lg transition-all duration-200"
+                        onClick={toggleMobileMenu}
+                      >
+                        Host Dashboard
+                      </Link>
+                    )}
                     {hasPermission("admin") && (
                       <Link
                         to="/admin"

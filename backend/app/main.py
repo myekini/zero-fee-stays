@@ -9,7 +9,7 @@ import logging
 from app.core.config import settings
 from app.core.logging import get_logger
 from app.core.exceptions import HiddyStaysException
-from app.api.v1 import payments, bookings, properties, admin
+from app.api.v1 import payments, bookings, properties, admin, email_templates
 from app.schemas.base import HealthCheckResponse
 
 # Initialize logger
@@ -123,6 +123,12 @@ app.include_router(
     admin.router,
     prefix="/api/admin",
     tags=["admin"]
+)
+
+app.include_router(
+    email_templates.router,
+    prefix="/api",
+    tags=["email-templates"]
 )
 
 
