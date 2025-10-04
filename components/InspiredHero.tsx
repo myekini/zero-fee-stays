@@ -184,24 +184,37 @@ export function InspiredHero({ className }: InspiredHeroProps) {
   return (
     <div className={cn("relative", className)}>
       {/* Hero Background Section */}
-      <div className="relative w-full h-[560px] bg-black overflow-hidden">
+      <div className="relative w-full h-[560px] overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 dark:from-black dark:via-slate-900 dark:to-black">
+        {/* Background Pattern */}
+        <div className="absolute inset-0">
+          {/* Subtle gradient overlay for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-black/40 dark:from-black/60 dark:via-black/40 dark:to-black/60" />
+          
+          {/* Optional: Add a subtle pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse" />
+            <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+            <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '4s' }} />
+          </div>
+        </div>
+        
         {/* Hero Content */}
-        <div className="relative container mx-auto px-8 h-full flex flex-col justify-center">
+        <div className="relative container mx-auto px-8 h-full flex flex-col justify-center z-10">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-5xl md:text-6xl font-bold text-white leading-[1.15] md:leading-[1.1] mb-6 max-w-2xl"
+            className="text-5xl md:text-6xl font-bold text-white leading-[1.15] md:leading-[1.1] mb-6 max-w-2xl drop-shadow-lg"
           >
             Hey Buddy! where are you <br />
-            <span className="text-white">Staying</span> tonight?
+            <span className="text-white bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Staying</span> tonight?
           </motion.h2>
 
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="flex items-center gap-2 text-white hover:text-white/80 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 text-white hover:text-blue-200 transition-all duration-300 text-sm font-medium bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hover:bg-white/20"
             onClick={() => {
               const searchSection = document.getElementById("search-section");
               searchSection?.scrollIntoView({ behavior: "smooth" });
@@ -238,7 +251,11 @@ export function InspiredHero({ className }: InspiredHeroProps) {
                     key={type.value}
                     value={type.value}
                     className={cn(
-                      "flex items-center gap-2 px-8 py-4 text-sm font-semibold transition-colors data-[state=inactive]:bg-neutral-900 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-neutral-800 data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-none border-0 shadow-none",
+                      "flex items-center gap-2 px-8 py-4 text-sm font-semibold transition-all duration-200 rounded-none border-0 shadow-none",
+                      "data-[state=inactive]:bg-slate-800/90 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-slate-700/90",
+                      "data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-lg",
+                      "dark:data-[state=inactive]:bg-slate-700/90 dark:data-[state=inactive]:text-slate-100", 
+                      "dark:data-[state=active]:bg-slate-100 dark:data-[state=active]:text-slate-900",
                       isFirst && "rounded-tl-lg"
                     )}
                   >
@@ -251,7 +268,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
           </Tabs>
 
           {/* Search Form Card */}
-          <Card className="card-premium-modern p-6 sm:p-8 rounded-b-xl rounded-tr-xl">
+          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-0 shadow-2xl shadow-black/20 dark:shadow-black/40 p-6 sm:p-8 rounded-b-xl rounded-tr-xl">
             <div className="space-y-6">
               {/* Main Search Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">

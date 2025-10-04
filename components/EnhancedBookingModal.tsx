@@ -478,52 +478,86 @@ const EnhancedBookingModal: React.FC<EnhancedBookingModalProps> = ({
           </div>
         </div>
 
-        {/* Progress Tracking */}
-        <div className="p-6 border-b bg-gray-50">
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">
-                Booking Progress
-              </span>
-              <span className="text-sm text-gray-500">
-                {Math.round(getProgressPercentage())}%
-              </span>
+        {/* Sleeker Progress Tracking */}
+        <div className="p-6 border-b border-border/50 bg-gradient-to-r from-gray-50/50 to-blue-50/30 dark:from-gray-900/20 dark:to-blue-900/10">
+          {/* Progress Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Booking Progress</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                {steps.find(s => s.id === step)?.description}
+              </p>
             </div>
-            <Progress value={getProgressPercentage()} className="h-2" />
+            <div className="flex items-center gap-2">
+              <div className="text-sm font-medium text-muted-foreground">
+                Step {steps.findIndex(s => s.id === step) + 1} of {steps.length}
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-center">
+
+          {/* Modern Progress Bar */}
+          <div className="relative mb-6">
+            <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-brand-500 to-brand-600 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${getProgressPercentage()}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Minimal Step Indicators */}
+          <div className="flex items-center justify-between relative">
             {steps.map((stepItem, index) => {
               const currentStepIndex = steps.findIndex((s) => s.id === step);
               const isCompleted = index < currentStepIndex;
               const isCurrent = stepItem.id === step;
+              const isUpcoming = index > currentStepIndex;
 
               return (
-                <div key={stepItem.id} className="flex items-center">
+                <div key={stepItem.id} className="flex flex-col items-center relative z-10">
+                  {/* Step Dot */}
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
                       isCurrent
-                        ? "bg-blue-600 text-white"
+                        ? "border-brand-500 bg-brand-500 scale-125 shadow-lg shadow-brand-500/30"
                         : isCompleted
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-200 text-gray-600"
+                          ? "border-brand-500 bg-brand-500"
+                          : "border-gray-300 dark:border-gray-600 bg-background"
                     }`}
                   >
-                    {isCompleted ? (
-                      <CheckCircle className="w-4 h-4" />
-                    ) : (
-                      index + 1
+                    {/* Active indicator */}
+                    {isCurrent && (
+                      <div className="absolute inset-0 rounded-full border-2 border-brand-400 animate-ping" />
                     )}
                   </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`w-12 h-1 mx-2 ${
-                        isCompleted ? "bg-green-500" : "bg-gray-200"
-                      }`}
-                    />
+                  
+                  {/* Step Label - Only show for current step on mobile */}
+                  <div className="mt-2 text-center hidden sm:block">
+                    <div className={`text-xs font-medium transition-colors ${
+                      isCurrent 
+                        ? "text-brand-600 dark:text-brand-400" 
+                        : isCompleted 
+                          ? "text-gray-600 dark:text-gray-400"
+                          : "text-gray-400 dark:text-gray-500"
+                    }`}>
+                      {stepItem.title}
+                    </div>
+                  </div>
+                  
+                  {/* Mobile - only show current step title */}
+                  {isCurrent && (
+                    <div className="mt-2 text-center sm:hidden">
+                      <div className="text-xs font-medium text-brand-600 dark:text-brand-400">
+                        {stepItem.title}
+                      </div>
+                    </div>
                   )}
                 </div>
               );
             })}
+
+            {/* Connecting Line */}
+            <div className="absolute top-1.5 left-0 right-0 h-px bg-gray-200 dark:bg-gray-700 -z-10" />
           </div>
         </div>
 
