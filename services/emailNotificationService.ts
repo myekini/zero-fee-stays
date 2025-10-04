@@ -63,6 +63,24 @@ class EmailNotificationService {
     });
     return res.success;
   }
+
+  async sendCancellationEmail(data: BookingEmailData, recipientType: "guest" | "host"): Promise<boolean> {
+    const res = await unifiedEmailService.sendBookingCancellation({
+      bookingId: data.bookingId,
+      guestName: data.guestName,
+      guestEmail: data.guestEmail,
+      hostName: data.hostName,
+      hostEmail: data.hostEmail,
+      propertyTitle: data.propertyTitle,
+      propertyLocation: data.propertyLocation,
+      checkInDate: data.checkInDate,
+      checkOutDate: data.checkOutDate,
+      guests: data.guestsCount,
+      totalAmount: data.totalAmount,
+      specialRequests: data.specialRequests,
+    });
+    return res.success;
+  }
 }
 
 export const emailNotificationService = new EmailNotificationService();
