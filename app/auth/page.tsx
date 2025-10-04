@@ -87,7 +87,7 @@ export default function AuthPage() {
               fill
               className="object-cover object-center"
               priority={siteConfig.heroImages.auth.priority}
-              quality={78}
+              quality={75}
               sizes={siteConfig.heroImages.auth.sizes}
             />
             {/* Theme-aware overlay for contrast */}

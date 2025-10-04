@@ -64,3 +64,4 @@ console.log('2. Run "npm run dev" to start the development server');
 console.log("3. Visit http://localhost:3000 to see your app");
 console.log("\nHappy coding! 🚀");
 
+

@@ -225,7 +225,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
           alt={siteConfig.heroImages.home.alt}
           fill
           priority={siteConfig.heroImages.home.priority}
-          quality={78}
+          quality={75}
           sizes={siteConfig.heroImages.home.sizes}
           className="object-cover object-center"
         />
