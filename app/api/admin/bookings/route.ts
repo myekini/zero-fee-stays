@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createAdminClient } from "@/lib/supabase-admin";
 
 // Helper function to verify admin
 async function verifyAdmin(request: NextRequest) {
+  const supabase = createAdminClient();
+  if (!supabase) {
+    return { isAdmin: false, error: "Service temporarily unavailable" };
+  }
+
   const authHeader = request.headers.get("authorization");
   if (!authHeader) {
     return { isAdmin: false, error: "No authorization header" };
@@ -42,6 +42,14 @@ async function verifyAdmin(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createAdminClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Service temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     const auth = await verifyAdmin(request);
     if (!auth.isAdmin) {
       return NextResponse.json(
@@ -138,6 +146,14 @@ export async function GET(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const supabase = createAdminClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Service temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     const auth = await verifyAdmin(request);
     if (!auth.isAdmin) {
       return NextResponse.json(
@@ -217,6 +233,14 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const supabase = createAdminClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Service temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     const auth = await verifyAdmin(request);
     if (!auth.isAdmin) {
       return NextResponse.json(
