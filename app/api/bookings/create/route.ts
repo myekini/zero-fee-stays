@@ -295,34 +295,22 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Send email notification to guest (booking confirmation)
+// Send email notification to guest (booking confirmation)
     if (guestInfo.email) {
       try {
-        await supabase.functions.invoke("send-email-notification", {
-          body: {
-            to: guestInfo.email,
-            subject: `Booking Confirmation - ${propertyDetails?.title}`,
-            template: "booking_confirmation_guest",
-            data: {
-              propertyTitle: propertyDetails?.title,
-              guestName: guestInfo.name,
-              checkInDate: new Date(checkIn).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-              checkOutDate: new Date(checkOut).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-              guestsCount: guests,
-              totalAmount: totalAmount.toFixed(2),
-              propertyUrl: `${process.env.APP_URL || "http://localhost:3000"}/bookings/${booking.id}`,
-            },
-          },
+        const { unifiedEmailService } = await import("@/lib/unified-email-service");
+        await unifiedEmailService.sendBookingConfirmation({
+          bookingId: booking.id,
+          guestName: guestInfo.name,
+          guestEmail: guestInfo.email,
+          hostName: `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() || "Host",
+          hostEmail: hostEmail || "",
+          propertyTitle: propertyDetails?.title || "Property",
+          propertyLocation: propertyDetails?.address || "",
+          checkInDate: new Date(checkIn).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          guests: guests,
+          totalAmount: totalAmount,
         });
         console.log("✅ Guest confirmation email sent");
       } catch (emailError) {
@@ -331,37 +319,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Send email notification to host (new booking alert)
+// Send email notification to host (new booking alert)
     if (hostEmail) {
       try {
-        await supabase.functions.invoke("send-email-notification", {
-          body: {
-            to: hostEmail,
-            subject: `New Booking Request - ${propertyDetails?.title}`,
-            template: "new_booking_host",
-            data: {
-              propertyTitle: propertyDetails?.title,
-              guestName: guestInfo.name,
-              guestEmail: guestInfo.email,
-              guestPhone: guestInfo.phone,
-              checkInDate: new Date(checkIn).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-              checkOutDate: new Date(checkOut).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-              guestsCount: guests,
-              totalAmount: totalAmount.toFixed(2),
-              specialRequests: guestInfo.specialRequests || "",
-              dashboardUrl: `${process.env.APP_URL || "http://localhost:3000"}/host-dashboard`,
-            },
-          },
+        const { unifiedEmailService } = await import("@/lib/unified-email-service");
+        await unifiedEmailService.sendHostNotification({
+          bookingId: booking.id,
+          guestName: guestInfo.name,
+          guestEmail: guestInfo.email,
+          hostName: `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() || "Host",
+          hostEmail: hostEmail,
+          propertyTitle: propertyDetails?.title || "Property",
+          propertyLocation: propertyDetails?.address || "",
+          checkInDate: new Date(checkIn).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          guests: guests,
+          totalAmount: totalAmount,
+          specialRequests: guestInfo.specialRequests || "",
         });
         console.log("✅ Host notification email sent");
       } catch (emailError) {

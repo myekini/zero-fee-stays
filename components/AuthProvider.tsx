@@ -176,23 +176,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         duration: 6000,
       });
 
-      // Send welcome email asynchronously (don't block on it)
+// Send welcome email asynchronously via unified email API (don't block on it)
       if (firstName) {
-        import("@/lib/emailNotificationService").then((service) => {
-          service
-            .sendWelcomeEmail({
-              email,
-              firstName,
-              lastName,
-            })
-            .then(() => {
-              console.log("✅ Welcome email sent successfully");
-            })
-            .catch((err) => {
-              console.error("❌ Failed to send welcome email:", err);
-              // Don't show error to user - this is non-critical
-            });
-        });
+        fetch("/api/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "welcome",
+            data: { name: firstName, email, userId: undefined },
+          }),
+        })
+          .then(() => {
+            console.log("✅ Welcome email requested successfully");
+          })
+          .catch((err) => {
+            console.error("❌ Failed to request welcome email:", err);
+            // Don't show error to user - this is non-critical
+          });
       }
     }
 

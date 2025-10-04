@@ -332,16 +332,15 @@ class UnifiedEmailService {
   /**
    * Send check-in reminder email
    */
-  async sendCheckInReminder(data: BookingEmailData): Promise<EmailResult> {
-    // For now, reuse booking confirmation template with different subject
-    // You can create a dedicated check-in reminder template later
-    const template = EmailTemplates.BookingConfirmationEmail({
+  async sendCheckInReminder(data: BookingEmailData & { checkInTime?: string; hostName?: string; hostPhone?: string; propertyAddress?: string; }): Promise<EmailResult> {
+    const template = EmailTemplates.CheckInReminderEmail({
       guestName: data.guestName,
       propertyTitle: data.propertyTitle,
       checkInDate: data.checkInDate,
-      checkOutDate: data.checkOutDate,
-      guests: data.guests,
-      totalAmount: data.totalAmount,
+      checkInTime: (data as any).checkInTime,
+      hostName: (data as any).hostName,
+      hostPhone: (data as any).hostPhone,
+      propertyAddress: (data as any).propertyAddress,
       bookingId: data.bookingId,
     });
 
@@ -401,6 +400,74 @@ class UnifiedEmailService {
           bookingId: data.bookingId,
           propertyTitle: data.propertyTitle,
         }
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * Send booking cancellation email
+   */
+  async sendBookingCancellation(data: BookingEmailData & { refundAmount?: number; refundPercentage?: number; cancellationReason?: string; }): Promise<EmailResult> {
+    const template = EmailTemplates.BookingCancellationEmail({
+      guestName: data.guestName,
+      propertyTitle: data.propertyTitle,
+      checkInDate: data.checkInDate,
+      checkOutDate: data.checkOutDate,
+      refundAmount: (data as any).refundAmount,
+      refundPercentage: (data as any).refundPercentage,
+      cancellationReason: (data as any).cancellationReason,
+      bookingId: data.bookingId,
+    });
+
+    const result = await this.sendEmail(
+      data.guestEmail,
+      `❌ Booking Cancelled - ${data.propertyTitle}`,
+      template,
+      "HiddyStays Cancellations <cancellations@hiddystays.com>"
+    );
+
+    if (result.success && result.emailId) {
+      await this.trackEmailEvent(
+        "booking_cancellation_sent",
+        result.emailId,
+        data.guestEmail,
+        "booking_cancellation",
+        { bookingId: data.bookingId }
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * Send payment receipt email
+   */
+  async sendPaymentReceipt(data: BookingEmailData & { amountPaid: number; paymentDate?: string; receiptUrl?: string; }): Promise<EmailResult> {
+    const template = EmailTemplates.PaymentReceiptEmail({
+      guestName: data.guestName,
+      propertyTitle: data.propertyTitle,
+      amountPaid: (data as any).amountPaid,
+      paymentDate: (data as any).paymentDate,
+      bookingId: data.bookingId,
+      receiptUrl: (data as any).receiptUrl,
+    });
+
+    const result = await this.sendEmail(
+      data.guestEmail,
+      `🧾 Payment Receipt - ${data.propertyTitle}`,
+      template,
+      "HiddyStays Billing <billing@hiddystays.com>"
+    );
+
+    if (result.success && result.emailId) {
+      await this.trackEmailEvent(
+        "payment_receipt_sent",
+        result.emailId,
+        data.guestEmail,
+        "payment_receipt",
+        { bookingId: data.bookingId }
       );
     }
 

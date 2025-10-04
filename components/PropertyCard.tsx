@@ -92,7 +92,7 @@ className="card-premium-modern rounded-lg cursor-pointer group hover:shadow-glas
                 </h3>
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <MapPin className="w-4 h-4" strokeWidth={1.5} />
-                  <span className="text-sm">{property.address}</span>
+<span className="text-sm text-foreground/80">{property.address}</span>
                 </div>
               </div>
 
@@ -221,7 +221,7 @@ className="card-premium-modern rounded-xl overflow-hidden cursor-pointer group h
           {/* Location */}
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="w-4 h-4 flex-shrink-0 text-primary" strokeWidth={2} />
-            <span className="text-sm line-clamp-1 font-medium">{property.address}</span>
+<span className="text-sm line-clamp-1 font-medium text-foreground/80">{property.address}</span>
           </div>
 
           {/* Quick Details */}

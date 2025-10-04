@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
   authors: [{ name: "HiddyStays Team" }],
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 
@@ -49,6 +50,7 @@ export default function RootLayout({
               <Toaster />
             </AuthProvider>
           </ErrorBoundary>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

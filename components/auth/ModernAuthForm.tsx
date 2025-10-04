@@ -215,34 +215,35 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
 
   if (authMode === "signin") {
     return (
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full space-y-6">
         {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Sign in to your account
-          </h1>
+        <div className="space-y-2 text-center">
+          <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
           <p className="text-sm text-muted-foreground">
-            Welcome back! Please enter your details.
+            Sign in to your account
           </p>
         </div>
 
         {/* Sign In Form */}
-        <form onSubmit={handleSignIn} className="space-y-5">
+        <form onSubmit={handleSignIn} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="email"
+              className="text-sm font-medium text-foreground"
+            >
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
                 placeholder="Enter your email"
                 value={signInData.email}
-                onChange={(e) =>
+                onChange={e =>
                   setSignInData({ ...signInData, email: e.target.value })
                 }
-                className="pl-11 h-12 text-base"
+                className="pl-10 h-11"
                 required
                 disabled={isLoading}
               />
@@ -250,33 +251,36 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-foreground"
+            >
               Password
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 value={signInData.password}
-                onChange={(e) =>
+                onChange={e =>
                   setSignInData({ ...signInData, password: e.target.value })
                 }
-                className="pl-11 pr-11 h-12 text-base"
+                className="pl-10 pr-10 h-11"
                 required
                 disabled={isLoading}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
                 disabled={isLoading}
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
+                  <EyeOff className="h-4 w-4" />
                 ) : (
-                  <Eye className="h-5 w-5" />
+                  <Eye className="h-4 w-4" />
                 )}
               </button>
             </div>
@@ -287,7 +291,7 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
               <Checkbox
                 id="remember"
                 checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                onCheckedChange={checked => setRememberMe(checked as boolean)}
                 disabled={isLoading}
               />
               <label
@@ -307,19 +311,16 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
 
           <Button
             type="submit"
-            className="btn-primary-modern w-full h-12 text-base"
+            className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 Signing in...
               </>
             ) : (
-              <>
-                Sign in
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </>
+              "Sign in"
             )}
           </Button>
         </form>
@@ -330,7 +331,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
             <div className="w-full border-t border-border"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-background text-muted-foreground">Or continue with</span>
+            <span className="px-4 bg-background text-muted-foreground">
+              Or continue with
+            </span>
           </div>
         </div>
 
@@ -340,9 +343,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           variant="outline"
           onClick={handleGoogleSignIn}
           disabled={isLoading}
-          className="w-full h-12 font-medium text-base"
+          className="w-full h-11 font-medium"
         >
-          <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
+          <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -381,35 +384,38 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
 
   // Sign Up Mode
   return (
-    <div className="w-full max-w-md space-y-8">
+    <div className="w-full space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="space-y-2 text-center">
+        <h1 className="text-2xl font-bold text-foreground">
           Create an account
         </h1>
         <p className="text-sm text-muted-foreground">
-          Get started with your free account today.
+          Get started with your free account
         </p>
       </div>
 
       {/* Sign Up Form */}
-      <form onSubmit={handleSignUp} className="space-y-5">
+      <form onSubmit={handleSignUp} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="firstName"
+              className="text-sm font-medium text-foreground"
+            >
               First Name
             </Label>
             <div className="relative">
-              <User className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="firstName"
                 type="text"
                 placeholder="John"
                 value={signUpData.firstName}
-                onChange={(e) =>
+                onChange={e =>
                   setSignUpData({ ...signUpData, firstName: e.target.value })
                 }
-                className="pl-11 h-12 text-base"
+                className="pl-10 h-11"
                 required
                 disabled={isLoading}
               />
@@ -417,20 +423,23 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="lastName"
+              className="text-sm font-medium text-foreground"
+            >
               Last Name
             </Label>
             <div className="relative">
-              <User className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="lastName"
                 type="text"
                 placeholder="Doe"
                 value={signUpData.lastName}
-                onChange={(e) =>
+                onChange={e =>
                   setSignUpData({ ...signUpData, lastName: e.target.value })
                 }
-                className="pl-11 h-12 text-base"
+                className="pl-10 h-11"
                 required
                 disabled={isLoading}
               />
@@ -439,20 +448,23 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="signup-email" className="text-sm font-medium text-foreground">
+          <Label
+            htmlFor="signup-email"
+            className="text-sm font-medium text-foreground"
+          >
             Email
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="signup-email"
               type="email"
               placeholder="your@email.com"
               value={signUpData.email}
-              onChange={(e) =>
+              onChange={e =>
                 setSignUpData({ ...signUpData, email: e.target.value })
               }
-              className="pl-11 h-12 text-base"
+              className="pl-10 h-11"
               required
               disabled={isLoading}
             />
@@ -460,34 +472,37 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="signup-password" className="text-sm font-medium text-foreground">
+          <Label
+            htmlFor="signup-password"
+            className="text-sm font-medium text-foreground"
+          >
             Password
           </Label>
           <div className="relative">
-            <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="signup-password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a password"
               value={signUpData.password}
-              onChange={(e) => {
+              onChange={e => {
                 setSignUpData({ ...signUpData, password: e.target.value });
                 validatePasswordStrength(e.target.value);
               }}
-              className="pl-11 pr-11 h-12 text-base"
+              className="pl-10 pr-10 h-11"
               required
               disabled={isLoading}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
               disabled={isLoading}
             >
               {showPassword ? (
-                <EyeOff className="h-5 w-5" />
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <Eye className="h-5 w-5" />
+                <Eye className="h-4 w-4" />
               )}
             </button>
           </div>
@@ -503,9 +518,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
                   }`}
                 >
                   {req.met ? (
-                    <CheckCircle className="h-4 w-4" />
+                    <CheckCircle className="h-3 w-3" />
                   ) : (
-                    <XCircle className="h-4 w-4" />
+                    <XCircle className="h-3 w-3" />
                   )}
                   <span>{req.label}</span>
                 </div>
@@ -522,32 +537,32 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
             Confirm Password
           </Label>
           <div className="relative">
-            <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="confirm-password"
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password"
               value={signUpData.confirmPassword}
-              onChange={(e) =>
+              onChange={e =>
                 setSignUpData({
                   ...signUpData,
                   confirmPassword: e.target.value,
                 })
               }
-              className="pl-11 pr-11 h-12 text-base"
+              className="pl-10 pr-10 h-11"
               required
               disabled={isLoading}
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3.5 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
               disabled={isLoading}
             >
               {showConfirmPassword ? (
-                <EyeOff className="h-5 w-5" />
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <Eye className="h-5 w-5" />
+                <Eye className="h-4 w-4" />
               )}
             </button>
           </div>
@@ -555,19 +570,16 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
 
         <Button
           type="submit"
-          className="btn-primary-modern w-full h-12 text-base"
+          className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground"
           disabled={isLoading || passwordErrors.length > 0}
         >
           {isLoading ? (
             <>
-              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               Creating account...
             </>
           ) : (
-            <>
-              Create account
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </>
+            "Create account"
           )}
         </Button>
       </form>
@@ -578,7 +590,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           <div className="w-full border-t border-border"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-background text-muted-foreground">Or continue with</span>
+          <span className="px-4 bg-background text-muted-foreground">
+            Or continue with
+          </span>
         </div>
       </div>
 
@@ -588,9 +602,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
         variant="outline"
         onClick={handleGoogleSignIn}
         disabled={isLoading}
-        className="w-full h-12 font-medium text-base"
+        className="w-full h-11 font-medium"
       >
-        <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
+        <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
           <path
             fill="#4285F4"
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

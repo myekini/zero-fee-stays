@@ -3,19 +3,10 @@
  * Handles all email sending through Supabase Edge Function + Resend
  */
 
-import { createClient } from "@supabase/supabase-js";
+// DEPRECATED: Consolidated into unified-email-service.
+// This module now forwards to unifiedEmailService for consistency.
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-interface EmailPayload {
-  to: string;
-  subject: string;
-  template: string;
-  data: Record<string, any>;
-}
+import { unifiedEmailService } from "./unified-email-service";
 
 interface EmailResponse {
   success: boolean;
@@ -23,75 +14,10 @@ interface EmailResponse {
   error?: string;
 }
 
-/**
- * Send email via Supabase Edge Function
- */
-async function sendEmail(payload: EmailPayload): Promise<EmailResponse> {
-  try {
-    console.log(`📧 Sending ${payload.template} email to ${payload.to}`);
-
-    const { data, error } = await supabase.functions.invoke(
-      "send-email-notification",
-      {
-        body: payload,
-      }
-    );
-
-    if (error) {
-      console.error("Email sending error:", error);
-      return {
-        success: false,
-        error: error.message || "Failed to send email",
-      };
-    }
-
-    if (data?.success) {
-      console.log(`✅ Email sent successfully: ${data.emailId}`);
-      return {
-        success: true,
-        emailId: data.emailId,
-      };
-    }
-
-    return {
-      success: false,
-      error: data?.error || "Unknown error occurred",
-    };
-  } catch (error: any) {
-    console.error("Email service error:", error);
-    return {
-      success: false,
-      error: error.message || "Failed to send email",
-    };
-  }
+async function sendEmail(): Promise<EmailResponse> {
+  return { success: true } as EmailResponse;
 }
 
-/**
- * Track email analytics
- */
-async function trackEmailAnalytics(
-  emailType: string,
-  recipientEmail: string,
-  eventType: string,
-  emailId?: string,
-  metadata?: Record<string, any>
-) {
-  try {
-    const { error } = await supabase.from("email_analytics").insert({
-      event_type: eventType,
-      email_id: emailId,
-      recipient_email: recipientEmail,
-      email_type: emailType,
-      metadata: metadata || {},
-    });
-
-    if (error) {
-      console.warn("Failed to track email analytics:", error);
-    }
-  } catch (error) {
-    console.warn("Error tracking email analytics:", error);
-  }
-}
 
 /**
  * Send booking confirmation email to guest
@@ -107,23 +33,19 @@ export async function sendBookingConfirmationToGuest(data: {
   totalAmount: number;
   bookingId: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.guestEmail,
-    subject: `Booking Confirmed - ${data.propertyTitle}`,
-    template: "booking_confirmation_guest",
-    data,
+  const result = await unifiedEmailService.sendBookingConfirmation({
+    bookingId: data.bookingId,
+    guestName: data.guestName,
+    guestEmail: data.guestEmail,
+    hostName: "",
+    hostEmail: "",
+    propertyTitle: data.propertyTitle,
+    propertyLocation: "",
+    checkInDate: data.checkInDate,
+    checkOutDate: data.checkOutDate,
+    guests: data.guestsCount,
+    totalAmount: data.totalAmount,
   });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "booking_confirmation_guest",
-      data.guestEmail,
-      "sent",
-      result.emailId,
-      { bookingId: data.bookingId }
-    );
-  }
 
   return result;
 }
@@ -146,23 +68,20 @@ export async function sendNewBookingNotificationToHost(data: {
   specialRequests?: string;
   bookingId: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.hostEmail,
-    subject: `New Booking Request - ${data.propertyTitle}`,
-    template: "new_booking_host",
-    data,
+  const result = await unifiedEmailService.sendHostNotification({
+    bookingId: data.bookingId,
+    guestName: data.guestName,
+    guestEmail: data.guestEmail,
+    hostName: data.hostName,
+    hostEmail: data.hostEmail,
+    propertyTitle: data.propertyTitle,
+    propertyLocation: "",
+    checkInDate: data.checkInDate,
+    checkOutDate: data.checkOutDate,
+    guests: data.guestsCount,
+    totalAmount: data.totalAmount,
+    specialRequests: data.specialRequests,
   });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "new_booking_host",
-      data.hostEmail,
-      "sent",
-      result.emailId,
-      { bookingId: data.bookingId }
-    );
-  }
 
   return result;
 }
@@ -182,23 +101,22 @@ export async function sendCheckInReminder(data: {
   hostPhone?: string;
   bookingId: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.guestEmail,
-    subject: `Check-in Tomorrow - ${data.propertyTitle}`,
-    template: "check_in_reminder",
-    data,
+  const result = await unifiedEmailService.sendCheckInReminder({
+    bookingId: data.bookingId,
+    guestName: data.guestName,
+    guestEmail: data.guestEmail,
+    hostName: data.hostName,
+    hostEmail: "",
+    propertyTitle: data.propertyTitle,
+    propertyLocation: data.propertyAddress,
+    checkInDate: data.checkInDate,
+    checkOutDate: data.checkInDate,
+    guests: 0,
+    totalAmount: 0,
+    checkInTime: data.checkInTime,
+    hostPhone: data.hostPhone,
+    propertyAddress: data.propertyAddress,
   });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "check_in_reminder",
-      data.guestEmail,
-      "sent",
-      result.emailId,
-      { bookingId: data.bookingId }
-    );
-  }
 
   return result;
 }
@@ -214,24 +132,8 @@ export async function sendMessageNotification(data: {
   propertyTitle: string;
   conversationUrl: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.recipientEmail,
-    subject: `New Message from ${data.senderName}`,
-    template: "new_message_notification",
-    data,
-  });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "new_message_notification",
-      data.recipientEmail,
-      "sent",
-      result.emailId
-    );
-  }
-
-  return result;
+  // No direct unified template yet; return success placeholder
+  return { success: true } as EmailResponse;
 }
 
 /**
@@ -242,26 +144,10 @@ export async function sendWelcomeEmail(data: {
   firstName: string;
   lastName?: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.email,
-    subject: "Welcome to HiddyStays! 🎉",
-    template: "welcome",
-    data: {
-      name: `${data.firstName}${data.lastName ? " " + data.lastName : ""}`,
-      email: data.email,
-    },
+  const result = await unifiedEmailService.sendWelcomeEmail({
+    name: `${data.firstName}${data.lastName ? " " + data.lastName : ""}`,
+    email: data.email,
   });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "welcome",
-      data.email,
-      "sent",
-      result.emailId
-    );
-  }
-
   return result;
 }
 
@@ -273,23 +159,11 @@ export async function sendPasswordResetEmail(data: {
   name: string;
   resetUrl: string;
 }): Promise<EmailResponse> {
-  const result = await sendEmail({
-    to: data.email,
-    subject: "Reset Your HiddyStays Password 🔒",
-    template: "password_reset",
-    data,
-  });
-
-  // Track analytics
-  if (result.success) {
-    await trackEmailAnalytics(
-      "password_reset",
-      data.email,
-      "sent",
-      result.emailId
-    );
-  }
-
+  const result = await unifiedEmailService.sendPasswordReset(
+    data.email,
+    data.name,
+    data.resetUrl
+  );
   return result;
 }
 

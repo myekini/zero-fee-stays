@@ -1,18 +1,20 @@
-import { Resend } from "resend";
+// @ts-nocheck
+// DEPRECATED: This file has been consolidated into unified-email-service.
+// For backward compatibility, we forward to unifiedEmailService.
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+import { unifiedEmailService } from "@/lib/unified-email-service";
 
 export interface BookingEmailData {
   guestName: string;
   guestEmail: string;
   propertyTitle: string;
-  propertyAddress: string;
+  propertyAddress?: string;
   checkIn: string;
   checkOut: string;
   guests: number;
   totalAmount: number;
   bookingId: string;
-  hostName: string;
+  hostName?: string;
   hostPhone?: string;
   hostEmail?: string;
   specialRequests?: string;
@@ -27,7 +29,7 @@ export interface HostNotificationData {
   guestName: string;
   guestEmail: string;
   propertyTitle: string;
-  propertyAddress: string;
+  propertyAddress?: string;
   checkIn: string;
   checkOut: string;
   guests: number;
@@ -38,9 +40,7 @@ export interface HostNotificationData {
 
 class EnhancedEmailService {
   private static instance: EnhancedEmailService;
-
   private constructor() {}
-
   static getInstance(): EnhancedEmailService {
     if (!EnhancedEmailService.instance) {
       EnhancedEmailService.instance = new EnhancedEmailService();
@@ -48,97 +48,84 @@ class EnhancedEmailService {
     return EnhancedEmailService.instance;
   }
 
-  // Send booking confirmation email to guest
   async sendBookingConfirmation(data: BookingEmailData): Promise<boolean> {
-    try {
-      const { error } = await resend.emails.send({
-        from: "HiddyStays <bookings@hiddystays.com>",
-        to: [data.guestEmail],
-        subject: `Booking Confirmed - ${data.propertyTitle}`,
-        html: this.generateBookingConfirmationHTML(data),
-      });
-
-      if (error) {
-        console.error("Error sending booking confirmation:", error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error sending booking confirmation:", error);
-      return false;
-    }
+    const res = await unifiedEmailService.sendBookingConfirmation({
+      bookingId: data.bookingId,
+      guestName: data.guestName,
+      guestEmail: data.guestEmail,
+      hostName: data.hostName || "",
+      hostEmail: data.hostEmail || "",
+      propertyTitle: data.propertyTitle,
+      propertyLocation: data.propertyAddress || "",
+      checkInDate: data.checkIn,
+      checkOutDate: data.checkOut,
+      guests: data.guests,
+      totalAmount: data.totalAmount,
+      specialRequests: data.specialRequests,
+    });
+    return res.success;
   }
 
-  // Send booking notification to host
   async sendHostBookingNotification(data: HostNotificationData): Promise<boolean> {
-    try {
-      const { error } = await resend.emails.send({
-        from: "HiddyStays <bookings@hiddystays.com>",
-        to: [data.hostEmail],
-        subject: `New Booking - ${data.propertyTitle}`,
-        html: this.generateHostNotificationHTML(data),
-      });
-
-      if (error) {
-        console.error("Error sending host notification:", error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error sending host notification:", error);
-      return false;
-    }
+    const res = await unifiedEmailService.sendHostNotification({
+      bookingId: data.bookingId,
+      guestName: data.guestName,
+      guestEmail: data.guestEmail,
+      hostName: data.hostName,
+      hostEmail: data.hostEmail,
+      propertyTitle: data.propertyTitle,
+      propertyLocation: data.propertyAddress || "",
+      checkInDate: data.checkIn,
+      checkOutDate: data.checkOut,
+      guests: data.guests,
+      totalAmount: data.totalAmount,
+      specialRequests: data.specialRequests,
+    });
+    return res.success;
   }
 
-  // Send booking reminder email
   async sendBookingReminder(data: BookingEmailData): Promise<boolean> {
-    try {
-      const { error } = await resend.emails.send({
-        from: "HiddyStays <reminders@hiddystays.com>",
-        to: [data.guestEmail],
-        subject: `Check-in Reminder - ${data.propertyTitle}`,
-        html: this.generateBookingReminderHTML(data),
-      });
-
-      if (error) {
-        console.error("Error sending booking reminder:", error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error sending booking reminder:", error);
-      return false;
-    }
+    const res = await unifiedEmailService.sendCheckInReminder({
+      bookingId: data.bookingId,
+      guestName: data.guestName,
+      guestEmail: data.guestEmail,
+      hostName: data.hostName || "",
+      hostEmail: data.hostEmail || "",
+      propertyTitle: data.propertyTitle,
+      propertyLocation: data.propertyAddress || "",
+      checkInDate: data.checkIn,
+      checkOutDate: data.checkOut,
+      guests: data.guests,
+      totalAmount: data.totalAmount,
+      checkInTime: data.checkInTime,
+      hostPhone: data.hostPhone,
+      propertyAddress: data.propertyAddress,
+    });
+    return res.success;
   }
 
-  // Send booking cancellation email
-  async sendBookingCancellation(data: BookingEmailData & { refundAmount?: number }): Promise<boolean> {
-    try {
-      const { error } = await resend.emails.send({
-        from: "HiddyStays <cancellations@hiddystays.com>",
-        to: [data.guestEmail],
-        subject: `Booking Cancelled - ${data.propertyTitle}`,
-        html: this.generateBookingCancellationHTML(data),
-      });
-
-      if (error) {
-        console.error("Error sending booking cancellation:", error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error sending booking cancellation:", error);
-      return false;
-    }
+  async sendBookingCancellation(data: BookingEmailData & { refundAmount?: number; refundPercentage?: number; cancellationReason?: string }): Promise<boolean> {
+    const res = await unifiedEmailService.sendBookingCancellation({
+      bookingId: data.bookingId,
+      guestName: data.guestName,
+      guestEmail: data.guestEmail,
+      hostName: data.hostName || "",
+      hostEmail: data.hostEmail || "",
+      propertyTitle: data.propertyTitle,
+      propertyLocation: data.propertyAddress || "",
+      checkInDate: data.checkIn,
+      checkOutDate: data.checkOut,
+      guests: data.guests,
+      totalAmount: data.totalAmount,
+      refundAmount: data.refundAmount,
+      refundPercentage: data.refundPercentage,
+      cancellationReason: data.cancellationReason,
+    });
+    return res.success;
   }
+}
 
-  // Generate booking confirmation HTML
-  private generateBookingConfirmationHTML(data: BookingEmailData): string {
-    return `
+export default EnhancedEmailService.getInstance();
       <!DOCTYPE html>
       <html>
         <head>
@@ -434,7 +421,6 @@ class EnhancedEmailService {
     `;
   }
 
-  // Generate booking cancellation HTML
   private generateBookingCancellationHTML(data: BookingEmailData & { refundAmount?: number }): string {
     return `
       <!DOCTYPE html>

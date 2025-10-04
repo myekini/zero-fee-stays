@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -35,8 +34,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DestinationSearch } from "@/components/DestinationSearch";
 import { cn } from "@/lib/utils";
-import { format, addDays, subDays } from "date-fns";
-import { siteConfig } from "@/lib/site-config";
+import { format, addDays } from "date-fns";
 
 interface InspiredHeroProps {
   className?: string;
@@ -112,7 +110,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
   };
 
   const handleSearch = async () => {
-    if (!selectedLocation || !checkInDate || !checkOutDate) {
+    if (!locationQuery || !checkInDate || !checkOutDate) {
       alert("Please fill in all required fields");
       return;
     }
@@ -121,7 +119,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
 
     try {
       const searchParams = new URLSearchParams();
-      searchParams.set("location", selectedLocation);
+      searchParams.set("location", selectedLocation || locationQuery);
       searchParams.set("checkIn", checkInDate!.toISOString().slice(0, 10));
       searchParams.set("checkOut", checkOutDate!.toISOString().slice(0, 10));
       searchParams.set("adults", adults.toString());
@@ -135,7 +133,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
         searchParams.set("lng", selectedCoordinates.lng.toString());
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
       router.push(`/properties?${searchParams.toString()}`);
     } catch (error) {
       console.error("Search error:", error);
@@ -183,74 +181,27 @@ export function InspiredHero({ className }: InspiredHeroProps) {
     return today;
   };
 
-  // Date navigation handlers
-  const navigateCheckInDate = (direction: "prev" | "next") => {
-    if (checkInDate) {
-      const newDate =
-        direction === "prev"
-          ? subDays(checkInDate, 1)
-          : addDays(checkInDate, 1);
-
-      const today = getMinCheckinDate();
-      if (newDate >= today) {
-        setCheckInDate(newDate);
-      }
-    } else {
-      setCheckInDate(new Date());
-    }
-  };
-
-  const navigateCheckOutDate = (direction: "prev" | "next") => {
-    if (checkOutDate) {
-      const newDate =
-        direction === "prev"
-          ? subDays(checkOutDate, 1)
-          : addDays(checkOutDate, 1);
-
-      const minDate = getMinCheckoutDate();
-      if (minDate && newDate >= minDate) {
-        setCheckOutDate(newDate);
-      }
-    } else if (checkInDate) {
-      setCheckOutDate(addDays(checkInDate, 1));
-    }
-  };
-
   return (
     <div className={cn("relative", className)}>
-      {/* Hero Background Image Section */}
-      <div className="relative w-full h-[560px] overflow-hidden">
-        <Image
-          src={siteConfig.heroImages.home.url}
-          alt={siteConfig.heroImages.home.alt}
-          fill
-          priority={siteConfig.heroImages.home.priority}
-          quality={75}
-          sizes={siteConfig.heroImages.home.sizes}
-          className="object-cover object-center"
-        />
-        {/* Theme-aware gradient overlay for legibility */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-background/80 via-background/30 to-transparent" />
-        {/* Subtle vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,transparent_60%,rgba(0,0,0,0.35)_100%)]" />
-
+      {/* Hero Background Section */}
+      <div className="relative w-full h-[560px] bg-black overflow-hidden">
         {/* Hero Content */}
         <div className="relative container mx-auto px-8 h-full flex flex-col justify-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-5xl md:text-6xl font-bold text-foreground leading-[1.15] md:leading-[1.1] mb-6 max-w-2xl"
+            className="text-5xl md:text-6xl font-bold text-white leading-[1.15] md:leading-[1.1] mb-6 max-w-2xl"
           >
             Hey Buddy! where are you <br />
-            <span className="text-foreground">Staying</span> tonight?
+            <span className="text-white">Staying</span> tonight?
           </motion.h2>
 
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="flex items-center gap-2 text-foreground hover:text-foreground/80 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 text-white hover:text-white/80 transition-colors text-sm font-medium"
             onClick={() => {
               const searchSection = document.getElementById("search-section");
               searchSection?.scrollIntoView({ behavior: "smooth" });
@@ -263,7 +214,10 @@ export function InspiredHero({ className }: InspiredHeroProps) {
       </div>
 
       {/* Search Card - Positioned to overlap hero */}
-      <div className="container mx-auto px-8 -mt-32 relative z-10" id="search-section">
+      <div
+        className="container mx-auto px-8 -mt-32 relative z-10"
+        id="search-section"
+      >
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -456,127 +410,88 @@ export function InspiredHero({ className }: InspiredHeroProps) {
               </div>
 
               {/* Date Selection Row */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
                 {/* Check-in Date */}
-                <div className="lg:col-span-3">
+                <div className="md:col-span-1 lg:col-span-4">
                   <Label className="text-xs text-muted-foreground mb-2 uppercase block">
                     Check In
                   </Label>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => navigateCheckInDate("prev")}
-                      disabled={
-                        !checkInDate || checkInDate <= getMinCheckinDate()!
-                      }
-                      className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Prev
-                    </button>
-                    <Popover
-                      open={isCheckInOpen}
-                      onOpenChange={setIsCheckInOpen}
-                    >
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "flex-1 justify-start text-left font-medium h-12 rounded-md px-4",
-                            !checkInDate && "text-muted-foreground"
-                          )}
-                        >
-                          <span className="text-sm truncate">
-                            {checkInDate
-                              ? format(checkInDate, "EEE, dd MMM")
-                              : "Select date"}
-                          </span>
-                          <Calendar className="ml-auto h-4 w-4 text-muted-foreground shrink-0" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <CalendarComponent
-                          mode="single"
-                          selected={checkInDate}
-                          onSelect={(date) => {
-                            setCheckInDate(date);
-                            setIsCheckInOpen(false);
-                          }}
-                          disabled={(date) => date < getMinCheckinDate()!}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <button
-                      onClick={() => navigateCheckInDate("next")}
-                      className="text-xs text-muted-foreground hover:text-foreground"
-                    >
-                      Next
-                    </button>
-                  </div>
+                  <Popover open={isCheckInOpen} onOpenChange={setIsCheckInOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-medium h-12 rounded-md px-4",
+                          !checkInDate && "text-muted-foreground"
+                        )}
+                      >
+                        <span className="text-sm truncate">
+                          {checkInDate
+                            ? format(checkInDate, "EEE, dd MMM")
+                            : "Select date"}
+                        </span>
+                        <Calendar className="ml-auto h-4 w-4 text-muted-foreground shrink-0" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={checkInDate}
+                        onSelect={date => {
+                          setCheckInDate(date);
+                          setIsCheckInOpen(false);
+                        }}
+                        disabled={date => date < getMinCheckinDate()!}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Check-out Date */}
-                <div className="lg:col-span-3">
+                <div className="md:col-span-1 lg:col-span-4">
                   <Label className="text-xs text-muted-foreground mb-2 uppercase block">
                     Check Out
                   </Label>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => navigateCheckOutDate("prev")}
-                      disabled={
-                        !checkOutDate ||
-                        (checkInDate &&
-                          checkOutDate <= addDays(checkInDate, 1))
-                      }
-                      className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Prev
-                    </button>
-                    <Popover
-                      open={isCheckOutOpen}
-                      onOpenChange={setIsCheckOutOpen}
-                    >
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "flex-1 justify-start text-left font-medium h-12 rounded-md px-4",
-                            !checkOutDate && "text-muted-foreground"
-                          )}
-                        >
-                          <span className="text-sm truncate">
-                            {checkOutDate
-                              ? format(checkOutDate, "EEE, dd MMM")
-                              : "Select date"}
-                          </span>
-                          <Calendar className="ml-auto h-4 w-4 text-muted-foreground shrink-0" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <CalendarComponent
-                          mode="single"
-                          selected={checkOutDate}
-                          onSelect={(date) => {
-                            setCheckOutDate(date);
-                            setIsCheckOutOpen(false);
-                          }}
-                          disabled={(date) => date < getMinCheckoutDate()!}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <button
-                      onClick={() => navigateCheckOutDate("next")}
-                      className="text-xs text-muted-foreground hover:text-foreground"
-                    >
-                      Next
-                    </button>
-                  </div>
+                  <Popover
+                    open={isCheckOutOpen}
+                    onOpenChange={setIsCheckOutOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-medium h-12 rounded-md px-4",
+                          !checkOutDate && "text-muted-foreground"
+                        )}
+                      >
+                        <span className="text-sm truncate">
+                          {checkOutDate
+                            ? format(checkOutDate, "EEE, dd MMM")
+                            : "Select date"}
+                        </span>
+                        <Calendar className="ml-auto h-4 w-4 text-muted-foreground shrink-0" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={checkOutDate}
+                        onSelect={date => {
+                          setCheckOutDate(date);
+                          setIsCheckOutOpen(false);
+                        }}
+                        disabled={date => date < getMinCheckoutDate()!}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Search Button */}
-                <div className="lg:col-span-6 flex items-end justify-end">
+                <div className="md:col-span-2 lg:col-span-4 flex items-end justify-end">
                   <Button
                     onClick={handleSearch}
                     disabled={
-                      !selectedLocation ||
+                      !locationQuery ||
                       !checkInDate ||
                       !checkOutDate ||
                       isSearching
@@ -599,8 +514,6 @@ export function InspiredHero({ className }: InspiredHeroProps) {
               </div>
             </div>
           </Card>
-
-          
         </motion.div>
       </div>
     </div>

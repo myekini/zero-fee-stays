@@ -1,5 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
-import { emailService } from "@/lib/email-service";
+import { unifiedEmailService } from "@/lib/unified-email-service";
 
 export interface WelcomeEmailData {
   user: {
@@ -17,27 +16,16 @@ export class WelcomeEmailService {
     try {
       console.log(`📧 Sending welcome email to ${userData.user.email}`);
 
-      const { data: result, error } = await supabase.functions.invoke(
-        "email-service",
-        {
-          body: {
-            type: "welcome_verification",
-            to: userData.user.email,
-            data: {
-              name:
-                userData.user.name ||
-                `${userData.user.firstName || ""} ${userData.user.lastName || ""}`.trim() ||
-                userData.user.email,
-              verifyUrl: `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify?type=signup`,
-              loginUrl: `${process.env.NEXT_PUBLIC_APP_URL}/auth`,
-            },
-          },
-        }
-      );
+      const result = await unifiedEmailService.sendWelcomeEmail({
+        name:
+          userData.user.name ||
+          `${userData.user.firstName || ""} ${userData.user.lastName || ""}`.trim() ||
+          userData.user.email,
+        email: userData.user.email,
+      });
 
-      if (error) {
-        console.error(`❌ Error sending welcome email:`, error);
-        return { success: false, error: error.message };
+      if (!result.success) {
+        return { success: false, error: result.error };
       }
 
       console.log(`✅ Welcome email sent successfully:`, result?.emailId);
@@ -58,30 +46,16 @@ export class WelcomeEmailService {
     try {
       console.log(`📧 Sending verification email to ${email}`);
 
-      const { data: result, error } = await supabase.functions.invoke(
-        "email-service",
-        {
-          body: {
-            type: "email_verification",
-            to: email,
-            data: {
-              user: {
-                name: firstName || email,
-                email: email,
-                firstName: firstName,
-              },
-              verifyUrl: `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify?type=signup&token=verify`,
-            },
-          },
-        }
-      );
+      const result = await unifiedEmailService.sendWelcomeEmail({
+        name: firstName || email,
+        email,
+      });
 
-      if (error) {
-        console.error(`❌ Error sending verification email:`, error);
-        return { success: false, error: error.message };
+      if (!result.success) {
+        return { success: false, error: result.error };
       }
 
-      console.log(`✅ Verification email sent successfully:`, result?.emailId);
+      console.log(`✅ Verification email requested successfully:`, result?.emailId);
       return { success: true };
     } catch (error) {
       console.error(`❌ Exception sending verification email:`, error);

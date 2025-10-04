@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Search,
   Menu,
@@ -82,13 +81,10 @@ const Header = () => {
           {/* Modern Logo with Avatar */}
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <Avatar className="h-10 w-10 ring-2 ring-brand-100 group-hover:ring-brand-300 transition-all duration-200">
-                <AvatarImage src="/placeholder.svg" alt="HiddyStays" />
-                <AvatarFallback className="bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold">
-                  <Home className="h-5 w-5" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent-500 rounded-full flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg group-hover:shadow-glow transition-all duration-200">
+                <Home className="h-5 w-5 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent-500 rounded-full flex items-center justify-center shadow-sm">
                 <Heart className="h-2.5 w-2.5 text-white fill-current" />
               </div>
             </div>
@@ -238,7 +234,7 @@ const Header = () => {
         <div className="mobile-menu-modern" onClick={toggleMobileMenu}>
           <div
             className="mobile-menu-content-modern"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className="p-6">
               {/* Mobile Header */}

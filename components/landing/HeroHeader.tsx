@@ -20,7 +20,7 @@ export function HeroHeader() {
             <div className="h-8 w-8 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg flex items-center justify-center">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-neutral-900">
+            <span className="text-xl font-bold text-foreground">
               ZeroFeeStays
             </span>
           </div>
@@ -29,19 +29,19 @@ export function HeroHeader() {
           <nav className="hidden md:flex items-center space-x-8">
             <a
               href="#features"
-              className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Features
             </a>
             <a
               href="#how-it-works"
-              className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               How it Works
             </a>
             <a
               href="#testimonials"
-              className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Reviews
             </a>

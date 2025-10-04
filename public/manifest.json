@@ -1,34 +1,26 @@
 {
-  "name": "BookDirect - Zero Platform Fees",
-  "short_name": "BookDirect",
-  "description": "Direct property bookings with zero platform fees for hosts",
+  "name": "HiddyStays - Zero-Fee Stays",
+  "short_name": "HiddyStays",
+  "description": "Premium accommodations with zero platform fees",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "theme_color": "#1a5f4a",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
     {
-      "src": "/placeholder.svg",
+      "src": "/favicon.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/placeholder.svg",
-      "sizes": "512x512", 
+      "src": "/favicon.svg",
+      "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["travel", "lifestyle"],
-  "screenshots": [
-    {
-      "src": "/placeholder.svg",
-      "sizes": "1280x720",
-      "type": "image/svg+xml",
-      "form_factor": "wide"
-    }
-  ]
+  "categories": ["travel", "lifestyle"]
 }

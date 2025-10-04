@@ -100,6 +100,47 @@ export async function POST(request: NextRequest) {
           totalAmount: data.totalAmount,
           specialRequests: data.specialRequests,
           hostInstructions: data.hostInstructions,
+          checkInTime: data.checkInTime,
+          hostPhone: data.hostPhone,
+          propertyAddress: data.propertyAddress,
+        });
+        break;
+
+      case "booking_cancellation":
+        result = await unifiedEmailService.sendBookingCancellation({
+          bookingId: data.bookingId,
+          guestName: data.guestName,
+          guestEmail: data.guestEmail,
+          hostName: data.hostName,
+          hostEmail: data.hostEmail,
+          propertyTitle: data.propertyTitle,
+          propertyLocation: data.propertyLocation,
+          checkInDate: data.checkInDate,
+          checkOutDate: data.checkOutDate,
+          guests: data.guests,
+          totalAmount: data.totalAmount,
+          refundAmount: data.refundAmount,
+          refundPercentage: data.refundPercentage,
+          cancellationReason: data.cancellationReason,
+        });
+        break;
+
+      case "payment_receipt":
+        result = await unifiedEmailService.sendPaymentReceipt({
+          bookingId: data.bookingId,
+          guestName: data.guestName,
+          guestEmail: data.guestEmail,
+          hostName: data.hostName,
+          hostEmail: data.hostEmail,
+          propertyTitle: data.propertyTitle,
+          propertyLocation: data.propertyLocation,
+          checkInDate: data.checkInDate,
+          checkOutDate: data.checkOutDate,
+          guests: data.guests,
+          totalAmount: data.totalAmount,
+          amountPaid: data.amountPaid,
+          paymentDate: data.paymentDate,
+          receiptUrl: data.receiptUrl,
         });
         break;
 

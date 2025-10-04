@@ -77,8 +77,8 @@ export function OptimisticPropertyCard({
 
   if (viewMode === "list") {
     return (
-      <Card
-        className={`bg-white rounded-lg shadow-sm cursor-pointer group hover:shadow-md transition-shadow ${className} ${
+<Card
+        className={`bg-card rounded-lg shadow-sm cursor-pointer group hover:shadow-md transition-shadow border border-border ${className} ${
           isOptimisticallyUpdating ? "opacity-75" : ""
         }`}
         onClick={handleCardClick}
@@ -179,8 +179,8 @@ export function OptimisticPropertyCard({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <Card
-        className={`bg-white rounded-2xl overflow-hidden shadow-sm cursor-pointer group hover:shadow-2xl transition-all duration-300 border-0 ${
+<Card
+        className={`bg-card rounded-2xl overflow-hidden shadow-sm cursor-pointer group hover:shadow-2xl transition-all duration-300 border border-border ${
           isOptimisticallyUpdating ? "opacity-75" : ""
         }`}
         onClick={handleCardClick}

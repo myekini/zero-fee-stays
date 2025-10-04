@@ -106,7 +106,7 @@ const Features = () => {
 
   return (
     <section
-className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30 dark:to-brand-950/30 relative overflow-hidden w-full"
+      className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30 dark:to-brand-950/30 relative overflow-hidden w-full"
       ref={sectionRef}
       id="features"
     >
@@ -141,9 +141,9 @@ className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 <div className="relative z-10 text-center">
-                  {/* Enhanced step indicator */}
+                  {/* Clean step indicator */}
                   <div
-                    className={`relative mx-auto w-24 h-24 bg-gradient-to-br ${step.color} rounded-2xl mb-6 flex items-center justify-center shadow-premium group-hover:shadow-glow transition-all duration-300 group-hover:scale-110`}
+                    className={`relative mx-auto w-24 h-24 bg-gradient-to-br ${step.color} rounded-2xl mb-6 flex items-center justify-center shadow-lg transition-all duration-300`}
                   >
                     <step.icon
                       className="w-10 h-10 text-white"
@@ -151,19 +151,14 @@ className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30
                     />
 
                     {/* Step number */}
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-card rounded-full shadow-premium flex items-center justify-center border-2 border-border">
-                    <span className="text-sm font-bold text-foreground">
-                      {step.step}
-                    </span>
+                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-card rounded-full shadow-lg flex items-center justify-center border-2 border-border">
+                      <span className="text-sm font-bold text-foreground">
+                        {step.step}
+                      </span>
+                    </div>
                   </div>
 
-                    {/* Glow effect */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${step.color} rounded-2xl opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300`}
-                    ></div>
-                  </div>
-
-                  <h3 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-brand-600 transition-colors">
+                  <h3 className="font-display text-xl font-bold text-foreground mb-3">
                     {step.title}
                   </h3>
                   <p className="text-muted-foreground leading-relaxed text-base">
@@ -197,22 +192,19 @@ className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30
               className={`group ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
               style={{ animationDelay: `${1 + index * 0.1}s` }}
             >
-              <Card className="card-premium-modern p-8 h-full group-hover:shadow-glass transition-all duration-500 border-0 relative overflow-hidden">
-                {/* Animated background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white via-neutral-50/30 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
+              <Card className="card-premium-modern p-8 h-full hover:shadow-lg transition-all duration-300 border border-border/50 relative overflow-hidden">
                 <div className="relative z-10">
-                  {/* Enhanced icon container */}
+                  {/* Clean icon container */}
                   <div className="mb-6">
                     <div
-                      className={`relative p-4 rounded-2xl ${feature.bgColor} ${feature.color} group-hover:scale-110 transition-all duration-500 shadow-premium group-hover:shadow-glow border ${feature.borderColor}`}
+                      className={`p-4 rounded-2xl ${feature.bgColor} ${feature.color} transition-all duration-300 shadow-sm border ${feature.borderColor}`}
                     >
                       <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="font-display text-xl font-bold text-neutral-900 mb-3 group-hover:text-brand-600 transition-colors duration-300">
+                    <h3 className="font-display text-xl font-bold text-neutral-900 mb-3">
                       {feature.title}
                     </h3>
                     <p className="text-neutral-600 leading-relaxed">

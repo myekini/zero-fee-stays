@@ -95,58 +95,61 @@ export const BaseTemplate = ({
 );
 
 // Welcome Email Template
-export const WelcomeEmail = ({ name, email }: EmailTemplateProps) => (
-  <BaseTemplate
-    title="Welcome to HiddyStays!"
-    preview="Your journey to authentic travel begins here"
-  >
-    <Heading className="text-2xl font-bold text-gray-900 m-0">
-      Welcome to HiddyStays, {name}! 🎉
-    </Heading>
+export const WelcomeEmail = ({ name, email }: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="Welcome to HiddyStays!"
+      preview="Your journey to authentic travel begins here"
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">
+        Welcome to HiddyStays, {name}! 🎉
+      </Heading>
 
-    <Text className="text-base text-gray-700 leading-6">
-      Thank you for joining our community of smart travelers who value authentic
-      experiences and zero platform fees.
-    </Text>
-
-    <Section className="bg-orange-50 border-l-4 border-orange-400 p-4 my-6">
-      <Text className="text-orange-800 font-semibold m-0">
-        🎁 Special Welcome Offer
+      <Text className="text-base text-gray-700 leading-6">
+        Thank you for joining our community of smart travelers who value authentic
+        experiences and zero platform fees.
       </Text>
-      <Text className="text-orange-700 m-0">
-        Save $50 on your first booking with code <strong>WELCOME50</strong>
+
+      <Section className="bg-orange-50 border-l-4 border-orange-400 p-4 my-6">
+        <Text className="text-orange-800 font-semibold m-0">
+          🎁 Special Welcome Offer
+        </Text>
+        <Text className="text-orange-700 m-0">
+          Save $50 on your first booking with code <strong>WELCOME50</strong>
+        </Text>
+      </Section>
+
+      <Section className="text-center my-8">
+        <Button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
+          href={`${baseUrl}/properties`}
+        >
+          🏡 Explore Properties
+        </Button>
+      </Section>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Over the next few days, we'll share insider tips on finding the perfect
+        authentic stay and getting the most value from direct bookings.
       </Text>
-    </Section>
 
-    <Section className="text-center my-8">
-      <Button
-        className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
-        href="/properties"
-      >
-        🏡 Explore Properties
-      </Button>
-    </Section>
+      <Text className="text-base text-gray-700 leading-6">
+        Questions? Just reply to this email - we read every message personally! 😊
+      </Text>
 
-    <Text className="text-base text-gray-700 leading-6">
-      Over the next few days, we'll share insider tips on finding the perfect
-      authentic stay and getting the most value from direct bookings.
-    </Text>
-
-    <Text className="text-base text-gray-700 leading-6">
-      Questions? Just reply to this email - we read every message personally! 😊
-    </Text>
-
-    <Text className="text-base text-gray-700 leading-6 font-semibold">
-      Welcome aboard!
-      <br />
-      Sarah Chen
-      <br />
-      <span className="font-normal text-gray-600">
-        Community Manager, HiddyStays
-      </span>
-    </Text>
-  </BaseTemplate>
-);
+      <Text className="text-base text-gray-700 leading-6 font-semibold">
+        Welcome aboard!
+        <br />
+        Sarah Chen
+        <br />
+        <span className="font-normal text-gray-600">
+          Community Manager, HiddyStays
+        </span>
+      </Text>
+    </BaseTemplate>
+  );
+};
 
 // Booking Confirmation Template
 export const BookingConfirmationEmail = ({
@@ -157,112 +160,115 @@ export const BookingConfirmationEmail = ({
   guests,
   totalAmount,
   bookingId,
-}: EmailTemplateProps) => (
-  <BaseTemplate
-    title="Booking Confirmed!"
-    preview={`Your stay at ${propertyTitle} is confirmed`}
-  >
-    <Heading className="text-2xl font-bold text-gray-900 m-0">
-      Booking Confirmed! 🎊
-    </Heading>
-
-    <Text className="text-base text-gray-700 leading-6">
-      Fantastic news, {guestName}! Your booking at{" "}
-      <strong>{propertyTitle}</strong> is officially confirmed.
-    </Text>
-
-    <Section className="bg-green-50 border border-green-200 rounded-lg p-6 my-6">
-      <Heading className="text-lg font-semibold text-gray-900 m-0 mb-4">
-        🏡 Booking Details
+}: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="Booking Confirmed!"
+      preview={`Your stay at ${propertyTitle} is confirmed`}
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">
+        Booking Confirmed! 🎊
       </Heading>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Property:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {propertyTitle}
-          </Text>
-        </Column>
-      </Row>
+      <Text className="text-base text-gray-700 leading-6">
+        Fantastic news, {guestName}! Your booking at{" "}
+        <strong>{propertyTitle}</strong> is officially confirmed.
+      </Text>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Check-in:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {checkInDate}
-          </Text>
-        </Column>
-      </Row>
+      <Section className="bg-green-50 border border-green-200 rounded-lg p-6 my-6">
+        <Heading className="text-lg font-semibold text-gray-900 m-0 mb-4">
+          🏡 Booking Details
+        </Heading>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Check-out:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {checkOutDate}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Property:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {propertyTitle}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Guests:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {guests}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-in:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {checkInDate}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Total:</Text>
-        </Column>
-        <Column>
-          <Text className="text-lg font-bold text-green-600 m-0">
-            ${totalAmount}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-out:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {checkOutDate}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row>
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Booking ID:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-mono text-gray-900 m-0">
-            #{bookingId}
-          </Text>
-        </Column>
-      </Row>
-    </Section>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Guests:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {guests}
+            </Text>
+          </Column>
+        </Row>
 
-    <Section className="text-center my-8">
-      <Button
-        className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
-        href={`/bookings/${bookingId}`}
-      >
-        📱 View Booking Details
-      </Button>
-    </Section>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Total:</Text>
+          </Column>
+          <Column>
+            <Text className="text-lg font-bold text-green-600 m-0">
+              ${totalAmount}
+            </Text>
+          </Column>
+        </Row>
 
-    <Text className="text-base text-gray-700 leading-6">
-      Need help or have questions? Our support team is here to help!
-    </Text>
+        <Row>
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Booking ID:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-mono text-gray-900 m-0">
+              #{bookingId}
+            </Text>
+          </Column>
+        </Row>
+      </Section>
 
-    <Text className="text-base text-gray-700 leading-6 font-semibold">
-      Can't wait for your authentic stay experience!
-      <br />
-      The HiddyStays Team
-    </Text>
-  </BaseTemplate>
-);
+      <Section className="text-center my-8">
+        <Button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
+          href={`${baseUrl}/bookings/${bookingId}`}
+        >
+          📱 View Booking Details
+        </Button>
+      </Section>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Need help or have questions? Our support team is here to help!
+      </Text>
+
+      <Text className="text-base text-gray-700 leading-6 font-semibold">
+        Can't wait for your authentic stay experience!
+        <br />
+        The HiddyStays Team
+      </Text>
+    </BaseTemplate>
+  );
+};
 
 // Host Notification Template
 export const HostNotificationEmail = ({
@@ -274,124 +280,127 @@ export const HostNotificationEmail = ({
   guests,
   totalAmount,
   bookingId,
-}: EmailTemplateProps) => (
-  <BaseTemplate
-    title="New Booking Received!"
-    preview={`${guestName} booked your ${propertyTitle}`}
-  >
-    <Heading className="text-2xl font-bold text-gray-900 m-0">
-      New Booking Received! 🎉
-    </Heading>
-
-    <Text className="text-base text-gray-700 leading-6">
-      Fantastic news, {hostName}! You've received a new booking for{" "}
-      <strong>{propertyTitle}</strong>.
-    </Text>
-
-    <Section className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
-      <Heading className="text-lg font-semibold text-gray-900 m-0 mb-4">
-        📋 Guest & Booking Information
+}: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="New Booking Received!"
+      preview={`${guestName} booked your ${propertyTitle}`}
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">
+        New Booking Received! 🎉
       </Heading>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Guest:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {guestName}
-          </Text>
-        </Column>
-      </Row>
+      <Text className="text-base text-gray-700 leading-6">
+        Fantastic news, {hostName}! You've received a new booking for{" "}
+        <strong>{propertyTitle}</strong>.
+      </Text>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Property:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {propertyTitle}
-          </Text>
-        </Column>
-      </Row>
+      <Section className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
+        <Heading className="text-lg font-semibold text-gray-900 m-0 mb-4">
+          📋 Guest & Booking Information
+        </Heading>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Check-in:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {checkInDate}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Guest:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {guestName}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Check-out:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {checkOutDate}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Property:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {propertyTitle}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Guests:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-semibold text-gray-900 m-0">
-            {guests}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-in:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {checkInDate}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row className="mb-2">
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Earnings:</Text>
-        </Column>
-        <Column>
-          <Text className="text-lg font-bold text-green-600 m-0">
-            ${totalAmount}
-          </Text>
-        </Column>
-      </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-out:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {checkOutDate}
+            </Text>
+          </Column>
+        </Row>
 
-      <Row>
-        <Column>
-          <Text className="text-sm text-gray-600 m-0">Booking ID:</Text>
-        </Column>
-        <Column>
-          <Text className="text-sm font-mono text-gray-900 m-0">
-            #{bookingId}
-          </Text>
-        </Column>
-      </Row>
-    </Section>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Guests:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">
+              {guests}
+            </Text>
+          </Column>
+        </Row>
 
-    <Section className="text-center my-8">
-      <Button
-        className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
-        href={`/host/bookings/${bookingId}`}
-      >
-        📱 View Booking Details
-      </Button>
-    </Section>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Earnings:</Text>
+          </Column>
+          <Column>
+            <Text className="text-lg font-bold text-green-600 m-0">
+              ${totalAmount}
+            </Text>
+          </Column>
+        </Row>
 
-    <Text className="text-base text-gray-700 leading-6">
-      Pro tip: Send a personal welcome message within 24 hours! Guests who
-      receive a warm welcome are 73% more likely to leave 5-star reviews.
-    </Text>
+        <Row>
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Booking ID:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-mono text-gray-900 m-0">
+              #{bookingId}
+            </Text>
+          </Column>
+        </Row>
+      </Section>
 
-    <Text className="text-base text-gray-700 leading-6 font-semibold">
-      Here's to another amazing authentic experience!
-      <br />
-      Your Host Success Team at HiddyStays 🌟
-    </Text>
-  </BaseTemplate>
-);
+      <Section className="text-center my-8">
+        <Button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
+          href={`${baseUrl}/host-dashboard?booking=${bookingId}`}
+        >
+          📱 View Booking Details
+        </Button>
+      </Section>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Pro tip: Send a personal welcome message within 24 hours! Guests who
+        receive a warm welcome are 73% more likely to leave 5-star reviews.
+      </Text>
+
+      <Text className="text-base text-gray-700 leading-6 font-semibold">
+        Here's to another amazing authentic experience!
+        <br />
+        Your Host Success Team at HiddyStays 🌟
+      </Text>
+    </BaseTemplate>
+  );
+};
 
 // Password Reset Template
 export const PasswordResetEmail = ({ name, resetUrl }: EmailTemplateProps) => (
@@ -427,6 +436,206 @@ export const PasswordResetEmail = ({ name, resetUrl }: EmailTemplateProps) => (
     </Text>
   </BaseTemplate>
 );
+
+// Check-in Reminder Template
+export const CheckInReminderEmail = ({
+  guestName,
+  propertyTitle,
+  checkInDate,
+  checkInTime,
+  hostName,
+  hostPhone,
+  propertyAddress,
+  bookingId,
+}: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="Check-in Reminder"
+      preview={`Your stay at ${propertyTitle} starts soon`}
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">
+        Your check-in is coming up
+      </Heading>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Hi {guestName}, just a friendly reminder that your stay at <strong>{propertyTitle}</strong> starts soon.
+      </Text>
+
+      <Section className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-in date:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">{checkInDate}</Text>
+          </Column>
+        </Row>
+        {checkInTime && (
+          <Row className="mb-2">
+            <Column>
+              <Text className="text-sm text-gray-600 m-0">Check-in time:</Text>
+            </Column>
+            <Column>
+              <Text className="text-sm font-semibold text-gray-900 m-0">{checkInTime}</Text>
+            </Column>
+          </Row>
+        )}
+        {propertyAddress && (
+          <Row>
+            <Column>
+              <Text className="text-sm text-gray-600 m-0">Address:</Text>
+            </Column>
+            <Column>
+              <Text className="text-sm font-semibold text-gray-900 m-0">{propertyAddress}</Text>
+            </Column>
+          </Row>
+        )}
+      </Section>
+
+      {hostName && (
+        <Section className="bg-green-50 border border-green-200 rounded-lg p-6 my-6">
+          <Heading className="text-lg font-semibold text-gray-900 m-0 mb-4">Your Host</Heading>
+          <Text className="text-sm text-gray-700 m-0"><strong>{hostName}</strong>{hostPhone ? ` • ${hostPhone}` : ""}</Text>
+        </Section>
+      )}
+
+      <Section className="text-center my-8">
+        <Button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
+          href={`${baseUrl}/bookings/${bookingId}`}
+        >
+          View Booking Details
+        </Button>
+      </Section>
+    </BaseTemplate>
+  );
+};
+
+// Booking Cancellation Template
+export const BookingCancellationEmail = ({
+  guestName,
+  propertyTitle,
+  checkInDate,
+  checkOutDate,
+  refundAmount,
+  refundPercentage,
+  cancellationReason,
+  bookingId,
+}: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="Booking Cancelled"
+      preview={`Your booking at ${propertyTitle} has been cancelled`}
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">Booking Cancelled</Heading>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Hi {guestName}, your booking for <strong>{propertyTitle}</strong> has been cancelled.
+      </Text>
+
+      <Section className="bg-red-50 border border-red-200 rounded-lg p-6 my-6">
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-in:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">{checkInDate}</Text>
+          </Column>
+        </Row>
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Check-out:</Text>
+          </Column>
+          <Column>
+            <Text className="text-sm font-semibold text-gray-900 m-0">{checkOutDate}</Text>
+          </Column>
+        </Row>
+        {typeof refundAmount !== "undefined" && (
+          <Row className="mb-2">
+            <Column>
+              <Text className="text-sm text-gray-600 m-0">Refund:</Text>
+            </Column>
+            <Column>
+              <Text className="text-sm font-semibold text-gray-900 m-0">${'{'}refundAmount{'}'}{refundPercentage ? ` (${refundPercentage}%)` : ""}</Text>
+            </Column>
+          </Row>
+        )}
+        {cancellationReason && (
+          <Row>
+            <Column>
+              <Text className="text-sm text-gray-600 m-0">Reason:</Text>
+            </Column>
+            <Column>
+              <Text className="text-sm font-semibold text-gray-900 m-0">{cancellationReason}</Text>
+            </Column>
+          </Row>
+        )}
+      </Section>
+
+      <Section className="text-center my-8">
+        <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline" href={`${baseUrl}/properties`}>
+          Browse Other Stays
+        </Button>
+      </Section>
+    </BaseTemplate>
+  );
+};
+
+// Payment Receipt Template
+export const PaymentReceiptEmail = ({
+  guestName,
+  propertyTitle,
+  amountPaid,
+  paymentDate,
+  bookingId,
+  receiptUrl,
+}: EmailTemplateProps) => {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://hiddystays.com";
+  return (
+    <BaseTemplate
+      title="Payment Receipt"
+      preview={`Your payment for ${propertyTitle} was received`}
+    >
+      <Heading className="text-2xl font-bold text-gray-900 m-0">Payment Receipt</Heading>
+
+      <Text className="text-base text-gray-700 leading-6">
+        Hi {guestName}, we've received your payment for <strong>{propertyTitle}</strong>.
+      </Text>
+
+      <Section className="bg-green-50 border border-green-200 rounded-lg p-6 my-6">
+        <Row className="mb-2">
+          <Column>
+            <Text className="text-sm text-gray-600 m-0">Amount:</Text>
+          </Column>
+          <Column>
+            <Text className="text-lg font-bold text-green-600 m-0">${'{'}amountPaid{'}'}</Text>
+          </Column>
+        </Row>
+        {paymentDate && (
+          <Row>
+            <Column>
+              <Text className="text-sm text-gray-600 m-0">Date:</Text>
+            </Column>
+            <Column>
+              <Text className="text-sm font-semibold text-gray-900 m-0">{paymentDate}</Text>
+            </Column>
+          </Row>
+        )}
+      </Section>
+
+      <Section className="text-center my-8">
+        <Button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg no-underline"
+          href={receiptUrl || `${baseUrl}/bookings/${bookingId}`}
+        >
+          View Receipt
+        </Button>
+      </Section>
+    </BaseTemplate>
+  );
+};
 
 // Newsletter Subscription Template
 export const NewsletterWelcomeEmail = ({ name, email }: EmailTemplateProps) => (
@@ -485,4 +694,7 @@ export const EmailTemplates = {
   HostNotificationEmail,
   PasswordResetEmail,
   NewsletterWelcomeEmail,
+  CheckInReminderEmail,
+  BookingCancellationEmail,
+  PaymentReceiptEmail,
 };

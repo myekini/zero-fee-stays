@@ -310,50 +310,50 @@ async function sendBookingConfirmationEmails(booking: any, supabase: any) {
       return;
     }
 
-    // Send email to guest
-    await fetch("/api/send-email-notification", {
+    // Send email to guest via Next API
+    const appUrl = Deno.env.get("APP_URL") || "http://localhost:3000";
+    await fetch(`${appUrl}/api/email/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        to: guest.email,
-        subject: `Booking Confirmed: ${property.title}`,
-        template: "booking_confirmation_guest",
-        data: {
-          bookingId: booking.id,
-          guestName: `${guest.first_name} ${guest.last_name}`,
-          hostName: `${host.first_name} ${host.last_name}`,
-          propertyTitle: property.title,
-          propertyLocation: property.location,
-          checkInDate: booking.check_in_date,
-          checkOutDate: booking.check_out_date,
-          guestsCount: booking.guests_count,
-          totalAmount: booking.total_amount,
-        },
-      }),
-    });
-
-    // Send email to host
-    await fetch("/api/send-email-notification", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: host.email,
-        subject: `New Booking: ${property.title}`,
-        template: "booking_notification_host",
+        type: "booking_confirmation",
         data: {
           bookingId: booking.id,
           guestName: `${guest.first_name} ${guest.last_name}`,
           guestEmail: guest.email,
           hostName: `${host.first_name} ${host.last_name}`,
+          hostEmail: host.email,
           propertyTitle: property.title,
           propertyLocation: property.location,
           checkInDate: booking.check_in_date,
           checkOutDate: booking.check_out_date,
-          guestsCount: booking.guests_count,
+          guests: booking.guests_count,
+          totalAmount: booking.total_amount,
+        },
+      }),
+    });
+
+    // Send email to host via Next API
+    await fetch(`${appUrl}/api/email/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "host_notification",
+        data: {
+          bookingId: booking.id,
+          guestName: `${guest.first_name} ${guest.last_name}`,
+          guestEmail: guest.email,
+          hostName: `${host.first_name} ${host.last_name}`,
+          hostEmail: host.email,
+          propertyTitle: property.title,
+          propertyLocation: property.location,
+          checkInDate: booking.check_in_date,
+          CheckOutDate: booking.check_out_date,
+          guests: booking.guests_count,
           totalAmount: booking.total_amount,
           specialRequests: booking.special_requests,
         },
@@ -398,48 +398,52 @@ async function sendCancellationEmails(
       return;
     }
 
-    // Send cancellation email to guest
-    await fetch("/api/send-email-notification", {
+    // Send cancellation email to guest via Next API
+    const appUrl = Deno.env.get("APP_URL") || "http://localhost:3000";
+    await fetch(`${appUrl}/api/email/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        to: guest.email,
-        subject: `Booking Cancelled: ${property.title}`,
-        template: "booking_cancellation",
+        type: "booking_cancellation",
         data: {
           bookingId: booking.id,
           guestName: `${guest.first_name} ${guest.last_name}`,
+          guestEmail: guest.email,
           hostName: `${host.first_name} ${host.last_name}`,
+          hostEmail: host.email,
           propertyTitle: property.title,
           checkInDate: booking.check_in_date,
           checkOutDate: booking.check_out_date,
+          guests: booking.guests_count,
           totalAmount: booking.total_amount,
-          cancelledBy: reason === "payment_failed" ? "system" : "guest",
+          cancellationReason: reason,
         },
       }),
     });
 
-    // Send cancellation email to host
-    await fetch("/api/send-email-notification", {
+    // Send cancellation email to host via Next API
+    await fetch(`${appUrl}/api/email/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        to: host.email,
-        subject: `Booking Cancelled: ${property.title}`,
-        template: "booking_cancellation",
+        type: "host_notification",
         data: {
           bookingId: booking.id,
           guestName: `${guest.first_name} ${guest.last_name}`,
+          guestEmail: guest.email,
           hostName: `${host.first_name} ${host.last_name}`,
+          hostEmail: host.email,
           propertyTitle: property.title,
+          propertyLocation: property.location,
           checkInDate: booking.check_in_date,
           checkOutDate: booking.check_out_date,
+          guests: booking.guests_count,
           totalAmount: booking.total_amount,
-          cancelledBy: reason === "payment_failed" ? "system" : "guest",
+          specialRequests: `Cancellation reason: ${reason}`,
         },
       }),
     });

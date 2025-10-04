@@ -156,28 +156,25 @@ export async function POST(request: NextRequest) {
       created_at: new Date().toISOString(),
     });
 
-    // Send cancellation email (optional - implement if needed)
+    // Send cancellation email via unified email service
     try {
-      const appUrl = process.env.APP_URL || "http://localhost:3000";
-
-      // Email to guest
-      await supabase.functions.invoke("send-email-notification", {
-        body: {
-          to: booking.guest_email,
-          template: "booking_cancelled_guest",
-          subject: `Booking Cancelled - ${propertyInfo?.title}`,
-          data: {
-            guestName: booking.guest_name,
-            propertyTitle: propertyInfo?.title,
-            checkInDate: booking.check_in_date,
-            checkOutDate: booking.check_out_date,
-            refundAmount: refundAmount,
-            refundPercentage: refundPercentage,
-            cancellationReason: reason || "Cancelled by request",
-          },
-        },
+      const { unifiedEmailService } = await import("@/lib/unified-email-service");
+      await unifiedEmailService.sendBookingCancellation({
+        bookingId: booking.id,
+        guestName: booking.guest_name,
+        guestEmail: booking.guest_email,
+        hostName: "",
+        hostEmail: "",
+        propertyTitle: propertyInfo?.title || "Property",
+        propertyLocation: "",
+        checkInDate: booking.check_in_date,
+        checkOutDate: booking.check_out_date,
+        guests: 0,
+        totalAmount: booking.total_amount,
+        refundAmount: refundAmount,
+        refundPercentage: refundPercentage,
+        cancellationReason: reason || "Cancelled by request",
       });
-
       console.log("✅ Cancellation email sent");
     } catch (emailError) {
       console.error("❌ Failed to send cancellation email:", emailError);

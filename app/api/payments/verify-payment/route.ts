@@ -85,43 +85,38 @@ export async function POST(request: NextRequest) {
           try {
             const appUrl = process.env.APP_URL || "http://localhost:3000";
 
-            // Send email to guest
-            await supabase.functions.invoke("send-email-notification", {
-              body: {
-                to: booking.guest_email,
-                template: "booking_confirmation_guest",
-                data: {
-                  propertyTitle: propertyInfo?.title || "Property",
-                  guestName: booking.guest_name,
-                  checkInDate: booking.check_in_date,
-                  checkOutDate: booking.check_out_date,
-                  guestsCount: booking.guests_count,
-                  totalAmount: booking.total_amount,
-                  propertyUrl: `${appUrl}/bookings/${booking.id}`,
-                },
-              },
+// Send email to guest using unified email service
+            const { unifiedEmailService } = await import("@/lib/unified-email-service");
+            await unifiedEmailService.sendBookingConfirmation({
+              bookingId: booking.id,
+              guestName: booking.guest_name,
+              guestEmail: booking.guest_email,
+              hostName: hostProfile?.full_name || "Host",
+              hostEmail: hostProfile?.email || "",
+              propertyTitle: propertyInfo?.title || "Property",
+              propertyLocation: propertyInfo?.address || "",
+              checkInDate: booking.check_in_date,
+              checkOutDate: booking.check_out_date,
+              guests: booking.guests_count,
+              totalAmount: booking.total_amount,
             });
 
-            // Send email to host
+// Send email to host using unified email service
             if (hostProfile?.email) {
-              await supabase.functions.invoke("send-email-notification", {
-                body: {
-                  to: hostProfile.email,
-                  template: "new_booking_host",
-                  data: {
-                    propertyTitle: propertyInfo?.title || "Property",
-                    hostName: hostProfile.full_name || "Host",
-                    guestName: booking.guest_name,
-                    guestEmail: booking.guest_email,
-                    guestPhone: booking.guest_phone || "Not provided",
-                    checkInDate: booking.check_in_date,
-                    checkOutDate: booking.check_out_date,
-                    guestsCount: booking.guests_count,
-                    totalAmount: booking.total_amount,
-                    specialRequests: booking.special_requests || "",
-                    dashboardUrl: `${appUrl}/host-dashboard`,
-                  },
-                },
+              const { unifiedEmailService } = await import("@/lib/unified-email-service");
+              await unifiedEmailService.sendHostNotification({
+                bookingId: booking.id,
+                guestName: booking.guest_name,
+                guestEmail: booking.guest_email,
+                hostName: hostProfile.full_name || "Host",
+                hostEmail: hostProfile.email,
+                propertyTitle: propertyInfo?.title || "Property",
+                propertyLocation: propertyInfo?.address || "",
+                checkInDate: booking.check_in_date,
+                checkOutDate: booking.check_out_date,
+                guests: booking.guests_count,
+                totalAmount: booking.total_amount,
+                specialRequests: booking.special_requests || "",
               });
             }
 
