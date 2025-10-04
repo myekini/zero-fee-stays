@@ -27,22 +27,22 @@ enable_signup = true
 shadow_port = 54320
 
 [functions.hello-world]
-verify_jwt = false
+verify_jwt = true
 
 [functions.email-service]
-verify_jwt = false
+verify_jwt = true
 
 [functions.send-email-notification]
-verify_jwt = false
+verify_jwt = true
 
 [functions.create-payment-session]
-verify_jwt = false
+verify_jwt = true
 
 [functions.stripe-webhook]
 verify_jwt = false
 
 [functions.verify-payment]
-verify_jwt = false
+verify_jwt = true
 
 [storage]
 enabled = true

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx supabase:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(timeout:*)",
+      "Bash(if exist:*)",
+      "Bash(if exist cleanup-homepage.sh del cleanup-homepage.sh)",
+      "Bash(powershell:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

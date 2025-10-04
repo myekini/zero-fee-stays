@@ -1,263 +1,223 @@
-# HiddyStays - Zero Fee Property Rental Platform
+# 🏠 HiddyStays - Zero Fee Property Rental Platform
 
-A modern, full-stack property rental platform built by hosts, for hosts. Helping Canadian property owners keep more of their earnings with zero platform fees.
+A modern, full-stack property rental platform built with **Next.js 15**, designed by hosts, for hosts. Helping Canadian property owners keep 100% of their earnings with zero platform fees.
 
-## 🚀 Features
+## 🚀 **Why Next.js?**
 
-- **Zero Platform Fees**: Keep 100% of your earnings
-- **Modern UI/UX**: Beautiful, responsive design with mobile-first approach
-- **Real-time Bookings**: Instant booking confirmation and management
-- **Secure Payments**: Stripe-powered payment processing
-- **Property Management**: Easy listing creation and management
-- **Analytics Dashboard**: Comprehensive insights for hosts
-- **PWA Support**: Install as a native app on mobile devices
-- **Email Notifications**: Automated booking confirmations and updates
+✅ **Single Codebase** - Frontend + Backend in one project  
+✅ **Better Performance** - Server-side rendering + API routes  
+✅ **Lower Costs** - Single deployment instead of separate services  
+✅ **Zero Platform Fees** - Optimized infrastructure costs  
+✅ **Modern Stack** - React 18 + TypeScript + Tailwind CSS  
 
-## 🛠️ Tech Stack
+## 📁 **Project Structure**
 
-### Frontend
+```
+hiddystays/
+├── 📁 app/                          # Next.js App Router
+│   ├── 📁 api/                      # API Routes (Backend)
+│   │   ├── 📁 payments/            # Stripe payment processing
+│   │   ├── 📁 bookings/            # Booking management
+│   │   ├── 📁 properties/           # Property management
+│   │   └── 📁 admin/               # Admin functions
+│   ├── 📁 (auth)/                  # Authentication pages
+│   ├── 📁 booking/                 # Booking flow pages
+│   ├── 📁 host-dashboard/          # Host management
+│   ├── 📁 properties/              # Property pages
+│   ├── 📄 layout.tsx               # Root layout
+│   ├── 📄 page.tsx                 # Home page
+│   └── 📄 globals.css              # Global styles
+├── 📁 components/                   # React components
+│   ├── 📁 ui/                      # Reusable UI components
+│   ├── 📁 auth/                    # Authentication components
+│   ├── 📁 booking/                 # Booking components
+│   └── 📁 property/                # Property components
+├── 📁 lib/                         # Utilities and configuration
+├── 📁 hooks/                       # Custom React hooks
+├── 📁 services/                    # API service layer
+├── 📁 public/                      # Static assets
+├── 📄 package.json                 # Dependencies
+├── 📄 next.config.js              # Next.js configuration
+├── 📄 tailwind.config.ts          # Tailwind CSS
+└── 📄 tsconfig.json               # TypeScript configuration
+```
+
+## 🛠️ **Tech Stack**
+
+### **Frontend**
+- **Next.js 15** with App Router
 - **React 18** with TypeScript
-- **Vite** for fast development and building
 - **Tailwind CSS** for styling
 - **Radix UI** for accessible components
-- **React Router** for navigation
 - **TanStack Query** for data fetching
 - **Stripe Elements** for payments
 
-### Backend
-- **FastAPI** with Python
-- **Supabase** for database and authentication
+### **Backend (API Routes)**
+- **Next.js API Routes** (replaces Express)
 - **Stripe** for payment processing
+- **Supabase** for database and auth
 - **Resend** for email services
-- **Uvicorn** for ASGI server
+- **TypeScript** for type safety
 
-### Infrastructure
-- **Supabase** for database, auth, and real-time features
-- **Stripe** for payment processing
-- **Resend** for transactional emails
+### **Infrastructure**
+- **Vercel** (recommended deployment)
+- **Supabase** for database and auth
+- **Stripe** for payments
+- **Resend** for emails
 
-## 📁 Project Structure
+## 🚀 **Quick Start**
 
-```
-zero-fee-stays/
-├── 📁 src/                    # React frontend
-│   ├── 📁 components/         # Reusable UI components
-│   ├── 📁 pages/             # Page components
-│   ├── 📁 services/          # API service layer
-│   ├── 📁 hooks/             # Custom React hooks
-│   ├── 📁 contexts/          # React contexts
-│   └── 📁 lib/               # Utility functions
-├── 📁 backend/               # FastAPI backend
-│   ├── 📁 app/               # Application code
-│   │   ├── 📁 api/           # API endpoints
-│   │   ├── 📁 core/          # Core configuration
-│   │   ├── 📁 services/      # Business logic
-│   │   └── 📁 schemas/       # Data models
-│   ├── 📁 tests/             # Backend tests
-│   └── requirements.txt      # Python dependencies
-├── 📁 supabase/              # Supabase functions
-│   └── 📁 functions/         # Edge functions
-├── 📁 docs/                  # Documentation
-├── 📁 public/                # Static assets
-└── package.json              # Frontend dependencies
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+ and npm
-- Python 3.11+
-- Supabase account
-- Stripe account
-- Resend account
-
-### 1. Clone and Setup
-
+### **1. Install Dependencies**
 ```bash
-git clone <repository-url>
-cd zero-fee-stays
-```
-
-### 2. Frontend Setup
-
-```bash
-# Install dependencies
 npm install
+```
 
-# Start development server
+### **2. Environment Setup**
+Copy the environment template:
+```bash
+cp env.template .env.local
+```
+
+Fill in your credentials in `.env.local`:
+```env
+# Stripe (get from https://dashboard.stripe.com/apikeys)
+STRIPE_SECRET_KEY=sk_test_your_key_here
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+
+# Supabase (get from https://supabase.com/dashboard)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+
+# Email (get from https://resend.com/api-keys)
+RESEND_API_KEY=your_resend_api_key_here
+```
+
+### **3. Start Development Server**
+```bash
 npm run dev
 ```
 
-Frontend will be available at: http://localhost:8080
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:3000/api
 
-### 3. Backend Setup
+## 📚 **API Endpoints**
 
+### **Payments**
+- `POST /api/payments/create-payment-intent` - Create Stripe payment intent
+- `POST /api/payments/create-session` - Create checkout session
+- `POST /api/payments/verify-payment` - Verify payment status
+
+### **Bookings**
+- `POST /api/bookings/create` - Create new booking
+- `GET /api/bookings/[id]` - Get booking details
+- `PUT /api/bookings/[id]` - Update booking
+- `DELETE /api/bookings/[id]` - Cancel booking
+
+### **Properties**
+- `GET /api/properties` - List properties with filters
+- `POST /api/properties` - Create property
+- `GET /api/properties/[id]` - Get property details
+
+### **Admin**
+- `GET /api/admin/dashboard` - Admin dashboard stats
+- `GET /api/admin/users` - Manage users
+- `GET /api/admin/bookings` - Manage bookings
+
+## 🎨 **Features**
+
+### **For Guests**
+- 🔍 **Property Search** with filters
+- 📅 **Real-time Availability** checking
+- 💳 **Secure Payments** via Stripe
+- 📱 **Mobile-optimized** interface
+- 📧 **Email Confirmations** for bookings
+
+### **For Hosts**
+- 🏠 **Property Management** dashboard
+- 📊 **Analytics** and insights
+- 💰 **Zero Platform Fees** - keep 100%
+- 📧 **Automated Notifications**
+- 📱 **Mobile-friendly** management
+
+### **For Admins**
+- 👥 **User Management**
+- 🏠 **Property Moderation**
+- 📊 **Platform Analytics**
+- 💳 **Payment Monitoring**
+
+## 🚀 **Deployment**
+
+### **Vercel (Recommended)**
 ```bash
-# Navigate to backend directory
-cd backend
-
-# Create virtual environment
-python -m venv .venv
-
-# Activate virtual environment
-# Windows:
-.venv\Scripts\Activate.ps1
-# macOS/Linux:
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy environment template
-cp env.example .env
-
-# Edit .env with your credentials
-# (See Environment Configuration section)
-
-# Start backend server
-python run.py
+npm run build
+vercel --prod
 ```
 
-Backend will be available at: http://localhost:8000
+### **Other Platforms**
+- **Railway**: Connect GitHub repo
+- **Netlify**: Build command `npm run build`
+- **AWS Amplify**: Next.js preset
+- **DigitalOcean App Platform**: Next.js template
 
-### 4. Environment Configuration
+## 🔧 **Development**
 
-Create `.env` files in both root and backend directories:
-
-#### Frontend (.env)
-```env
-VITE_API_URL=http://localhost:8000
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key_here
-```
-
-#### Backend (.env)
-```env
-# Application Configuration
-APP_NAME=HiddyStays API
-APP_VERSION=1.0.0
-DEBUG=true
-ENVIRONMENT=development
-
-# Server Configuration
-HOST=0.0.0.0
-PORT=8000
-
-# CORS Configuration
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:8080
-
-# Stripe Configuration
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
-STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
-
-# Supabase Configuration
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
-SUPABASE_ANON_KEY=your_anon_key_here
-
-# Email Configuration (Resend)
-RESEND_API_KEY=your_resend_api_key_here
-FROM_EMAIL=noreply@hiddystays.com
-FROM_NAME=HiddyStays
-SUPPORT_EMAIL=support@hiddystays.com
-APP_URL=http://localhost:8080
-
-# Security Configuration
-SECRET_KEY=your-secret-key-here-change-in-production
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Logging Configuration
-LOG_LEVEL=INFO
-```
-
-## 📚 API Documentation
-
-Once the backend is running, access the API documentation:
-
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
-
-## 🔧 Development
-
-### Frontend Commands
-
+### **Available Scripts**
 ```bash
 npm run dev          # Start development server
 npm run build        # Build for production
-npm run preview      # Preview production build
+npm run start        # Start production server
 npm run lint         # Run ESLint
 npm run type-check   # Run TypeScript check
 ```
 
-### Backend Commands
+### **Environment Variables**
+All environment variables are documented in `env.template`. Key variables:
 
-```bash
-python run.py                    # Start development server
-uvicorn app.main:app --reload    # Alternative start command
-pytest tests/                    # Run tests
-black app/                       # Format code
-isort app/                       # Sort imports
-flake8 app/                      # Lint code
-```
+- `STRIPE_SECRET_KEY` - Stripe secret key for payments
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
+- `RESEND_API_KEY` - Resend API key for emails
 
-## 🧪 Testing
+## 🎯 **Migration from Vite + Express**
 
-### Frontend Testing
-```bash
-npm test
-```
+This project was successfully migrated from:
+- ❌ **Vite + Express** (two separate projects)
+- ✅ **Next.js** (single full-stack project)
 
-### Backend Testing
-```bash
-cd backend
-pytest tests/
-pytest --cov=app tests/  # With coverage
-```
+### **Benefits of Migration:**
+- 🚀 **Better Performance** - Server-side rendering
+- 💰 **Lower Costs** - Single deployment
+- 🔧 **Easier Maintenance** - One codebase
+- 🎯 **Better SEO** - Server-side rendering
+- 📱 **Mobile Optimized** - Built-in optimizations
 
-## 🚀 Deployment
+## 🆘 **Support**
 
-### Frontend Deployment
-The frontend can be deployed to any static hosting service:
-- Vercel
-- Netlify
-- GitHub Pages
-- AWS S3 + CloudFront
+### **Documentation**
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Stripe Documentation](https://stripe.com/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
-### Backend Deployment
-The backend can be deployed to:
-- Railway
-- Heroku
-- DigitalOcean App Platform
-- AWS ECS
-- Google Cloud Run
+### **Getting Help**
+- Check the API documentation at `/api/docs` (development only)
+- Review error logs in the console
+- Check environment variable configuration
+- Verify all service credentials are correct
 
-### Environment Variables
-Make sure to set all required environment variables in your deployment platform.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
+## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
-
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the [documentation](docs/)
-
-## 🙏 Acknowledgments
+## 🙏 **Acknowledgments**
 
 - Built with ❤️ for Canadian property owners
 - Zero platform fees philosophy
 - Modern web technologies for the best user experience
+- Next.js for optimal performance and developer experience
+
+---
+
+**Ready to launch your zero-fee property rental platform! 🚀**
