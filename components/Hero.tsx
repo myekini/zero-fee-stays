@@ -90,7 +90,7 @@ const Hero = ({
   return (
     <section>
       <motion.section
-        className="relative overflow-hidden bg-gradient-to-br from-background via-background to-brand-50 dark:to-brand-950 min-h-[85vh] flex items-center"
+        className="relative overflow-visible bg-gradient-to-br from-background via-background to-brand-50 dark:to-brand-950 min-h-[85vh] flex items-center"
         initial={{ opacity: 0, scale: 1.04, filter: "blur(12px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{ type: "spring", bounce: 0.32, duration: 0.9 }}

@@ -134,7 +134,7 @@ export function ModernSearch({ className }: ModernSearchProps) {
       transition={{ duration: 0.6, delay: 0.3 }}
       className={cn("w-full max-w-4xl mx-auto", className)}
     >
-      <Card className="p-8 shadow-2xl rounded-3xl overflow-hidden">
+      <Card className="p-8 shadow-2xl rounded-3xl overflow-visible">
         <div className="space-y-6">
           {/* Search Form */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

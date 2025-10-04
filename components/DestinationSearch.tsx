@@ -163,7 +163,8 @@ export function DestinationSearch({
   // Filter suggestions based on input
   useEffect(() => {
     if (!value.trim()) {
-      setFilteredSuggestions(popularDestinations);
+      // Do not show default suggestions; require typing first
+      setFilteredSuggestions([]);
     } else {
       const filtered = popularDestinations.filter(
         (dest) =>
@@ -298,7 +299,7 @@ export function DestinationSearch({
 
       {/* Dropdown */}
       <AnimatePresence>
-        {isOpen && filteredSuggestions.length > 0 && (
+        {isOpen && value.trim().length > 0 && filteredSuggestions.length > 0 && (
           <motion.div
             className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-[9999] max-h-80 overflow-hidden"
             variants={ANIMATION_VARIANTS.container}
@@ -309,9 +310,11 @@ export function DestinationSearch({
             aria-label="Destination suggestions"
           >
             <div className="p-2">
-              <div className="text-xs text-neutral-500 px-2 py-2 font-medium uppercase tracking-wide">
-                {value.trim() ? "Search Results" : "Popular Destinations"}
-              </div>
+              {value.trim() && (
+                <div className="text-xs text-neutral-500 px-2 py-2 font-medium uppercase tracking-wide">
+                  Search Results
+                </div>
+              )}
               <div className="max-h-64 overflow-y-auto">
                 {filteredSuggestions.map((suggestion, index) => (
                   <motion.button

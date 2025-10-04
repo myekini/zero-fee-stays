@@ -234,7 +234,7 @@ export function EnhancedHero({ className }: EnhancedHeroProps) {
   };
 
   return (
-    <section className={cn("relative overflow-hidden", className)}>
+    <section className={cn("relative overflow-visible", className)}>
       {/* Premium Hero Background */}
       <div className="relative min-h-[85vh] flex items-center">
         {/* Background Image with Premium Overlay */}
@@ -315,7 +315,7 @@ export function EnhancedHero({ className }: EnhancedHeroProps) {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="max-w-6xl mx-auto"
           >
-            <Card className="p-5 md:p-6 lg:p-8 shadow-[0_20px_70px_-10px_rgba(0,0,0,0.3)] border border-white/10 bg-white/98 dark:bg-slate-900/98 backdrop-blur-2xl rounded-3xl overflow-hidden ring-1 ring-black/5 dark:ring-white/10">
+            <Card className="p-5 md:p-6 lg:p-8 shadow-[0_20px_70px_-10px_rgba(0,0,0,0.3)] border border-white/10 bg-white/98 dark:bg-slate-900/98 backdrop-blur-2xl rounded-3xl overflow-visible ring-1 ring-black/5 dark:ring-white/10">
               {/* Property Type Tabs */}
               <Tabs value={propertyType} onValueChange={setPropertyType} className="mb-6">
                 <TabsList className="grid w-full grid-cols-3 h-14 bg-neutral-100 dark:bg-slate-800 rounded-2xl p-1.5 gap-2">

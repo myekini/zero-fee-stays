@@ -600,41 +600,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
             </div>
           </Card>
 
-          {/* Popular Destinations strip */}
-          <div className="mt-6 md:mt-8">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Popular destinations</h3>
-              <a
-                href={`/properties?location=${encodeURIComponent(POPULAR_DESTINATIONS[0]?.name ?? "Toronto")}`}
-                className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
-              >
-                See all →
-              </a>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {POPULAR_DESTINATIONS.map((d) => (
-                <a
-                  key={d.name}
-                  href={`/properties?location=${encodeURIComponent(d.name)}`}
-                  className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-soft hover:shadow-premium transition-all cursor-pointer"
-                >
-                  <div className="relative h-28 w-full">
-                    <Image
-                      src={d.image}
-                      alt={`${d.name}, ${d.subtitle}`}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
-                    <div className="text-white text-sm font-semibold leading-tight">{d.name}</div>
-                    <div className="text-white/80 text-xs mt-0.5">{d.subtitle}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
+          
         </motion.div>
       </div>
     </div>
