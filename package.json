@@ -1,7 +1,6 @@
 {
   "name": "hiddystays",
   "version": "1.0.0",
-  "type": "module",
   "description": "Zero-fee property rental platform built with Next.js",
   "private": true,
   "author": "HiddyStays Team",
