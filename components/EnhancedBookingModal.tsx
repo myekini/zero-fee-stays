@@ -427,59 +427,88 @@ const EnhancedBookingModal: React.FC<EnhancedBookingModalProps> = ({
     }
   };
 
+  const getStepNumber = (currentStep: typeof step): number => {
+    const steps = ["dates", "guests", "contact", "review", "payment", "confirmation"];
+    return steps.indexOf(currentStep) + 1;
+  };
+
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in-0 duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="booking-modal-title"
       onClick={onClose}
     >
       <div
-        className="bg-card rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-in fade-in-0 zoom-in-95"
+        className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in fade-in-0 zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 id="booking-modal-title" className="text-2xl font-bold text-foreground">Book Your Stay</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} aria-label="Close booking modal">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900">
+          <div>
+            <h2 id="booking-modal-title" className="text-2xl font-bold text-slate-900 dark:text-white">
+              Complete Booking
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Step {getStepNumber(step)} of 5
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            aria-label="Close"
+            className="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2"
+          >
             <X className="w-5 h-5" />
           </Button>
         </div>
 
-        {/* Property Info */}
-        <div className="p-6 border-b">
-          <div className="flex items-center space-x-4">
-            <img
-              src={property.images?.[0] || '/assets/default-property.jpg'}
-              alt={property.title}
-              className="w-16 h-16 object-cover rounded-lg"
-            />
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground">{property.title}</h3>
-              <div className="flex items-center text-gray-600 text-sm mt-1">
-                <MapPin className="w-4 h-4 mr-1" />
-                {property.location}
-              </div>
-              {property.rating && (
-                <div className="flex items-center mt-1">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm text-gray-600 ml-1">
-                    {property.rating} ({property.review_count} reviews)
-                  </span>
+        {/* Property Info - Compact */}
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+          <div className="flex items-center gap-4">
+            <div className="relative w-20 h-20 flex-shrink-0">
+              <img
+                src={property.images?.[0] || '/assets/default-property.jpg'}
+                alt={property.title}
+                className="w-full h-full object-cover rounded-xl ring-2 ring-slate-200 dark:ring-slate-700"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-slate-900 dark:text-white truncate text-lg">
+                {property.title}
+              </h3>
+              <div className="flex items-center gap-3 mt-1.5">
+                <div className="flex items-center text-slate-600 dark:text-slate-400 text-sm">
+                  <MapPin className="w-3.5 h-3.5 mr-1" />
+                  <span className="truncate">{property.location}</span>
                 </div>
-              )}
-              <p className="text-gray-600 mt-1">
-                ${property.price_per_night} per night
-              </p>
+                {property.rating && (
+                  <div className="flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span className="text-sm font-medium text-slate-900 dark:text-white">
+                      {property.rating}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mt-2 inline-flex items-baseline gap-1 bg-white dark:bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
+                  ${property.price_per_night}
+                </span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">/night</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Sleeker Progress Tracking */}
-        <div className="p-6 border-b border-border/50 bg-gradient-to-r from-gray-50/50 to-blue-50/30 dark:from-gray-900/20 dark:to-blue-900/10">
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto max-h-[calc(90vh-240px)]">
+          {/* Sleeker Progress Tracking */}
+          <div className="p-6 border-b border-border/50 bg-gradient-to-r from-gray-50/50 to-blue-50/30 dark:from-gray-900/20 dark:to-blue-900/10">
           {/* Progress Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -954,6 +983,7 @@ const EnhancedBookingModal: React.FC<EnhancedBookingModalProps> = ({
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

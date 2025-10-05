@@ -185,10 +185,10 @@ export default function AvailabilityCalendar({
         </div>
       )}
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <CalendarIcon className="mr-2 h-5 w-5 text-muted-foreground" />
-          <h3 className="text-lg font-medium text-foreground">Availability Calendar</h3>
+          <CalendarIcon className="mr-3 h-5 w-5 text-slate-500 dark:text-slate-400" />
+          <h3 className="text-lg font-light text-slate-900 dark:text-white tracking-tight">Availability</h3>
         </div>
 
         {!showSelectedDateOnly && (
@@ -198,6 +198,7 @@ export default function AvailabilityCalendar({
               size="sm"
               onClick={() => setMonth(new Date())}
               disabled={isSameMonth(month, new Date())}
+              className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Today
             </Button>
@@ -206,6 +207,7 @@ export default function AvailabilityCalendar({
               size="sm"
               onClick={() => fetchAvailability()}
               disabled={loading}
+              className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Refresh
             </Button>

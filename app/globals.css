@@ -4,41 +4,41 @@
 
 @layer base {
   :root {
-    /* Premium OKLCH Design System - ZeroFeeStays Brand */
+    /* Sophisticated Light Mode - Warm & Elegant */
     --radius: 0.875rem;
 
-    /* Base Colors - Ultra Clean */
-    --background: oklch(0.99 0 0);
-    --foreground: oklch(0.15 0.005 285.823);
-    --card: oklch(0.99 0 0);
-    --card-foreground: oklch(0.15 0.005 285.823);
-    --popover: oklch(0.99 0 0);
-    --popover-foreground: oklch(0.15 0.005 285.823);
+    /* Base Colors - Warm Cream Background */
+    --background: oklch(0.98 0.008 50); /* Subtle warm cream */
+    --foreground: oklch(0.15 0.01 280); /* Rich dark slate */
+    --card: oklch(0.995 0.005 45); /* Pure warm white */
+    --card-foreground: oklch(0.15 0.01 280);
+    --popover: oklch(0.995 0.005 45);
+    --popover-foreground: oklch(0.15 0.01 280);
 
-    /* Brand Primary - Deep Emerald */
-    --primary: oklch(0.55 0.18 160);
-    --primary-foreground: oklch(0.99 0.01 160);
+    /* Brand Primary - Sophisticated Emerald */
+    --primary: oklch(0.55 0.16 155);
+    --primary-foreground: oklch(0.98 0.01 155);
 
-    /* Brand Secondary - Refined Neutral */
-    --secondary: oklch(0.96 0.002 286);
-    --secondary-foreground: oklch(0.25 0.008 286);
+    /* Brand Secondary - Warm Neutral */
+    --secondary: oklch(0.94 0.008 50);
+    --secondary-foreground: oklch(0.25 0.01 280);
 
-    /* Accent - Vibrant Amber */
-    --accent: oklch(0.75 0.15 60);
-    --accent-foreground: oklch(0.12 0.01 60);
+    /* Accent - Refined Gold */
+    --accent: oklch(0.72 0.12 65);
+    --accent-foreground: oklch(0.15 0.01 65);
 
-    /* Muted Colors */
-    --muted: oklch(0.96 0.002 286);
-    --muted-foreground: oklch(0.5 0.015 286);
+    /* Muted Colors - Warm Grays */
+    --muted: oklch(0.93 0.008 50);
+    --muted-foreground: oklch(0.45 0.02 280);
 
-    /* Destructive */
-    --destructive: oklch(0.55 0.22 25);
-    --destructive-foreground: oklch(0.99 0.01 25);
+    /* Destructive - Warm Red */
+    --destructive: oklch(0.58 0.18 25);
+    --destructive-foreground: oklch(0.98 0.01 25);
 
-    /* Borders & Inputs */
-    --border: oklch(0.9 0.005 286);
-    --input: oklch(0.95 0.003 286);
-    --ring: oklch(0.55 0.18 160);
+    /* Borders & Inputs - Subtle Warm Tones */
+    --border: oklch(0.88 0.01 50);
+    --input: oklch(0.92 0.008 50);
+    --ring: oklch(0.55 0.16 155);
 
     /* Charts */
     --chart-1: oklch(0.623 0.164 158.5);
@@ -83,38 +83,38 @@
   }
 
   .dark {
-    /* Ultra Premium Dark Mode - Rich & Sophisticated */
-    --background: oklch(0.09 0.003 286);
-    --foreground: oklch(0.97 0.002 286);
-    --card: oklch(0.13 0.004 286);
-    --card-foreground: oklch(0.97 0.002 286);
-    --popover: oklch(0.13 0.004 286);
-    --popover-foreground: oklch(0.97 0.002 286);
+    /* Sophisticated Dark Mode - Rich Charcoal & Warm Accents */
+    --background: oklch(0.08 0.005 260); /* Deep charcoal with blue undertones */
+    --foreground: oklch(0.95 0.005 50); /* Warm off-white */
+    --card: oklch(0.12 0.008 260); /* Rich dark card background */
+    --card-foreground: oklch(0.95 0.005 50);
+    --popover: oklch(0.12 0.008 260);
+    --popover-foreground: oklch(0.95 0.005 50);
 
-    /* Brand Primary - Luminous Emerald */
-    --primary: oklch(0.65 0.22 160);
-    --primary-foreground: oklch(0.09 0.003 160);
+    /* Brand Primary - Bright Emerald */
+    --primary: oklch(0.68 0.20 155);
+    --primary-foreground: oklch(0.08 0.005 155);
 
-    /* Brand Secondary - Deep Slate */
-    --secondary: oklch(0.2 0.005 286);
-    --secondary-foreground: oklch(0.94 0.002 286);
+    /* Brand Secondary - Warm Dark Gray */
+    --secondary: oklch(0.18 0.008 260);
+    --secondary-foreground: oklch(0.92 0.005 50);
 
-    /* Accent - Warm Gold */
-    --accent: oklch(0.72 0.18 55);
-    --accent-foreground: oklch(0.09 0.003 55);
+    /* Accent - Luminous Gold */
+    --accent: oklch(0.75 0.15 65);
+    --accent-foreground: oklch(0.08 0.005 65);
 
-    /* Muted Colors - Premium Dark Mode */
-    --muted: oklch(0.2 0.005 286);
-    --muted-foreground: oklch(0.6 0.012 286);
+    /* Muted Colors - Sophisticated Dark Grays */
+    --muted: oklch(0.18 0.008 260);
+    --muted-foreground: oklch(0.65 0.015 260);
 
-    /* Destructive - Premium Dark Mode */
-    --destructive: oklch(0.65 0.25 20);
-    --destructive-foreground: oklch(0.97 0.01 20);
+    /* Destructive - Vibrant Red */
+    --destructive: oklch(0.68 0.22 25);
+    --destructive-foreground: oklch(0.95 0.005 25);
 
-    /* Borders & Inputs - Premium Dark Mode */
-    --border: oklch(0.25 0.005 286);
-    --input: oklch(0.22 0.005 286);
-    --ring: oklch(0.65 0.22 160);
+    /* Borders & Inputs - Refined Dark Borders */
+    --border: oklch(0.25 0.01 260);
+    --input: oklch(0.22 0.008 260);
+    --ring: oklch(0.68 0.20 155);
 
     /* Charts - Premium Dark Mode */
     --chart-1: oklch(0.68 0.2 158.5);
@@ -224,6 +224,8 @@
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.2;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
   }
 
   h1 {
@@ -249,26 +251,224 @@
     font-weight: 600;
   }
 
+  h5 {
+    @apply text-lg lg:text-xl;
+    font-weight: 500;
+  }
+
+  h6 {
+    @apply text-base lg:text-lg;
+    font-weight: 500;
+  }
+
   p {
     line-height: 1.7;
     font-weight: 400;
+    color: hsl(var(--foreground) / 0.85);
+  }
+
+  /* Monte-inspired Typography Scale */
+  .text-display-xl {
+    @apply text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  .text-display-lg {
+    @apply text-5xl lg:text-6xl xl:text-7xl font-light tracking-tight;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .text-display-md {
+    @apply text-4xl lg:text-5xl xl:text-6xl font-light tracking-tight;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .text-display-sm {
+    @apply text-3xl lg:text-4xl xl:text-5xl font-light tracking-tight;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .text-title-xl {
+    @apply text-2xl lg:text-3xl font-medium tracking-tight;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .text-title-lg {
+    @apply text-xl lg:text-2xl font-medium tracking-tight;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .text-title-md {
+    @apply text-lg lg:text-xl font-medium tracking-tight;
+    line-height: 1.2;
+  }
+
+  .text-title-sm {
+    @apply text-base lg:text-lg font-medium;
+    line-height: 1.3;
+  }
+
+  .text-body-xl {
+    @apply text-xl lg:text-2xl font-light;
+    line-height: 1.6;
+    color: hsl(var(--foreground) / 0.8);
   }
 
   .text-body-lg {
-    @apply text-lg leading-relaxed font-medium;
+    @apply text-lg lg:text-xl font-normal;
+    line-height: 1.65;
+    color: hsl(var(--foreground) / 0.85);
   }
 
   .text-body {
-    @apply text-base leading-relaxed;
+    @apply text-base lg:text-lg font-normal;
+    line-height: 1.7;
+    color: hsl(var(--foreground) / 0.85);
   }
 
   .text-body-sm {
-    @apply text-sm leading-relaxed;
+    @apply text-sm lg:text-base font-normal;
+    line-height: 1.65;
+    color: hsl(var(--foreground) / 0.75);
+  }
+
+  .text-body-xs {
+    @apply text-xs lg:text-sm font-normal;
+    line-height: 1.6;
+    color: hsl(var(--foreground) / 0.7);
   }
 
   .text-caption {
-    @apply text-xs leading-normal font-medium tracking-wide uppercase;
+    @apply text-xs lg:text-sm font-medium tracking-wide uppercase;
+    line-height: 1.4;
+    color: hsl(var(--foreground) / 0.6);
+    letter-spacing: 0.08em;
   }
+
+  .text-overline {
+    @apply text-xs font-semibold tracking-widest uppercase;
+    line-height: 1.2;
+    color: hsl(var(--foreground) / 0.5);
+    letter-spacing: 0.15em;
+  }
+}
+
+/* Monte-inspired Spacing System */
+.space-section {
+  @apply py-24 lg:py-32 xl:py-40;
+}
+
+.space-section-sm {
+  @apply py-16 lg:py-20 xl:py-24;
+}
+
+.space-section-lg {
+  @apply py-32 lg:py-40 xl:py-48;
+}
+
+.space-content {
+  @apply space-y-8 lg:space-y-12 xl:space-y-16;
+}
+
+.space-content-sm {
+  @apply space-y-6 lg:space-y-8 xl:space-y-10;
+}
+
+.space-content-lg {
+  @apply space-y-12 lg:space-y-16 xl:space-y-20;
+}
+
+/* Monte-inspired Container System */
+.container-narrow {
+  @apply max-w-4xl mx-auto px-6 lg:px-8;
+}
+
+.container-wide {
+  @apply max-w-7xl mx-auto px-6 lg:px-8;
+}
+
+.container-full {
+  @apply max-w-full mx-auto px-6 lg:px-8 xl:px-12;
+}
+
+/* Monte-inspired Grid Systems */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Monte-inspired Card Layouts */
+.card-monte {
+  @apply bg-white border-0 rounded-2xl shadow-sm hover:shadow-lg;
+  @apply transition-all duration-300;
+  backdrop-filter: blur(10px);
+}
+
+.card-monte-elevated {
+  @apply bg-white border-0 rounded-3xl shadow-lg hover:shadow-2xl;
+  @apply transition-all duration-500 transform hover:-translate-y-1;
+  backdrop-filter: blur(20px);
+}
+
+.card-monte-minimal {
+  @apply bg-white border border-slate-100 rounded-xl hover:border-slate-200;
+  @apply transition-all duration-200 hover:shadow-sm;
+}
+
+/* Monte-inspired Content Areas */
+.content-area {
+  @apply space-y-8 lg:space-y-12;
+}
+
+.content-header {
+  @apply space-y-4 lg:space-y-6;
+}
+
+.content-body {
+  @apply space-y-6 lg:space-y-8;
+}
+
+/* Monte-inspired Button Spacing */
+.btn-group {
+  @apply flex items-center gap-3 lg:gap-4;
+}
+
+.btn-group-sm {
+  @apply flex items-center gap-2 lg:gap-3;
+}
+
+.btn-group-lg {
+  @apply flex items-center gap-4 lg:gap-6;
+}
+
+/* Monte-inspired Form Spacing */
+.form-section {
+  @apply space-y-6 lg:space-y-8;
+}
+
+.form-group {
+  @apply space-y-2 lg:space-y-3;
+}
+
+.form-fields {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6;
+}
+
+.form-fields-single {
+  @apply space-y-4 lg:space-y-6;
 }
 
 /* Essential Performance Optimizations */

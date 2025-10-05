@@ -19,21 +19,47 @@ export default function AuthCallbackPage() {
         const connectionTest = await testSupabaseConnection();
         console.log("Connection test result:", connectionTest);
 
-        // Get the session from the URL hash
-        const { data, error } = await supabase.auth.getSession();
+        // Check for error in URL (OAuth or email verification error)
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get("error");
+        const errorDescription = urlParams.get("error_description");
 
         if (error) {
-          console.error("Auth callback error:", error);
+          console.error("Auth callback error from URL:", error, errorDescription);
+          router.push(`/auth?error=${encodeURIComponent(errorDescription || error)}`);
+          return;
+        }
+
+        // Check for success message (email verification)
+        const type = urlParams.get("type");
+        if (type === "signup") {
+          console.log("Email verification successful");
+          // User verified email, try to get session
+        }
+
+        // Get the session (works for both OAuth and email verification)
+        const { data, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("Auth callback session error:", sessionError);
           router.push("/auth?error=callback_failed");
           return;
         }
 
         if (data.session) {
           console.log("Session found, redirecting to home...");
-          router.push("/");
+          // Small delay to ensure auth state is propagated
+          setTimeout(() => {
+            router.push("/");
+          }, 500);
         } else {
-          console.log("No session found, redirecting to auth...");
-          router.push("/auth");
+          console.log("No session found after callback");
+          // If email was just verified but no session, show success message
+          if (type === "signup") {
+            router.push("/auth?verified=true");
+          } else {
+            router.push("/auth");
+          }
         }
       } catch (error) {
         console.error("Unexpected error in auth callback:", error);

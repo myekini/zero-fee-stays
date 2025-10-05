@@ -190,54 +190,75 @@ function HostDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">
-              Host Dashboard
-            </h1>
-            <p className="text-muted-foreground">
-              Welcome back, {user?.user_metadata?.first_name || "Host"}!
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              className="bg-primary hover:bg-primary/90"
-              onClick={() => {
-                setSelectedProperty(null);
-                setShowPropertyForm(true);
-              }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Property
-            </Button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100/50">
+      <div className="container mx-auto px-6 py-12">
+        {/* Monte-inspired Header */}
+        <div className="relative mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-sm text-slate-600 mb-2">
+                <Home className="w-4 h-4" />
+                <span>Property Management</span>
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-light text-slate-900 tracking-tight">
+                Host Dashboard
+              </h1>
+              <p className="text-lg text-slate-600 font-light max-w-2xl">
+                Welcome back, {user?.user_metadata?.first_name || "Host"}. Manage your properties with elegance and ease.
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200"
+                onClick={() => setShowBookings(true)}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                View Bookings
+              </Button>
+              <Button
+                className="bg-slate-900 hover:bg-slate-800 text-white shadow-md hover:shadow-lg transition-all duration-200"
+                onClick={() => {
+                  setSelectedProperty(null);
+                  setShowPropertyForm(true);
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Property
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Monte-inspired Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Properties</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {stats.total_properties}
-                    </p>
-                    <p className="text-xs text-primary flex items-center gap-1">
-                      <ArrowUpRight className="w-3 h-3" />
-                      +2 this month
-                    </p>
+            <Card className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 bg-slate-100 group-hover:bg-slate-200 rounded-xl flex items-center justify-center transition-all duration-200">
+                      <Home className="w-6 h-6 text-slate-600" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Total</p>
+                      <p className="text-3xl font-light text-slate-900 tracking-tight">
+                        {stats.total_properties}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-3 bg-primary/10 rounded-lg">
-                    <Home className="w-6 h-6 text-primary" />
+                  <div className="pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-slate-900">Properties</span>
+                      <span className="text-xs text-slate-500 flex items-center gap-1">
+                        <ArrowUpRight className="w-3 h-3" />
+                        +2 this month
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -249,23 +270,28 @@ function HostDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">
-                      Active Bookings
-                    </p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {stats.active_bookings}
-                    </p>
-                    <p className="text-xs text-primary flex items-center gap-1">
-                      <ArrowUpRight className="w-3 h-3" />
-                      +12% from last month
-                    </p>
+            <Card className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 bg-emerald-50 group-hover:bg-emerald-100 rounded-xl flex items-center justify-center transition-all duration-200">
+                      <Calendar className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Active</p>
+                      <p className="text-3xl font-light text-slate-900 tracking-tight">
+                        {stats.active_bookings}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-3 bg-primary/10 rounded-lg">
-                    <Calendar className="w-6 h-6 text-primary" />
+                  <div className="pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-slate-900">Bookings</span>
+                      <span className="text-xs text-emerald-600 flex items-center gap-1">
+                        <ArrowUpRight className="w-3 h-3" />
+                        +12% from last month
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -277,23 +303,28 @@ function HostDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">
-                      Monthly Revenue
-                    </p>
-                    <p className="text-2xl font-bold text-foreground">
-                      ${stats.monthly_revenue.toLocaleString()}
-                    </p>
-                    <p className="text-xs text-primary flex items-center gap-1">
-                      <ArrowUpRight className="w-3 h-3" />
-                      +8% from last month
-                    </p>
+            <Card className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 rounded-xl flex items-center justify-center transition-all duration-200">
+                      <DollarSign className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Monthly</p>
+                      <p className="text-3xl font-light text-slate-900 tracking-tight">
+                        ${stats.monthly_revenue.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-3 bg-primary/10 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-primary" />
+                  <div className="pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-slate-900">Revenue</span>
+                      <span className="text-xs text-blue-600 flex items-center gap-1">
+                        <ArrowUpRight className="w-3 h-3" />
+                        +8% from last month
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -305,21 +336,28 @@ function HostDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Avg Rating</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {stats.avg_rating}
-                    </p>
-                    <p className="text-xs text-primary flex items-center gap-1">
-                      <ArrowUpRight className="w-3 h-3" />
-                      +0.2 from last month
-                    </p>
+            <Card className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 bg-amber-50 group-hover:bg-amber-100 rounded-xl flex items-center justify-center transition-all duration-200">
+                      <Star className="w-6 h-6 text-amber-500" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Average</p>
+                      <p className="text-3xl font-light text-slate-900 tracking-tight">
+                        {stats.avg_rating}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-3 bg-accentCustom-100 rounded-lg">
-                    <Star className="w-6 h-6 text-accentCustom-600" />
+                  <div className="pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-slate-900">Rating</span>
+                      <span className="text-xs text-amber-600 flex items-center gap-1">
+                        <ArrowUpRight className="w-3 h-3" />
+                        +0.2 from last month
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -327,28 +365,55 @@ function HostDashboard() {
           </motion.div>
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="properties">Properties</TabsTrigger>
-            <TabsTrigger value="bookings">Bookings</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          </TabsList>
+        {/* Monte-styled Main Content */}
+        <Tabs defaultValue="overview" className="space-y-12">
+          <div className="bg-white rounded-2xl p-2 shadow-sm border border-slate-200">
+            <TabsList className="grid w-full grid-cols-4 bg-transparent h-12 p-1">
+              <TabsTrigger 
+                value="overview" 
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-slate-600 font-medium rounded-xl transition-all duration-200"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="properties" 
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-slate-600 font-medium rounded-xl transition-all duration-200"
+              >
+                Properties
+              </TabsTrigger>
+              <TabsTrigger 
+                value="bookings" 
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-slate-600 font-medium rounded-xl transition-all duration-200"
+              >
+                Bookings
+              </TabsTrigger>
+              <TabsTrigger 
+                value="analytics" 
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-slate-600 font-medium rounded-xl transition-all duration-200"
+              >
+                Analytics
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-12">
             {/* Properties Section */}
-            <Card>
-              <CardHeader>
+            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <CardHeader className="pb-8">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>Your Properties</CardTitle>
-                    <CardDescription>
-                      Manage and monitor your property listings
+                  <div className="space-y-2">
+                    <CardTitle className="text-2xl font-light text-slate-900 tracking-tight">Your Properties</CardTitle>
+                    <CardDescription className="text-slate-600 font-light">
+                      Manage and monitor your property listings with ease
                     </CardDescription>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
                     View All
                   </Button>
                 </div>
@@ -362,26 +427,26 @@ function HostDashboard() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
                     >
-                      <Card className="overflow-hidden">
+                      <Card className="overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 group bg-white">
                         <div className="flex">
                           {/* Property Image */}
-                          <div className="w-32 h-32 flex-shrink-0 relative bg-muted">
+                          <div className="w-36 h-36 flex-shrink-0 relative bg-slate-50">
                             <img
                               src={property.images?.[0] || '/assets/apartment_lobby_ss.jpg'}
                               alt={property.title}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               onError={(e) => {
                                 e.currentTarget.src = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=400&fit=crop';
                               }}
                             />
-                            <div className="absolute top-2 left-2">
+                            <div className="absolute top-3 left-3">
                               <Badge
-                                variant={
-                                  property.is_active ? "default" : "secondary"
-                                }
-                                className={
-                                  property.is_active ? "bg-primary" : ""
-                                }
+                                variant="secondary"
+                                className={`text-xs font-medium px-2 py-1 ${
+                                  property.is_active 
+                                    ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
+                                    : "bg-slate-100 text-slate-600 border-slate-200"
+                                }`}
                               >
                                 {property.is_active ? "Active" : "Inactive"}
                               </Badge>
@@ -389,14 +454,14 @@ function HostDashboard() {
                           </div>
 
                           {/* Property Details */}
-                          <div className="flex-1 p-4">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="font-semibold text-foreground line-clamp-1">
+                          <div className="flex-1 p-6">
+                            <div className="flex items-start justify-between mb-3">
+                              <h3 className="font-medium text-slate-900 text-lg line-clamp-1 group-hover:text-slate-800">
                                 {property.title}
                               </h3>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm">
+                                  <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-600">
                                     <MoreHorizontal className="w-4 h-4" />
                                   </Button>
                                 </DropdownMenuTrigger>
@@ -432,57 +497,57 @@ function HostDashboard() {
                               </DropdownMenu>
                             </div>
 
-                            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-3">
+                            <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
                               <MapPin className="w-4 h-4" />
-                              <span>{property.address}</span>
+                              <span className="line-clamp-1">{property.address}</span>
                             </div>
 
-                            <div className="flex items-center justify-between mb-3">
-                              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                <div className="flex items-center gap-1">
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center gap-6 text-sm text-slate-600">
+                                <div className="flex items-center gap-2">
                                   <Bed className="w-4 h-4" />
-                                  <span>{property.bedrooms}</span>
+                                  <span className="font-medium">{property.bedrooms}</span>
                                 </div>
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-2">
                                   <Bath className="w-4 h-4" />
-                                  <span>{property.bathrooms}</span>
+                                  <span className="font-medium">{property.bathrooms}</span>
                                 </div>
                               </div>
                               <div className="text-right">
-                                <p className="font-semibold text-foreground">
-                                  ${property.price_per_night}/night
+                                <p className="font-semibold text-slate-900 text-lg">
+                                  ${property.price_per_night}<span className="text-sm font-normal text-slate-500">/night</span>
                                 </p>
                               </div>
                             </div>
 
                             {/* Performance Metrics */}
-                            <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border">
+                            <div className="grid grid-cols-3 gap-6 pt-4 border-t border-slate-100">
                               <div className="text-center">
                                 <div className="flex items-center justify-center gap-1 mb-1">
-                                  <Star className="w-3 h-3 fill-accentCustom-400 text-accentCustom-400" />
-                                  <span className="text-sm font-medium">
+                                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                                  <span className="text-sm font-semibold text-slate-900">
                                     {property.rating}
                                   </span>
                                 </div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-slate-500">
                                   {property.review_count} reviews
                                 </p>
                               </div>
 
                               <div className="text-center">
-                                <div className="text-sm font-medium text-foreground mb-1">
+                                <div className="text-sm font-semibold text-slate-900 mb-1">
                                   {property.occupancy_rate}%
                                 </div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-slate-500">
                                   Occupancy
                                 </p>
                               </div>
 
                               <div className="text-center">
-                                <div className="text-sm font-medium text-foreground mb-1">
+                                <div className="text-sm font-semibold text-slate-900 mb-1">
                                   ${property.revenue.toLocaleString()}
                                 </div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-slate-500">
                                   Revenue
                                 </p>
                               </div>

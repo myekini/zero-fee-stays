@@ -42,7 +42,6 @@ export default tseslint.config(
         { argsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/prefer-const": "error",
       "@typescript-eslint/no-non-null-assertion": "warn",
       // General rules
       "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",

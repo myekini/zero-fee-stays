@@ -28,7 +28,7 @@ interface ModernAuthFormProps {
 
 export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
   const router = useRouter();
-  const { signIn, signUp, signInWithGoogle } = useAuth();
+  const { signIn, signUp, signInWithGoogle, resendVerificationEmail } = useAuth();
   const { toast } = useToast();
 
   const [authMode, setAuthMode] = useState<"signin" | "signup">(mode);
@@ -36,6 +36,7 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   // Sign In Form
   const [signInData, setSignInData] = useState({
@@ -55,6 +56,17 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
   // Password validation for signup
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
+  // Load remembered email on component mount
+  React.useEffect(() => {
+    if (authMode === "signin") {
+      const rememberedEmail = localStorage.getItem("rememberedEmail");
+      if (rememberedEmail) {
+        setSignInData({ ...signInData, email: rememberedEmail });
+        setRememberMe(true);
+      }
+    }
+  }, [authMode]);
+
   const validatePasswordStrength = (password: string) => {
     const validation = AuthUtils.validatePassword(password);
     setPasswordErrors(validation.errors);
@@ -68,12 +80,23 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
     try {
       const { error } = await signIn(signInData.email, signInData.password);
       if (error) {
+        // Check if error is about unverified email
+        if (error.message.includes("verify your email")) {
+          setUnverifiedEmail(signInData.email);
+        }
         toast({
           title: "Sign in failed",
           description: error.message,
           variant: "destructive",
         });
       } else {
+        // Store email in localStorage if "Remember me" is checked
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", signInData.email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+
         toast({
           title: "Welcome back!",
           description: "You've been signed in successfully.",
@@ -129,6 +152,7 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           description: error.message,
           variant: "destructive",
         });
+        // Don't clear form or switch modes on error - let user fix the issue
       } else {
         toast({
           title: "Account created!",
@@ -137,7 +161,7 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
           duration: 6000,
         });
 
-        // Clear form
+        // Clear form only on success
         setSignUpData({
           firstName: "",
           lastName: "",
@@ -147,10 +171,10 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
         });
         setPasswordErrors([]);
 
-        // Switch to sign in mode after a delay
+        // Switch to sign in mode after a delay (only on success)
         setTimeout(() => {
           setAuthMode("signin");
-        }, 2000);
+        }, 3000);
       }
     } catch (error) {
       toast({
@@ -324,6 +348,28 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
             )}
           </Button>
         </form>
+
+        {/* Resend Verification Email */}
+        {unverifiedEmail && (
+          <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+            <p className="text-sm text-amber-800 dark:text-amber-200 mb-2">
+              Haven't received the verification email?
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                setIsLoading(true);
+                await resendVerificationEmail(unverifiedEmail);
+                setIsLoading(false);
+              }}
+              disabled={isLoading}
+              className="w-full"
+            >
+              Resend verification email
+            </Button>
+          </div>
+        )}
 
         {/* Divider */}
         <div className="relative">

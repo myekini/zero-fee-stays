@@ -114,46 +114,49 @@ function PropertiesContent() {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Enhanced Page Header */}
-      <div className="relative bg-gradient-to-br from-primary via-primary/95 to-primary/80 overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+      {/* Monte-inspired Page Header */}
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
+        {/* Elegant Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
+            backgroundSize: '60px 60px'
           }} />
         </div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/5"></div>
 
-        <div className="container mx-auto px-4 py-16 relative">
-          <div className="text-center text-white max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span>{properties.length} properties available</span>
+        <div className="container mx-auto px-6 py-20 relative">
+          <div className="text-center text-white max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-8 border border-white/10">
+              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+              <span className="text-white">{properties.length} premium properties available</span>
             </div>
 
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
-              Find Your Perfect Stay
+            <h1 className="text-5xl lg:text-6xl font-light mb-6 tracking-tight text-white">
+              Discover Your <span className="font-medium">Perfect Stay</span>
             </h1>
-            <p className="text-lg lg:text-xl text-white/90 mb-6 leading-relaxed">
-              Discover exceptional properties with <span className="font-bold text-white">zero platform fees</span>.
-              Direct booking, better prices, authentic experiences.
+            <p className="text-xl lg:text-2xl text-white/80 mb-8 leading-relaxed font-light">
+              Experience luxury accommodations with <span className="font-medium text-white">zero platform fees</span>.<br/>
+              Direct booking, exceptional value, authentic hospitality.
             </p>
 
-            {/* Quick Stats */}
-            <div className="flex items-center justify-center gap-8 mt-8">
+            {/* Elegant Stats */}
+            <div className="flex items-center justify-center gap-12 mt-12">
               <div className="text-center">
-                <div className="text-3xl font-bold">0%</div>
-                <div className="text-sm text-white/80">Platform Fees</div>
+                <div className="text-4xl font-light text-white mb-2">0%</div>
+                <div className="text-sm text-white/60 uppercase tracking-wider">Platform Fees</div>
               </div>
-              <div className="w-px h-12 bg-white/30"></div>
+              <div className="w-px h-16 bg-white/20"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold">100%</div>
-                <div className="text-sm text-white/80">Host Earnings</div>
+                <div className="text-4xl font-light text-white mb-2">100%</div>
+                <div className="text-sm text-white/60 uppercase tracking-wider">Value to You</div>
               </div>
-              <div className="w-px h-12 bg-white/30"></div>
+              <div className="w-px h-16 bg-white/20"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold">24/7</div>
-                <div className="text-sm text-white/80">Support</div>
+                <div className="text-4xl font-light text-white mb-2">24/7</div>
+                <div className="text-sm text-white/60 uppercase tracking-wider">Support</div>
               </div>
             </div>
           </div>

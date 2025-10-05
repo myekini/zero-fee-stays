@@ -26,6 +26,7 @@ interface AuthContextType {
   signInWithTwitter: () => Promise<{ error: any }>;
   resetPassword: (email: string) => Promise<{ error: any }>;
   updatePassword: (password: string) => Promise<{ error: any }>;
+  resendVerificationEmail: (email: string) => Promise<{ error: any }>;
   updateProfile: (updates: Partial<AuthUser>) => Promise<{ error: any }>;
   hasPermission: (requiredRole: "user" | "host" | "admin") => Promise<boolean>;
   refreshSession: () => Promise<void>;
@@ -209,7 +210,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -220,6 +221,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: error.message,
         variant: "destructive",
       });
+      return { error };
+    }
+
+    // Check if email is verified
+    if (data.user && !data.user.email_confirmed_at) {
+      // Sign out the user immediately
+      await supabase.auth.signOut();
+
+      const verificationError = {
+        message: "Please verify your email before signing in. Check your inbox for the verification link.",
+      };
+
+      toast({
+        title: "Email not verified",
+        description: verificationError.message,
+        variant: "destructive",
+        duration: 6000,
+      });
+
+      return { error: verificationError };
     }
 
     return { error };
@@ -462,6 +483,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  const resendVerificationEmail = async (email: string) => {
+    if (!AuthUtils.isValidEmail(email)) {
+      return { error: { message: "Please enter a valid email address." } };
+    }
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        toast({
+          title: "Failed to resend verification email",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Verification email sent!",
+          description: "Please check your inbox for the verification link.",
+          duration: 5000,
+        });
+      }
+
+      return { error };
+    } catch (err) {
+      const error = { message: "An unexpected error occurred." };
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      return { error };
+    }
+  };
+
   const updateProfile = async (updates: Partial<AuthUser>) => {
     const { error } = await supabase.auth.updateUser({
       data: {
@@ -493,7 +554,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error || !profile) {
         console.error("Error fetching user role:", error);
-        return false;
+        // Fallback: assume user role if profile doesn't exist or role is missing
+        return requiredRole === "user";
       }
 
       // Type guard to ensure profile has role property
@@ -555,9 +617,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signInWithGoogle,
     signInWithGitHub,
     signInWithTwitter,
-    signInWithApple,
     resetPassword,
     updatePassword,
+    resendVerificationEmail,
     updateProfile,
     hasPermission,
     refreshSession,

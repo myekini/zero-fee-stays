@@ -289,51 +289,64 @@ export function PropertyForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0">
-        <div className="relative">
-          {/* Header */}
-          <DialogHeader className="p-6 pb-0">
+      <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0 border-0 shadow-xl">
+        <div className="relative bg-gradient-to-br from-slate-50 to-white">
+          {/* Monte-inspired Header */}
+          <DialogHeader className="px-8 pt-8 pb-6">
             <div className="flex items-center justify-between">
-              <div>
-                <DialogTitle className="text-2xl font-bold">
-                  {property ? "Edit Property" : "Add New Property"}
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-600 mb-2">
+                  <Home className="w-3 h-3" />
+                  <span>Property Management</span>
+                </div>
+                <DialogTitle className="text-3xl font-light text-slate-900 tracking-tight">
+                  {property ? "Edit Property" : "Create Property"}
                 </DialogTitle>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-slate-600 font-light">
                   Step {step} of 3: {steps[step - 1]?.description}
                 </p>
               </div>
-              <Button variant="ghost" size="sm" onClick={onClose}>
-                <X className="w-4 h-4" />
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={onClose}
+                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl"
+              >
+                <X className="w-5 h-5" />
               </Button>
             </div>
 
-            {/* Progress Steps */}
-            <div className="flex items-center gap-4 mt-6">
+            {/* Monte-styled Progress Steps */}
+            <div className="flex items-center justify-center gap-8 mt-8">
               {steps.map((stepItem, index) => (
-                <div key={stepItem.id} className="flex items-center gap-2">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                      stepItem.id <= step
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {stepItem.id < step ? (
-                      <Check className="w-4 h-4" />
-                    ) : (
-                      stepItem.id
-                    )}
-                  </div>
-                  <div className="hidden sm:block">
-                    <p className="text-sm font-medium">{stepItem.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {stepItem.description}
-                    </p>
+                <div key={stepItem.id} className="flex items-center gap-3">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 ${
+                        stepItem.id <= step
+                          ? "bg-slate-900 text-white shadow-sm"
+                          : "bg-slate-100 text-slate-400"
+                      }`}
+                    >
+                      {stepItem.id < step ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        stepItem.id
+                      )}
+                    </div>
+                    <div className="hidden sm:block">
+                      <p className={`text-sm font-medium ${
+                        stepItem.id <= step ? "text-slate-900" : "text-slate-500"
+                      }`}>{stepItem.title}</p>
+                      <p className="text-xs text-slate-500">
+                        {stepItem.description}
+                      </p>
+                    </div>
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`w-8 h-0.5 ${
-                        stepItem.id < step ? "bg-primary" : "bg-muted"
+                      className={`w-16 h-0.5 transition-all duration-200 ${
+                        stepItem.id < step ? "bg-slate-300" : "bg-slate-100"
                       }`}
                     />
                   )}
@@ -342,26 +355,28 @@ export function PropertyForm({
             </div>
           </DialogHeader>
 
-          <div className="p-6">
+          <div className="px-8 pb-8">
             {/* Step 1: Basic Information */}
             {step === 1 && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Home className="w-5 h-5" />
+                <Card className="border-0 shadow-sm bg-white">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-xl font-light text-slate-900">
+                      <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                        <Home className="w-5 h-5 text-slate-600" />
+                      </div>
                       Basic Information
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-slate-600 font-light ml-11">
                       Tell us about your property and set your pricing
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
                         <div>

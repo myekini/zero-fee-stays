@@ -1,6 +1,7 @@
 {
   "name": "hiddystays",
   "version": "1.0.0",
+  "type": "module",
   "description": "Zero-fee property rental platform built with Next.js",
   "private": true,
   "author": "HiddyStays Team",
@@ -26,8 +27,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit",
     "type-check:watch": "tsc --noEmit --watch",
     "format": "prettier --write .",
@@ -103,7 +104,7 @@
     "resend": "^2.1.0",
     "sonner": "^1.5.0",
     "stripe": "^14.7.0",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
