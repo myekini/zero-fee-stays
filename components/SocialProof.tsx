@@ -49,24 +49,24 @@ const SocialProof = () => {
       number: "1,200+",
       label: "Verified Properties",
       description: "Quality accommodations",
-      color: "text-accent-600",
-      bgColor: "bg-accent-50",
+      color: "text-brand-500",
+      bgColor: "bg-brand-50",
     },
     {
       icon: DollarSign,
       number: "$2.3M",
       label: "Saved by Guests",
       description: "In booking fees avoided",
-      color: "text-terracotta-600",
-      bgColor: "bg-terracotta-50",
+      color: "text-neutral-700",
+      bgColor: "bg-neutral-50",
     },
     {
       icon: Star,
       number: "4.9/5",
       label: "Average Rating",
       description: "From verified bookings",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-brand-600",
+      bgColor: "bg-brand-50",
     },
   ];
 
@@ -94,7 +94,7 @@ className="py-24 bg-background relative overflow-hidden"
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-gradient-to-r from-brand-500/5 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-l from-accent-500/5 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-l from-brand-400/5 to-transparent rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

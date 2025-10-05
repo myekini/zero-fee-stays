@@ -98,7 +98,7 @@ const Hero = ({
         {/* Premium Background Elements */}
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center bg-no-repeat opacity-5" />
         <div className="absolute top-1/4 -left-4 w-72 h-72 bg-brand-500/20 rounded-full mix-blend-multiply opacity-40 animate-blob" />
-        <div className="absolute top-1/3 -right-4 w-72 h-72 bg-accent-500/20 rounded-full mix-blend-multiply opacity-40 animate-blob animation-delay-2000" />
+        <div className="absolute top-1/3 -right-4 w-72 h-72 bg-brand-400/20 rounded-full mix-blend-multiply opacity-40 animate-blob animation-delay-2000" />
         <div className="absolute -bottom-8 left-1/3 w-72 h-72 bg-brand-400/20 rounded-full mix-blend-multiply opacity-40 animate-blob animation-delay-4000" />
         <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-24 z-10">
           {/* Main Content */}
@@ -111,7 +111,7 @@ const Hero = ({
                 as="h1"
                 className="my-8 text-4xl font-bold text-pretty lg:text-6xl xl:text-7xl tracking-tight leading-[1.1] text-foreground"
               >
-                <span className="inline-block bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 bg-clip-text text-transparent">
+<span className="inline-block bg-gradient-to-r from-brand-700 via-brand-600 to-brand-400 bg-clip-text text-transparent">
                   {heading.split(" ").slice(0, 2).join(" ")}
                 </span>
                 <br className="hidden sm:block" />
@@ -139,7 +139,7 @@ const Hero = ({
                   <span>No fees</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-accent-500 rounded-full" />
+                  <div className="w-2 h-2 bg-brand-400 rounded-full" />
                   <span>Direct booking</span>
                 </div>
               </motion.div>
@@ -187,7 +187,8 @@ const Hero = ({
                   <Button
                     asChild
                     size="lg"
-                    className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-brand-600 via-brand-500 to-brand-600 hover:from-brand-700 hover:via-brand-600 hover:to-brand-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 rounded-xl border-0"
+                    variant="brandOnBlack"
+                    className="px-8 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                   >
                     <a
                       href={buttons.primary.url}

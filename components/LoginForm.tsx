@@ -501,9 +501,10 @@ export function LoginForm() {
               </div>
             </div>
 
-            <Button
+<Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              variant="brand"
+              className="w-full"
               disabled={isLoading || passwordErrors.length > 0}
             >
               {isLoading ? (

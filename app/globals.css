@@ -4,41 +4,41 @@
 
 @layer base {
   :root {
-    /* Sophisticated Light Mode - Warm & Elegant */
+    /* Premium Sky & Charcoal - Clean & Professional */
     --radius: 0.875rem;
 
-    /* Base Colors - Warm Cream Background */
-    --background: oklch(0.98 0.008 50); /* Subtle warm cream */
-    --foreground: oklch(0.15 0.01 280); /* Rich dark slate */
-    --card: oklch(0.995 0.005 45); /* Pure warm white */
-    --card-foreground: oklch(0.15 0.01 280);
-    --popover: oklch(0.995 0.005 45);
-    --popover-foreground: oklch(0.15 0.01 280);
+    /* Base Colors - Soft Sky Blue */
+    --background: 240 247 250; /* #F0F7FA */
+    --foreground: 26 26 26; /* #1A1A1A */
+    --card: 255 255 255; /* #FFFFFF */
+    --card-foreground: 26 26 26;
+    --popover: 255 255 255;
+    --popover-foreground: 26 26 26;
 
-    /* Brand Primary - Sophisticated Emerald */
-    --primary: oklch(0.55 0.16 155);
-    --primary-foreground: oklch(0.98 0.01 155);
+    /* Primary - Deep Navy */
+    --primary: 30 58 95; /* #1E3A5F */
+    --primary-foreground: 255 255 255;
 
-    /* Brand Secondary - Warm Neutral */
-    --secondary: oklch(0.94 0.008 50);
-    --secondary-foreground: oklch(0.25 0.01 280);
+    /* Secondary - Light Blue-Gray */
+    --secondary: 225 235 240; /* #E1EBF0 */
+    --secondary-foreground: 26 26 26;
 
-    /* Accent - Refined Gold */
-    --accent: oklch(0.72 0.12 65);
-    --accent-foreground: oklch(0.15 0.01 65);
+    /* Accent - Premium Amber */
+    --accent: 245 158 11; /* #F59E0B */
+    --accent-foreground: 255 255 255;
 
-    /* Muted Colors - Warm Grays */
-    --muted: oklch(0.93 0.008 50);
-    --muted-foreground: oklch(0.45 0.02 280);
+    /* Muted - Very Light Blue */
+    --muted: 241 247 250; /* #F1F7FA */
+    --muted-foreground: 100 116 139; /* #64748B */
 
-    /* Destructive - Warm Red */
-    --destructive: oklch(0.58 0.18 25);
-    --destructive-foreground: oklch(0.98 0.01 25);
+    /* Destructive - Error Red */
+    --destructive: 239 68 68; /* #EF4444 */
+    --destructive-foreground: 255 255 255;
 
-    /* Borders & Inputs - Subtle Warm Tones */
-    --border: oklch(0.88 0.01 50);
-    --input: oklch(0.92 0.008 50);
-    --ring: oklch(0.55 0.16 155);
+    /* Borders & Inputs - Solid Colors */
+    --border: 203 213 225; /* #CBD5E1 */
+    --input: 226 232 240; /* #E2E8F0 */
+    --ring: 30 58 95; /* #1E3A5F */
 
     /* Charts */
     --chart-1: oklch(0.623 0.164 158.5);
@@ -83,38 +83,38 @@
   }
 
   .dark {
-    /* Sophisticated Dark Mode - Rich Charcoal & Warm Accents */
-    --background: oklch(0.08 0.005 260); /* Deep charcoal with blue undertones */
-    --foreground: oklch(0.95 0.005 50); /* Warm off-white */
-    --card: oklch(0.12 0.008 260); /* Rich dark card background */
-    --card-foreground: oklch(0.95 0.005 50);
-    --popover: oklch(0.12 0.008 260);
-    --popover-foreground: oklch(0.95 0.005 50);
+    /* Premium Dark Mode - Deep Navy with Amber accents */
+    --background: 15 23 42; /* #0F172A - Deep slate */
+    --foreground: 248 250 252; /* #F8FAFC - Almost white */
+    --card: 30 41 59; /* #1E293B - Dark card */
+    --card-foreground: 248 250 252;
+    --popover: 30 41 59; /* #1E293B - Solid dark popover */
+    --popover-foreground: 248 250 252; /* Bright white text */
 
-    /* Brand Primary - Bright Emerald */
-    --primary: oklch(0.68 0.20 155);
-    --primary-foreground: oklch(0.08 0.005 155);
+    /* Primary - Deep Navy (matches brand) */
+    --primary: 30 58 95; /* #1E3A5F */
+    --primary-foreground: 255 255 255; /* White text on deep navy */
 
-    /* Brand Secondary - Warm Dark Gray */
-    --secondary: oklch(0.18 0.008 260);
-    --secondary-foreground: oklch(0.92 0.005 50);
+    /* Secondary - Medium Slate */
+    --secondary: 51 65 85; /* #334155 */
+    --secondary-foreground: 248 250 252;
 
-    /* Accent - Luminous Gold */
-    --accent: oklch(0.75 0.15 65);
-    --accent-foreground: oklch(0.08 0.005 65);
+    /* Accent - Vibrant Amber */
+    --accent: 251 191 36; /* #FBBF24 - Bright amber */
+    --accent-foreground: 15 23 42;
 
-    /* Muted Colors - Sophisticated Dark Grays */
-    --muted: oklch(0.18 0.008 260);
-    --muted-foreground: oklch(0.65 0.015 260);
+    /* Muted - Dark Slate with Bright Text */
+    --muted: 51 65 85; /* #334155 */
+    --muted-foreground: 203 213 225; /* #CBD5E1 - Light gray text */
 
-    /* Destructive - Vibrant Red */
-    --destructive: oklch(0.68 0.22 25);
-    --destructive-foreground: oklch(0.95 0.005 25);
+    /* Destructive - Bright Red */
+    --destructive: 248 113 113; /* #F87171 */
+    --destructive-foreground: 15 23 42;
 
-    /* Borders & Inputs - Refined Dark Borders */
-    --border: oklch(0.25 0.01 260);
-    --input: oklch(0.22 0.008 260);
-    --ring: oklch(0.68 0.20 155);
+    /* Borders & Inputs - Visible in Dark Mode */
+    --border: 71 85 105; /* #475569 - Visible border */
+    --input: 51 65 85; /* #334155 - Dark input with good contrast */
+    --ring: 30 58 95; /* Deep navy focus ring */
 
     /* Charts - Premium Dark Mode */
     --chart-1: oklch(0.68 0.2 158.5);
@@ -563,20 +563,20 @@ body {
 }
 
 .nav-modern.scrolled {
-  background-color: hsl(var(--background) / 0.8);
+  background-color: rgb(var(--background) / 0.8);
   @apply backdrop-blur-xl shadow-premium;
 }
 
 /* Premium Dark Mode Navigation */
 .dark .nav-modern {
   @apply bg-background backdrop-blur-xl;
-  border-bottom: 1px solid hsl(var(--border) / 0.2);
+  border-bottom: 1px solid rgb(var(--border) / 0.2);
 }
 
 .dark .nav-modern.scrolled {
-  background-color: hsl(var(--background) / 0.8);
+  background-color: rgb(var(--background) / 0.8);
   @apply backdrop-blur-xl shadow-glow;
-  border-bottom: 1px solid hsl(var(--border) / 0.3);
+  border-bottom: 1px solid rgb(var(--border) / 0.3);
 }
 
 /* Premium Modern Search Styles */
@@ -646,7 +646,7 @@ body {
 
 /* Modern Utilities */
 .text-gradient-brand {
-  @apply bg-gradient-to-r from-brand-500 to-accentCustom-500 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent;
 }
 
 .text-gradient-accent {
@@ -788,3 +788,128 @@ body {
     @apply flex-col space-y-4;
   }
 }
+
+/* ===================================================================
+   CRITICAL FIXES: Dark Mode Text Visibility
+   ================================================================= */
+
+/* Fix all input fields in dark mode */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="search"],
+.dark input[type="number"],
+.dark input[type="tel"],
+.dark input[type="url"],
+.dark textarea,
+.dark select {
+  background-color: rgb(var(--input)) !important;
+  color: rgb(var(--foreground)) !important;
+  border-color: rgb(var(--border)) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgb(var(--muted-foreground)) !important;
+  opacity: 0.7;
+}
+
+/* Fix button text visibility in dark mode */
+.dark button {
+  color: inherit;
+}
+
+.dark button[data-state="open"],
+.dark button[aria-expanded="true"] {
+  color: rgb(var(--foreground)) !important;
+}
+
+/* Fix calendar visibility in dark mode */
+.dark .rdp {
+  background-color: rgb(var(--popover)) !important;
+  color: rgb(var(--popover-foreground)) !important;
+}
+
+.dark .rdp-month,
+.dark .rdp-table,
+.dark .rdp-caption {
+  background-color: rgb(var(--popover)) !important;
+  color: rgb(var(--popover-foreground)) !important;
+}
+
+.dark .rdp-day {
+  color: rgb(var(--foreground)) !important;
+}
+
+.dark .rdp-day_selected {
+  background-color: rgb(var(--primary)) !important;
+  color: rgb(var(--primary-foreground)) !important;
+}
+
+.dark .rdp-day:hover:not(.rdp-day_selected) {
+  background-color: rgb(var(--muted)) !important;
+  color: rgb(var(--foreground)) !important;
+}
+
+/* Fix dropdown/popover text in dark mode */
+.dark [role="dialog"],
+.dark [role="menu"],
+.dark [role="listbox"],
+.dark [data-radix-popper-content-wrapper] {
+  background-color: rgb(var(--popover)) !important;
+  color: rgb(var(--popover-foreground)) !important;
+}
+
+.dark [role="menuitem"],
+.dark [role="option"] {
+  color: rgb(var(--foreground)) !important;
+}
+
+.dark [role="menuitem"]:hover,
+.dark [role="option"]:hover {
+  background-color: rgb(var(--muted)) !important;
+  color: rgb(var(--foreground)) !important;
+}
+
+/* Fix label visibility in dark mode */
+.dark label {
+  color: rgb(var(--foreground)) !important;
+}
+
+/* Ensure all text in cards is visible */
+.dark .card,
+.dark [data-card] {
+  background-color: rgb(var(--card)) !important;
+  color: rgb(var(--card-foreground)) !important;
+}
+
+/* Fix specific UI components - removed circular dependency classes */
+
+/* Ensure popover content is always visible */
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
+
+.dark [data-radix-popper-content-wrapper] > div {
+  background-color: rgb(var(--popover)) !important;
+  color: rgb(var(--popover-foreground)) !important;
+  border-color: rgb(var(--border)) !important;
+}
+
+/* Fix DestinationSearch dropdown in dark mode */
+.dark .destination-search-dropdown,
+.dark [data-destination-dropdown] {
+  background-color: rgb(var(--popover)) !important;
+  color: rgb(var(--popover-foreground)) !important;
+}
+
+/* Ensure ALL form controls have proper colors */
+.dark *[class*="input"],
+.dark *[class*="Input"],
+.dark *[class*="field"],
+.dark *[class*="Field"] {
+  background-color: rgb(var(--input)) !important;
+  color: rgb(var(--foreground)) !important;
+}
+
+/* Removed overly broad selector that could cause issues */

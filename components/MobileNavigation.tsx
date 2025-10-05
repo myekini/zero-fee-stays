@@ -162,7 +162,7 @@ const MobileNavigation = () => {
           <div className="flex items-center gap-2">
             <div className="relative">
               <MapPin className="h-4 w-4 text-muted-foreground animate-pulse" />
-              <div className="absolute -top-1 -right-1 h-2 w-2 bg-green-500 rounded-full animate-ping"></div>
+<div className="absolute -top-1 -right-1 h-2 w-2 bg-brand-500 rounded-full animate-ping"></div>
             </div>
             <span className="text-sm font-medium">Current Location</span>
           </div>

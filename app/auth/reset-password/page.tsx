@@ -119,8 +119,8 @@ function ResetPasswordContent() {
           <Card className="shadow-sm border">
             <CardContent className="px-6 py-8">
               <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
+<div className="mx-auto w-16 h-16 bg-brand-50 dark:bg-brand-950/30 rounded-full flex items-center justify-center mb-4">
+<CheckCircle className="h-8 w-8 text-brand-600" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
                   Password Updated!
@@ -130,8 +130,8 @@ function ResetPasswordContent() {
                   in with your new password.
                 </p>
                 <div className="space-y-3">
-                  <Link href="/auth">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+<Link href="/auth">
+                    <Button variant="brand" className="w-full">
                       Sign In Now
                     </Button>
                   </Link>
@@ -153,7 +153,7 @@ function ResetPasswordContent() {
         {/* Back Button */}
         <Link
           href="/auth"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6 group"
+className="inline-flex items-center text-brand-600 hover:text-brand-700 mb-6 group"
         >
           <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Sign In

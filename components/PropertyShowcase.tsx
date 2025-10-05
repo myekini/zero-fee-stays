@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Star, MapPin, Heart, Loader2 } from "lucide-react";
 import PropertyCard from "./PropertyCard";
+import { Button } from "@/components/ui/button";
 
 interface Property {
   id: string;
@@ -103,9 +104,9 @@ const PropertyShowcase = () => {
     >
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-hiddy-coral/10 to-hiddy-teal/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-brand-600/10 to-brand-400/10 rounded-full blur-3xl animate-float"></div>
         <div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-hiddy-teal/10 to-hiddy-sunset/10 rounded-full blur-3xl animate-float"
+          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-brand-500/10 to-brand-300/10 rounded-full blur-3xl animate-float"
           style={{ animationDelay: "2s" }}
         ></div>
       </div>
@@ -116,14 +117,14 @@ const PropertyShowcase = () => {
           className={`text-center max-w-4xl mx-auto mb-12 ${isVisible ? "animate-fadeInUp" : "opacity-0"}`}
         >
           {/* Eyebrow */}
-          <div className="inline-flex items-center px-4 py-2 bg-hiddy-coral/10 rounded-full text-hiddy-coral font-medium text-sm mb-6">
+          <div className="inline-flex items-center px-4 py-2 bg-brand-600/10 rounded-full text-brand-600 font-medium text-sm mb-6">
             <Star className="w-4 h-4 mr-2 fill-current" />
             Handpicked Premium Properties
           </div>
 
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
             Discover Amazing
-            <span className="block text-transparent bg-gradient-to-r from-hiddy-coral to-hiddy-teal bg-clip-text">
+            <span className="block text-transparent bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text">
               Destinations
             </span>
           </h2>
@@ -140,15 +141,15 @@ const PropertyShowcase = () => {
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-8 mt-10 text-slate-500">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-brand-600 rounded-full"></div>
               <span className="text-sm font-medium">Verified Properties</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-brand-400 rounded-full"></div>
               <span className="text-sm font-medium">Instant Booking</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-neutral-500 rounded-full"></div>
               <span className="text-sm font-medium">24/7 Support</span>
             </div>
           </div>
@@ -197,7 +198,7 @@ const PropertyShowcase = () => {
           className={`text-center mt-8 ${isVisible ? "animate-fadeInUp" : "opacity-0"}`}
           style={{ animationDelay: "0.6s" }}
         >
-          <div className="relative glassmorphism-enhanced rounded-3xl p-8 max-w-4xl mx-auto">
+              <div className="relative rounded-3xl p-8 max-w-4xl mx-auto card-premium-modern">
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-5">
               <div
@@ -221,20 +222,20 @@ const PropertyShowcase = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link href="/properties" className="group">
-                  <button className="btn-gradient-terracotta-sage px-10 py-4 relative overflow-hidden z-20">
-                    <span className="relative z-30 flex items-center text-white drop-shadow-lg font-bold">
+                  <Button variant="brandOnBlack" className="px-10 py-4 font-bold">
+                    <span className="flex items-center">
                       Explore All Properties
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                     </span>
-                  </button>
+                  </Button>
                 </Link>
 
                 <div className="flex items-center gap-6 text-slate-600">
                   <div className="flex items-center gap-2">
                     <div className="flex -space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-hiddy-coral to-hiddy-teal rounded-full border-2 border-white"></div>
-                      <div className="w-8 h-8 bg-gradient-to-br from-hiddy-teal to-hiddy-sunset rounded-full border-2 border-white"></div>
-                      <div className="w-8 h-8 bg-gradient-to-br from-hiddy-sunset to-hiddy-coral rounded-full border-2 border-white"></div>
+                      <div className="w-8 h-8 bg-gradient-to-br from-brand-600 to-brand-400 rounded-full border-2 border-white"></div>
+                      <div className="w-8 h-8 bg-gradient-to-br from-neutral-800 to-neutral-600 rounded-full border-2 border-white"></div>
+                      <div className="w-8 h-8 bg-gradient-to-br from-brand-500 to-brand-400 rounded-full border-2 border-white"></div>
                     </div>
                     <span className="text-sm font-medium">
                       100+ Happy Guests

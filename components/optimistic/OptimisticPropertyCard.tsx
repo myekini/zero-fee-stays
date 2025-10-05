@@ -140,7 +140,7 @@ export function OptimisticPropertyCard({
 
               {(property.metrics?.avg_rating || property.rating) && (
                 <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <Star className="w-4 h-4 fill-brand-500 text-brand-500" />
                   <span className="text-sm font-medium text-neutral-700">
                     {property.metrics?.avg_rating || property.rating}
                   </span>
@@ -230,12 +230,12 @@ export function OptimisticPropertyCard({
                 ⭐ Featured
               </div>
             )}
-            <div className="bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1">
+              <div className="bg-brand-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1">
               ✅ Verified
             </div>
             {property.metrics?.avg_rating &&
               property.metrics.avg_rating >= 4.5 && (
-                <div className="bg-yellow-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1">
+                <div className="bg-neutral-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1">
                   🏆 Top Rated
                 </div>
               )}
@@ -285,7 +285,7 @@ export function OptimisticPropertyCard({
             {/* Rating */}
             {(property.metrics?.avg_rating || property.rating) && (
               <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                <Star className="w-4 h-4 fill-brand-500 text-brand-500" />
                 <span className="text-sm font-medium text-neutral-700">
                   {property.metrics?.avg_rating || property.rating}
                 </span>

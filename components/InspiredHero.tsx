@@ -496,7 +496,8 @@ export function InspiredHero({ className }: InspiredHeroProps) {
 
                 {/* Search Button */}
                 <div className="md:col-span-2 lg:col-span-4 flex items-end justify-end">
-                  <Button
+<Button
+                    variant="brandOnBlack"
                     onClick={handleSearch}
                     disabled={
                       !locationQuery ||
@@ -504,7 +505,7 @@ export function InspiredHero({ className }: InspiredHeroProps) {
                       !checkOutDate ||
                       isSearching
                     }
-                    className="btn-primary-modern w-full lg:w-auto px-8 py-6 text-base"
+                    className="w-full lg:w-auto px-8 py-6 text-base"
                   >
                     {isSearching ? (
                       <>

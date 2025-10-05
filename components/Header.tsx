@@ -85,7 +85,7 @@ const Header = () => {
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg group-hover:shadow-glow transition-all duration-200">
                 <Home className="h-5 w-5 text-white" />
               </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent-500 rounded-full flex items-center justify-center shadow-sm">
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-brand-500 rounded-full flex items-center justify-center shadow-sm">
                 <Heart className="h-2.5 w-2.5 text-white fill-current" />
               </div>
             </div>
@@ -210,7 +210,7 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <Link href="/auth">
-                <Button className="btn-primary-modern flex items-center space-x-2 h-10 px-4">
+                <Button variant="brandOnBlack" className="flex items-center space-x-2 h-10 px-4">
                   <User className="w-4 h-4" />
                   <span className="hidden sm:inline">Sign In</span>
                 </Button>
@@ -243,7 +243,7 @@ const Header = () => {
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg" alt="HiddyStays" />
-                    <AvatarFallback className="bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-brand-500 to-brand-600 text-white font-bold text-sm">
                       <Home className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
@@ -357,7 +357,7 @@ const Header = () => {
                   </div>
                 ) : (
                   <Link href="/auth" onClick={toggleMobileMenu}>
-                    <Button className="w-full btn-primary-modern">
+                    <Button variant="brandOnBlack" className="w-full">
                       Sign In
                     </Button>
                   </Link>

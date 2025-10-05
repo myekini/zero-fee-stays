@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
         {/* Back Button */}
         <Link
           href="/auth"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6 group"
+className="inline-flex items-center text-brand-600 hover:text-brand-700 mb-6 group"
         >
           <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Sign In
@@ -115,8 +115,8 @@ export default function ForgotPasswordPage() {
               <div className="space-y-6">
                 {/* Success State */}
                 <div className="text-center">
-                  <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+<div className="mx-auto w-16 h-16 bg-brand-50 dark:bg-brand-950/30 rounded-full flex items-center justify-center mb-4">
+<CheckCircle className="h-8 w-8 text-brand-600" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     Email Sent Successfully!
@@ -128,12 +128,12 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 {/* Instructions */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+<div className="bg-muted border border-border rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-blue-800">
+<AlertCircle className="h-5 w-5 text-brand-600 mt-0.5 flex-shrink-0" />
+<div className="text-sm text-foreground">
                       <p className="font-medium mb-1">Next Steps:</p>
-                      <ul className="space-y-1 text-blue-700">
+<ul className="space-y-1 text-muted-foreground">
                         <li>• Check your email inbox</li>
                         <li>• Look for an email from HiddyStays</li>
                         <li>• Click the reset link in the email</li>
@@ -164,7 +164,7 @@ export default function ForgotPasswordPage() {
                   <Link href="/auth">
                     <Button
                       variant="ghost"
-                      className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+className="w-full text-brand-600 hover:text-brand-700 hover:bg-brand-50 dark:hover:bg-brand-950/30"
                     >
                       Back to Sign In
                     </Button>
@@ -191,9 +191,10 @@ export default function ForgotPasswordPage() {
                   </div>
                 </div>
 
-                <Button
+<Button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                  variant="brand"
+                  className="w-full"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -213,7 +214,7 @@ export default function ForgotPasswordPage() {
               Remember your password?{" "}
               <Link
                 href="/auth"
-                className="text-blue-600 hover:text-blue-700 underline"
+className="text-brand-600 hover:text-brand-700 underline"
               >
                 Sign in instead
               </Link>

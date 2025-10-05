@@ -92,11 +92,11 @@ export default function NewsletterSubscription({
     return (
       <Card className={`p-6 ${className}`}>
         <div className="text-center">
-          <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-          <h4 className="text-lg font-semibold text-gray-900 mb-2">
+          <CheckCircle className="h-12 w-12 text-brand-600 mx-auto mb-4" />
+          <h4 className="text-lg font-semibold text-foreground mb-2">
             Thank You for Subscribing!
           </h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Check your email for a welcome message and exclusive travel tips.
           </p>
         </div>
@@ -107,11 +107,11 @@ export default function NewsletterSubscription({
   return (
     <Card className={`p-6 ${className}`}>
       <div className="flex items-center mb-4">
-        <Mail className="h-5 w-5 text-green-600 mr-2" />
-        <h4 className="text-lg font-semibold text-gray-900">{title}</h4>
+        <Mail className="h-5 w-5 text-brand-600 mr-2" />
+        <h4 className="text-lg font-semibold text-foreground">{title}</h4>
       </div>
 
-      <p className="text-sm text-gray-600 mb-4">{description}</p>
+      <p className="text-sm text-muted-foreground mb-4">{description}</p>
 
       <form onSubmit={handleSubmit} className="space-y-3">
         <Input
@@ -134,7 +134,8 @@ export default function NewsletterSubscription({
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-green-600 hover:bg-green-700"
+          variant="brandOnBlack"
+          className="w-full"
         >
           {isLoading ? (
             <>
@@ -147,7 +148,7 @@ export default function NewsletterSubscription({
         </Button>
       </form>
 
-      <p className="text-xs text-gray-500 mt-3">
+      <p className="text-xs text-muted-foreground mt-3">
         We respect your privacy. Unsubscribe at any time.
       </p>
     </Card>

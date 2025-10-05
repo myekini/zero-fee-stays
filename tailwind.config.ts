@@ -27,19 +27,21 @@ export default {
     },
     extend: {
       colors: {
-        border: "oklch(var(--border))",
-        input: "oklch(var(--input))",
-        ring: "oklch(var(--ring))",
-        background: "oklch(var(--background))",
-        foreground: "oklch(var(--foreground))",
+        // Core theme tokens (CSS variables are RGB triples)
+        border: "rgb(var(--border))",
+        input: "rgb(var(--input))",
+        ring: "rgb(var(--ring))",
+        background: "rgb(var(--background))",
+        foreground: "rgb(var(--foreground))",
         primary: {
-          DEFAULT: "oklch(var(--primary))",
-          foreground: "oklch(var(--primary-foreground))",
+          DEFAULT: "rgb(var(--primary))",
+          foreground: "rgb(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "oklch(var(--secondary))",
-          foreground: "oklch(var(--secondary-foreground))",
+          DEFAULT: "rgb(var(--secondary))",
+          foreground: "rgb(var(--secondary-foreground))",
         },
+        // Premium amber accent scale, plus token mapping
         accent: {
           50: "#fffbeb",
           100: "#fef3c7",
@@ -51,59 +53,59 @@ export default {
           700: "#b45309",
           800: "#92400e",
           900: "#78350f",
-          DEFAULT: "oklch(var(--accent))",
-          foreground: "oklch(var(--accent-foreground))",
+          DEFAULT: "rgb(var(--accent))",
+          foreground: "rgb(var(--accent-foreground))",
         },
         muted: {
-          DEFAULT: "oklch(var(--muted))",
-          foreground: "oklch(var(--muted-foreground))",
+          DEFAULT: "rgb(var(--muted))",
+          foreground: "rgb(var(--muted-foreground))",
         },
         popover: {
-          DEFAULT: "oklch(var(--popover))",
-          foreground: "oklch(var(--popover-foreground))",
+          DEFAULT: "rgb(var(--popover))",
+          foreground: "rgb(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "oklch(var(--card))",
-          foreground: "oklch(var(--card-foreground))",
+          DEFAULT: "rgb(var(--card))",
+          foreground: "rgb(var(--card-foreground))",
         },
         destructive: {
-          DEFAULT: "oklch(var(--destructive))",
-          foreground: "oklch(var(--destructive-foreground))",
+          DEFAULT: "rgb(var(--destructive))",
+          foreground: "rgb(var(--destructive-foreground))",
         },
         chart: {
-          "1": "oklch(var(--chart-1))",
-          "2": "oklch(var(--chart-2))",
-          "3": "oklch(var(--chart-3))",
-          "4": "oklch(var(--chart-4))",
-          "5": "oklch(var(--chart-5))",
+          "1": "var(--chart-1)",
+          "2": "var(--chart-2)",
+          "3": "var(--chart-3)",
+          "4": "var(--chart-4)",
+          "5": "var(--chart-5)",
         },
         sidebar: {
-          DEFAULT: "oklch(var(--sidebar))",
-          foreground: "oklch(var(--sidebar-foreground))",
-          primary: "oklch(var(--sidebar-primary))",
-          "primary-foreground": "oklch(var(--sidebar-primary-foreground))",
-          accent: "oklch(var(--sidebar-accent))",
-          "accent-foreground": "oklch(var(--sidebar-accent-foreground))",
-          border: "oklch(var(--sidebar-border))",
-          ring: "oklch(var(--sidebar-ring))",
+          DEFAULT: "var(--sidebar)",
+          foreground: "var(--sidebar-foreground)",
+          primary: "var(--sidebar-primary)",
+          "primary-foreground": "var(--sidebar-primary-foreground)",
+          accent: "var(--sidebar-accent)",
+          "accent-foreground": "var(--sidebar-accent-foreground)",
+          border: "var(--sidebar-border)",
+          ring: "var(--sidebar-ring)",
         },
-        // Modern Premium Brand Colors - Clean & Sophisticated
+        // Modern Premium Brand Colors - Deep Navy
         brand: {
-          // Primary - Deep Forest Green (Trust, Nature, Stability)
-          50: "#f0fdf4",
-          100: "#dcfce7",
-          200: "#bbf7d0",
-          300: "#86efac",
-          400: "#4ade80",
-          500: "#059669", // Main brand color
-          600: "#047857",
-          700: "#065f46",
-          800: "#064e3b",
-          900: "#064e3b",
-          DEFAULT: "#059669",
+          50: "#F2F6FA",
+          100: "#E6EEF7",
+          200: "#CBDCF0",
+          300: "#AFC9E8",
+          400: "#7BA3D2",
+          500: "#2B4F7E",
+          600: "#1E3A5F", // Main brand color
+          700: "#162D4A",
+          800: "#0F2238",
+          900: "#0A1828",
+          950: "#070F1A",
+          DEFAULT: "#1E3A5F",
           foreground: "#ffffff",
         },
-        // Custom accent colors for components
+        // Custom accent colors for components (kept for convenience)
         accentCustom: {
           50: "#fffbeb",
           100: "#fef3c7",
@@ -180,13 +182,13 @@ export default {
           800: "#262626",
           900: "#171717",
         },
-        // Simplified HiddyStays Brand Colors
+        // Simplified HiddyStays Brand Colors (legacy)
         hiddy: {
-          primary: "#059669", // Main brand green
-          accent: "#f59e0b", // Warm gold accent
-          neutral: "#737373", // Professional gray
-          surface: "#fafafa", // Light background
-          surfaceDark: "#171717", // Dark background
+          primary: "#1E3A5F",
+          accent: "#f59e0b",
+          neutral: "#737373",
+          surface: "#fafafa",
+          surfaceDark: "#171717",
           white: "#ffffff",
         },
       },

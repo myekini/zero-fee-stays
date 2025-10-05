@@ -348,7 +348,8 @@ export function ModernSearch({ className }: ModernSearchProps) {
                 isSearching
               }
               size="lg"
-              className="px-16 py-4 text-lg min-w-[280px] font-semibold bg-gradient-to-r from-brand-600 via-brand-500 to-brand-600 hover:from-brand-700 hover:via-brand-600 hover:to-brand-700 text-white shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 rounded-2xl border-0"
+              variant="brandOnBlack"
+              className="px-16 py-4 text-lg min-w-[280px] font-semibold rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
             >
               {isSearching ? (
                 <>

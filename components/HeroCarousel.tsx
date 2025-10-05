@@ -118,10 +118,10 @@ export function HeroCarousel() {
       <button
         onClick={goToPrev}
         className={cn(
-          "absolute left-4 top-1/2 -translate-y-1/2 z-30",
-          "bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full",
+          "absolute left-4 top-1/2 -translate-y-1/2 z-50",
+          "bg-white/20 hover:bg-white/40 backdrop-blur-sm p-3 rounded-full",
           "transition-all duration-200",
-          isPaused ? "opacity-100" : "opacity-0 md:opacity-0 md:group-hover:opacity-100"
+          "opacity-100 hover:scale-110"
         )}
         aria-label="Previous slide"
       >
@@ -131,10 +131,10 @@ export function HeroCarousel() {
       <button
         onClick={goToNext}
         className={cn(
-          "absolute right-4 top-1/2 -translate-y-1/2 z-30",
-          "bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full",
+          "absolute right-4 top-1/2 -translate-y-1/2 z-50",
+          "bg-white/20 hover:bg-white/40 backdrop-blur-sm p-3 rounded-full",
           "transition-all duration-200",
-          isPaused ? "opacity-100" : "opacity-0 md:opacity-0 md:group-hover:opacity-100"
+          "opacity-100 hover:scale-110"
         )}
         aria-label="Next slide"
       >
@@ -142,7 +142,7 @@ export function HeroCarousel() {
       </button>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex gap-2">
         {CAROUSEL_IMAGES.map((_, index) => (
           <button
             key={index}

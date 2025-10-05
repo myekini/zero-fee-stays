@@ -580,7 +580,7 @@ export function EnhancedHero({ className }: EnhancedHeroProps) {
                     onClick={handleSearch}
                     disabled={!selectedLocation || !checkInDate || !checkOutDate || isSearching}
                     size="lg"
-                    className="px-16 py-6 text-lg min-w-[320px] font-bold bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 hover:from-brand-700 hover:via-brand-600 hover:to-accent-600 text-white shadow-[0_20px_40px_-10px_rgba(5,150,105,0.5)] hover:shadow-[0_25px_50px_-10px_rgba(5,150,105,0.6)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl border-0 ring-2 ring-brand-400/20 hover:ring-brand-400/40"
+className="px-16 py-6 text-lg min-w-[320px] font-bold bg-gradient-to-r from-brand-700 via-brand-600 to-brand-500 hover:from-brand-800 hover:via-brand-700 hover:to-brand-600 text-white shadow-[0_20px_40px_-10px_rgba(30,58,95,0.45)] hover:shadow-[0_25px_50px_-10px_rgba(30,58,95,0.55)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl border-0 ring-2 ring-brand-400/20 hover:ring-brand-400/40"
                   >
                     {isSearching ? (
                       <>

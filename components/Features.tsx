@@ -38,17 +38,17 @@ const Features = () => {
       icon: MessageCircle,
       title: "Direct Contact",
       description: "Chat with hosts for personalized service.",
-      color: "text-accent-600",
-      bgColor: "bg-accent-50",
-      borderColor: "border-accent-200",
+      color: "text-brand-500",
+      bgColor: "bg-brand-50",
+      borderColor: "border-brand-200",
     },
     {
       icon: Shield,
       title: "Secure & Trusted",
       description: "Safe payments and verified hosts.",
-      color: "text-terracotta-600",
-      bgColor: "bg-terracotta-50",
-      borderColor: "border-terracotta-200",
+      color: "text-neutral-700",
+      bgColor: "bg-neutral-50",
+      borderColor: "border-neutral-200",
     },
   ];
 
@@ -65,7 +65,7 @@ const Features = () => {
       icon: MessageCircle,
       title: "Connect",
       description: "Chat with hosts directly",
-      color: "from-accent-500 to-accent-600",
+      color: "from-brand-500 to-brand-600",
     },
     {
       step: 3,
@@ -113,7 +113,7 @@ const Features = () => {
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-gradient-to-r from-brand-500/5 to-transparent rounded-full blur-3xl dark:from-brand-400/10"></div>
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-l from-accent-500/5 to-transparent rounded-full blur-3xl dark:from-accent-400/10"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-l from-brand-400/5 to-transparent rounded-full blur-3xl dark:from-brand-300/10"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -237,7 +237,7 @@ const Features = () => {
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link href="/properties" className="group">
-                  <Button className="btn-primary-modern px-12 py-5 text-lg">
+                  <Button variant="brandOnBlack" className="px-12 py-5 text-lg">
                     <span className="flex items-center">
                       Get Started Today
                       <ArrowRight className="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform" />

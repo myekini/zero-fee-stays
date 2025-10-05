@@ -269,7 +269,7 @@ export function DestinationSearch({
           className="pl-10 pr-10 h-12 rounded-xl font-semibold"
           autoComplete="off"
         />
-        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
+        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4">
           <AnimatePresence mode="wait">
             {isLoading ? (
@@ -280,7 +280,7 @@ export function DestinationSearch({
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.2 }}
               >
-                <Loader2 className="h-4 w-4 text-neutral-400 animate-spin" />
+                <Loader2 className="h-4 w-4 text-muted-foreground animate-spin" />
               </motion.div>
             ) : (
               <motion.div
@@ -290,7 +290,7 @@ export function DestinationSearch({
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.2 }}
               >
-                <Search className="h-4 w-4 text-neutral-400" />
+                <Search className="h-4 w-4 text-muted-foreground" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -301,7 +301,7 @@ export function DestinationSearch({
       <AnimatePresence>
         {isOpen && filteredSuggestions.length > 0 && (
           <motion.div
-            className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-[9999] max-h-80 overflow-hidden"
+            className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-lg z-[9999] max-h-80 overflow-hidden"
             variants={ANIMATION_VARIANTS.container}
             initial="hidden"
             animate="show"
@@ -310,7 +310,7 @@ export function DestinationSearch({
             aria-label="Destination suggestions"
           >
             <div className="p-2">
-              <div className="text-xs text-neutral-500 px-2 py-2 font-medium uppercase tracking-wide">
+              <div className="text-xs text-muted-foreground px-2 py-2 font-medium uppercase tracking-wide">
                 {value.trim() ? "Search Results" : "Popular Destinations"}
               </div>
               <div className="max-h-64 overflow-y-auto">
@@ -319,22 +319,22 @@ export function DestinationSearch({
                     key={suggestion.place_id}
                     onClick={() => handleSelect(suggestion)}
                     className={cn(
-                      "w-full px-3 py-2 text-left hover:bg-neutral-50 transition-all duration-200 rounded-lg group flex items-center justify-between",
-                      activeIndex === index && "bg-brand-50 text-brand-700"
+                      "w-full px-3 py-2 text-left hover:bg-muted transition-all duration-200 rounded-lg group flex items-center justify-between",
+                      activeIndex === index && "bg-brand-50 text-brand-700 dark:bg-brand-950/40 dark:text-brand-200"
                     )}
                     variants={ANIMATION_VARIANTS.item}
                     role="option"
                     aria-selected={activeIndex === index}
                   >
                     <div className="flex items-center flex-1 min-w-0">
-                      <div className="flex-shrink-0 w-6 h-6 bg-neutral-100 rounded-lg flex items-center justify-center mr-3">
-                        <MapPin className="h-3 w-3 text-neutral-600" />
+                      <div className="flex-shrink-0 w-6 h-6 bg-muted rounded-lg flex items-center justify-center mr-3">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-neutral-900 text-sm group-hover:text-brand-600 transition-colors">
+                        <div className="font-medium text-foreground text-sm group-hover:text-brand-600 transition-colors">
                           {suggestion.structured_formatting.main_text}
                         </div>
-                        <div className="text-xs text-neutral-500">
+                        <div className="text-xs text-muted-foreground">
                           {suggestion.structured_formatting.secondary_text}
                         </div>
                       </div>
@@ -355,8 +355,8 @@ export function DestinationSearch({
             </div>
 
             {/* Footer */}
-            <div className="px-3 py-2 border-t border-neutral-100 bg-neutral-50">
-              <div className="flex items-center justify-between text-xs text-neutral-500">
+            <div className="px-3 py-2 border-t border-border bg-muted/50">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>Press ↑↓ to navigate</span>
                 <span>Enter to select • ESC to close</span>
               </div>

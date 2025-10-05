@@ -133,8 +133,9 @@ BEGIN
     'profile',
     'User profile was updated',
     jsonb_build_object(
-      'updated_fields', jsonb_object_keys(to_jsonb(NEW) - to_jsonb(OLD)),
-      'profile_id', NEW.id
+      'profile_id', NEW.id,
+      'old_data', to_jsonb(OLD),
+      'new_data', to_jsonb(NEW)
     ),
     NULL,
     NULL,

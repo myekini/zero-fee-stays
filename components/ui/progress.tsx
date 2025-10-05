@@ -30,11 +30,11 @@ export function BookingProgress({ steps, className }: BookingProgressProps) {
               <div
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors",
-                  step.completed
-                    ? "border-green-500 bg-green-500 text-white"
+step.completed
+                    ? "border-brand-600 bg-brand-600 text-white"
                     : step.current
-                      ? "border-blue-500 bg-blue-500 text-white"
-                      : "border-gray-300 bg-white text-gray-400"
+                      ? "border-brand-500 bg-brand-500 text-white"
+                      : "border-border bg-card text-muted-foreground"
                 )}
               >
                 {step.completed ? (
@@ -47,15 +47,15 @@ export function BookingProgress({ steps, className }: BookingProgressProps) {
                 <p
                   className={cn(
                     "text-xs font-medium",
-                    step.completed || step.current
-                      ? "text-gray-900"
-                      : "text-gray-500"
+step.completed || step.current
+                      ? "text-foreground"
+                      : "text-muted-foreground"
                   )}
                 >
                   {step.title}
                 </p>
                 {step.description && (
-                  <p className="text-xs text-gray-500">{step.description}</p>
+<p className="text-xs text-muted-foreground">{step.description}</p>
                 )}
               </div>
             </div>
@@ -65,9 +65,9 @@ export function BookingProgress({ steps, className }: BookingProgressProps) {
               <div
                 className={cn(
                   "h-0.5 w-16 transition-colors",
-                  steps[index + 1]?.completed || steps[index + 1]?.current
-                    ? "bg-green-500"
-                    : "bg-gray-300"
+steps[index + 1]?.completed || steps[index + 1]?.current
+                    ? "bg-brand-500"
+                    : "bg-border"
                 )}
               />
             )}
@@ -92,14 +92,14 @@ export function ProgressBar({
   return (
     <div className={cn("w-full", className)}>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-sm font-medium text-gray-700">Progress</span>
+<span className="text-sm font-medium text-foreground">Progress</span>
         {showPercentage && (
-          <span className="text-sm text-gray-500">{Math.round(progress)}%</span>
+<span className="text-sm text-muted-foreground">{Math.round(progress)}%</span>
         )}
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+<div className="w-full bg-muted rounded-full h-2">
         <div
-          className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
           style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
         />
       </div>

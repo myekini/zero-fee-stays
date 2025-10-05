@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 SECURITY DEFINER
-SET search_path = public
+SET search_path = ''
 LANGUAGE plpgsql
 AS $$
 BEGIN
@@ -13,17 +13,11 @@ BEGIN
     user_id,
     first_name,
     last_name,
-    avatar_url,
-    phone,
-    bio,
     is_host
   ) VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data ->> 'first_name', ''),
     COALESCE(NEW.raw_user_meta_data ->> 'last_name', ''),
-    NULL, -- avatar_url
-    NULL, -- phone
-    NULL, -- bio
     COALESCE((NEW.raw_user_meta_data ->> 'role') = 'host', false)
   );
 

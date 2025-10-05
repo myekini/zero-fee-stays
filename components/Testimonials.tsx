@@ -91,13 +91,13 @@ const Testimonials = () => {
   return (
     <section
       ref={sectionRef}
-className="py-24 bg-gradient-to-br from-background via-background to-accent-50/30 dark:to-brand-950/20 relative overflow-hidden w-full"
+className="py-24 bg-gradient-to-br from-background via-background to-brand-50/30 dark:to-brand-950/20 relative overflow-hidden w-full"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-gradient-to-l from-brand-500/5 to-transparent rounded-full blur-3xl animate-float"></div>
         <div
-          className="absolute bottom-1/4 left-0 w-96 h-96 bg-gradient-to-r from-accent-500/5 to-transparent rounded-full blur-3xl animate-float"
+className="absolute bottom-1/4 left-0 w-96 h-96 bg-gradient-to-r from-brand-400/5 to-transparent rounded-full blur-3xl animate-float"
           style={{ animationDelay: "3s" }}
         ></div>
       </div>
@@ -110,9 +110,9 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
           {/* Modern Badge */}
           <Badge
             variant="secondary"
-            className="mb-8 px-6 py-3 text-sm font-medium bg-accent-50 text-accent-700 border-accent-200"
+className="mb-8 px-6 py-3 text-sm font-medium bg-brand-50 text-brand-700 border-brand-200"
           >
-            <Star className="w-4 h-4 mr-2 text-yellow-500 fill-current" />
+<Star className="w-4 h-4 mr-2 text-brand-600 fill-current" />
             Guest Experiences
           </Badge>
 
@@ -160,7 +160,7 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
             >
               <Card className="card-premium-modern p-6 h-full relative overflow-hidden group-hover:shadow-glass transition-all duration-500">
                 {/* Background glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-transparent to-accent-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-transparent to-brand-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div className="relative z-10">
                   {/* Simplified Rating */}
@@ -169,7 +169,7 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-5 h-5 fill-accent-400 text-accent-400 group-hover:scale-110 transition-transform duration-200"
+className="w-5 h-5 fill-brand-500 text-brand-500 group-hover:scale-110 transition-transform duration-200"
                           strokeWidth={1.5}
                           style={{ animationDelay: `${i * 0.1}s` }}
                         />
@@ -189,7 +189,7 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
                         src={testimonial.image}
                         alt={testimonial.name}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold">
+<AvatarFallback className="bg-gradient-to-br from-brand-500 to-brand-600 text-white font-bold">
                         {testimonial.name
                           .split(" ")
                           .map((n) => n[0])
@@ -260,7 +260,7 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link href="/properties" className="group">
-                  <Button className="btn-primary-modern px-12 py-5 text-lg">
+<Button variant="brandOnBlack" className="px-12 py-5 text-lg">
                     <span className="flex items-center">
                       Start Your Journey
                       <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
@@ -284,7 +284,7 @@ className="py-24 bg-gradient-to-br from-background via-background to-accent-50/3
                 </div>
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-3 h-3 bg-accent-400 rounded-full animate-pulse"
+className="w-3 h-3 bg-brand-400 rounded-full animate-pulse"
                     style={{ animationDelay: "0.5s" }}
                   ></div>
                   <span className="font-medium">Zero platform fees</span>
