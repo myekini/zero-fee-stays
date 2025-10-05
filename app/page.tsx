@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
-import { InspiredHero } from "@/components/InspiredHero";
+import { ModernHero } from "@/components/ModernHero";
 
 // Lazy load components for better performance
 const Features = dynamic(() => import("@/components/Features"), {
@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header />
-      <InspiredHero />
+      <ModernHero />
       <Features />
       <Footer />
     </main>
