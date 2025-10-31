@@ -15,40 +15,115 @@ export default function AuthCallbackPage() {
       try {
         console.log("Handling auth callback...");
 
-        // Test Supabase connection first
-        const connectionTest = await testSupabaseConnection();
-        console.log("Connection test result:", connectionTest);
-
         // Check for error in URL (OAuth or email verification error)
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get("error");
         const errorDescription = urlParams.get("error_description");
+        const errorCode = urlParams.get("error_code");
 
         if (error) {
-          console.error("Auth callback error from URL:", error, errorDescription);
-          router.push(`/auth?error=${encodeURIComponent(errorDescription || error)}`);
+          console.error(
+            "Auth callback error from URL:",
+            error,
+            errorDescription,
+            errorCode
+          );
+
+          // Map common errors to user-friendly messages
+          let userMessage = errorDescription || error;
+
+          switch (error) {
+            case "access_denied":
+              userMessage = "You cancelled the sign-in process. Please try again.";
+              break;
+            case "server_error":
+              userMessage = "A server error occurred. Please try again later.";
+              break;
+            case "temporarily_unavailable":
+              userMessage = "The authentication service is temporarily unavailable. Please try again in a few moments.";
+              break;
+            case "invalid_request":
+              userMessage = "Invalid authentication request. Please contact support if this persists.";
+              break;
+            case "unauthorized_client":
+              userMessage = "OAuth configuration error. Please contact support.";
+              break;
+            case "invalid_grant":
+              userMessage = "Authentication expired. Please try signing in again.";
+              break;
+            default:
+              if (errorDescription?.includes("Email link is invalid")) {
+                userMessage = "This email verification link has expired or already been used. Please request a new one.";
+              } else if (errorDescription?.includes("not authorized")) {
+                userMessage = "You don't have permission to access this application.";
+              }
+          }
+
+          router.push(
+            `/auth?error=${encodeURIComponent(userMessage)}`
+          );
           return;
         }
 
         // Check for success message (email verification)
         const type = urlParams.get("type");
-        if (type === "signup") {
-          console.log("Email verification successful");
-          // User verified email, try to get session
+        const accessToken = urlParams.get("access_token");
+        const refreshToken = urlParams.get("refresh_token");
+
+        console.log("Callback params:", {
+          type,
+          hasAccessToken: !!accessToken,
+          hasRefreshToken: !!refreshToken,
+        });
+
+        // If we have tokens in URL (from email verification), set the session
+        if (accessToken && refreshToken) {
+          console.log("Setting session from URL tokens...");
+          const { data, error: setSessionError } =
+            await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+          if (setSessionError) {
+            console.error(
+              "Error setting session from tokens:",
+              setSessionError
+            );
+            router.push("/auth?error=session_set_failed");
+            return;
+          }
+
+          if (data.session) {
+            console.log("Session set successfully, redirecting to home...");
+            // Wait for auth state to propagate
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
+            return;
+          }
         }
 
-        // Get the session (works for both OAuth and email verification)
+        // Fallback: Try to get existing session
         const { data, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {
           console.error("Auth callback session error:", sessionError);
-          router.push("/auth?error=callback_failed");
+
+          let errorMessage = "Authentication failed. Please try signing in again.";
+
+          if (sessionError.message?.includes("refresh_token_not_found")) {
+            errorMessage = "Your session has expired. Please sign in again.";
+          } else if (sessionError.message?.includes("invalid_grant")) {
+            errorMessage = "Authentication link is invalid or expired. Please request a new one.";
+          }
+
+          router.push(`/auth?error=${encodeURIComponent(errorMessage)}`);
           return;
         }
 
         if (data.session) {
-          console.log("Session found, redirecting to home...");
-          // Small delay to ensure auth state is propagated
+          console.log("Existing session found, redirecting to home...");
           setTimeout(() => {
             router.push("/");
           }, 500);
@@ -61,14 +136,25 @@ export default function AuthCallbackPage() {
             router.push("/auth");
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Unexpected error in auth callback:", error);
-        router.push("/auth?error=unexpected_error");
+
+        let errorMessage = "An unexpected error occurred during authentication.";
+
+        if (error?.message) {
+          if (error.message.includes("network")) {
+            errorMessage = "Network error. Please check your connection and try again.";
+          } else if (error.message.includes("fetch")) {
+            errorMessage = "Unable to connect to authentication service. Please try again.";
+          }
+        }
+
+        router.push(`/auth?error=${encodeURIComponent(errorMessage)}`);
       }
     };
 
     handleAuthCallback();
-  }, [router, testSupabaseConnection]);
+  }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

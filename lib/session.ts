@@ -2,8 +2,6 @@ import { Session } from "@supabase/supabase-js";
 import AuthUtils from "./auth";
 
 export interface SessionData {
-  accessToken: string;
-  refreshToken: string;
   expiresAt: number;
   userId: string;
   userRole: string;
@@ -14,17 +12,13 @@ export class SessionManager {
   private static readonly TOKEN_REFRESH_THRESHOLD = 5 * 60 * 1000; // 5 minutes
 
   /**
-   * Store session data securely
+   * Store session metadata (no tokens)
    */
   static storeSession(session: Session): void {
-    if (!session?.access_token) return;
+    if (!session) return;
 
     const sessionData: SessionData = {
-      accessToken: session.access_token,
-      refreshToken: session.refresh_token || "",
-      expiresAt: session.expires_at
-        ? session.expires_at * 1000
-        : Date.now() + 3600000,
+      expiresAt: session.expires_at ? session.expires_at * 1000 : Date.now() + 3600000,
       userId: session.user.id,
       userRole: AuthUtils.determineUserRole(session.user),
     };
@@ -93,8 +87,8 @@ export class SessionManager {
    * Get access token from stored session
    */
   static getAccessToken(): string | null {
-    const session = this.getStoredSession();
-    return session?.accessToken || null;
+    // Tokens are managed by supabase-js; we do not mirror them here
+    return null;
   }
 
   /**
@@ -110,9 +104,8 @@ export class SessionManager {
       return { isValid: false };
     }
 
-    // Validate token
-    const tokenPayload = AuthUtils.decodeToken(session.accessToken);
-    if (!tokenPayload) {
+    // Validate by expiry only (no tokens stored here)
+    if (Date.now() > session.expiresAt) {
       this.clearSession();
       return { isValid: false };
     }
@@ -127,20 +120,16 @@ export class SessionManager {
   /**
    * Update session with new tokens
    */
-  static updateSession(accessToken: string, refreshToken?: string): void {
+  static updateSession(accessToken: string): void {
     const currentSession = this.getStoredSession();
     if (!currentSession) return;
 
     const tokenPayload = AuthUtils.decodeToken(accessToken);
-    if (!tokenPayload) return;
+    if (!tokenPayload?.exp) return;
 
     const updatedSession: SessionData = {
       ...currentSession,
-      accessToken,
-      refreshToken: refreshToken || currentSession.refreshToken,
-      expiresAt: tokenPayload.exp
-        ? tokenPayload.exp * 1000
-        : Date.now() + 3600000,
+      expiresAt: tokenPayload.exp * 1000,
     };
 
     try {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
@@ -16,11 +16,44 @@ const ProtectedRoute = ({
   requiredRole = "user",
   fallbackPath = "/auth",
 }: ProtectedRouteProps) => {
-  const { authUser, loading } = useAuth();
+  const { authUser, loading, hasPermission } = useAuth();
   const router = useRouter();
+  const [checking, setChecking] = useState(true);
+  const [allowed, setAllowed] = useState(false);
 
-  // Show loading spinner while checking authentication
-  if (loading) {
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      if (loading) return;
+      if (!authUser) {
+        router.push(fallbackPath);
+        return;
+      }
+      if (requiredRole === "user") {
+        if (!cancelled) {
+          setAllowed(true);
+          setChecking(false);
+        }
+        return;
+      }
+      const ok = await hasPermission(requiredRole);
+      if (!cancelled) {
+        if (ok) {
+          setAllowed(true);
+        } else {
+          // Redirect to appropriate dashboard if lacking permission
+          router.push(authUser.role === "admin" ? "/admin" : authUser.role === "host" ? "/host-dashboard" : "/profile");
+        }
+        setChecking(false);
+      }
+    };
+    check();
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, authUser, requiredRole, hasPermission, router, fallbackPath]);
+
+  if (loading || checking) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -31,36 +64,8 @@ const ProtectedRoute = ({
     );
   }
 
-  // Redirect to auth if not authenticated
-  if (!authUser) {
-    router.push(fallbackPath);
-    return null;
-  }
+  if (!allowed) return null;
 
-  // Check role-based access
-  if (requiredRole !== "user") {
-    const roleHierarchy = {
-      user: 1,
-      host: 2,
-      admin: 3,
-    };
-
-    if (roleHierarchy[authUser.role] < roleHierarchy[requiredRole]) {
-      // User doesn't have required role, redirect to appropriate dashboard
-      let redirectPath = "/profile";
-
-      if (authUser.role === "admin") {
-        redirectPath = "/admin";
-      } else if (authUser.role === "host") {
-        redirectPath = "/host-dashboard";
-      }
-
-      router.push(redirectPath);
-      return null;
-    }
-  }
-
-  // User is authenticated and has required role
   return <>{children}</>;
 };
 

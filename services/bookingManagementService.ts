@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { emailNotificationService } from "./emailNotificationService";
+import { unifiedEmailService } from "@/lib/unified-email-service";
 
 export interface BookingRequest {
   propertyId: string;
@@ -569,9 +569,21 @@ class BookingManagementService {
         bookingStatus: "cancelled" as const,
       };
 
-      // Send cancellation emails
-      await emailNotificationService.sendCancellationEmail(emailData, "guest");
-      await emailNotificationService.sendCancellationEmail(emailData, "host");
+      // Send cancellation emails (guest and host)
+      await unifiedEmailService.sendBookingCancellation({
+        bookingId: booking.id,
+        guestName: emailData.guestName,
+        guestEmail: emailData.guestEmail,
+        hostName: emailData.hostName,
+        hostEmail: emailData.hostEmail,
+        propertyTitle: emailData.propertyTitle,
+        propertyLocation: emailData.propertyLocation,
+        checkInDate: emailData.checkInDate,
+        checkOutDate: emailData.checkOutDate,
+        guests: emailData.guestsCount,
+        totalAmount: emailData.totalAmount,
+        cancellationReason: reason,
+      } as any);
     } catch (error) {
       console.error("Error sending cancellation emails:", error);
     }

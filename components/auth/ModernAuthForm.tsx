@@ -28,7 +28,8 @@ interface ModernAuthFormProps {
 
 export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
   const router = useRouter();
-  const { signIn, signUp, signInWithGoogle, resendVerificationEmail } = useAuth();
+  const { signIn, signUp, signInWithGoogle, resendVerificationEmail } =
+    useAuth();
   const { toast } = useToast();
 
   const [authMode, setAuthMode] = useState<"signin" | "signup">(mode);
@@ -37,6 +38,33 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+
+  // Check for URL parameters on mount
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const verified = urlParams.get("verified");
+    const error = urlParams.get("error");
+
+    if (verified === "true") {
+      toast({
+        title: "✅ Email Verified!",
+        description:
+          "Your email has been verified successfully. You can now sign in.",
+        variant: "default",
+        duration: 5000,
+      });
+      setAuthMode("signin");
+    }
+
+    if (error) {
+      toast({
+        title: "Authentication Error",
+        description: decodeURIComponent(error),
+        variant: "destructive",
+        duration: 8000,
+      });
+    }
+  }, [toast]);
 
   // Sign In Form
   const [signInData, setSignInData] = useState({
@@ -160,6 +188,9 @@ export function ModernAuthForm({ mode = "signin" }: ModernAuthFormProps) {
             "Please check your email to verify your account before signing in.",
           duration: 6000,
         });
+
+        // Set the email for resend verification option
+        setUnverifiedEmail(signUpData.email);
 
         // Clear form only on success
         setSignUpData({

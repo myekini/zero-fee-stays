@@ -1,184 +1,9 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+// Re-export the generated types from Supabase and import locally for usage
+import type { Database } from "@/integrations/supabase/types";
+export type { Database } from "@/integrations/supabase/types";
 
-export interface Database {
-  public: {
-    Tables: {
-      bookings: {
-        Row: {
-          id: string;
-          property_id: string;
-          guest_id: string;
-          host_id: string;
-          check_in: string;
-          check_out: string;
-          guests_count: number;
-          total_amount: number;
-          currency: string;
-          status: "pending" | "confirmed" | "cancelled" | "completed";
-          special_requests: string | null;
-          payment_status: "pending" | "paid" | "failed" | "refunded" | null;
-          stripe_payment_intent_id: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          property_id: string;
-          guest_id: string;
-          host_id: string;
-          check_in: string;
-          check_out: string;
-          guests_count?: number;
-          total_amount: number;
-          currency?: string;
-          status?: "pending" | "confirmed" | "cancelled" | "completed";
-          special_requests?: string | null;
-          payment_status?: "pending" | "paid" | "failed" | "refunded" | null;
-          stripe_payment_intent_id?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          property_id?: string;
-          guest_id?: string;
-          host_id?: string;
-          check_in?: string;
-          check_out?: string;
-          guests_count?: number;
-          total_amount?: number;
-          currency?: string;
-          status?: "pending" | "confirmed" | "cancelled" | "completed";
-          special_requests?: string | null;
-          payment_status?: "pending" | "paid" | "failed" | "refunded" | null;
-          stripe_payment_intent_id?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      properties: {
-        Row: {
-          id: string;
-          title: string;
-          description: string;
-          location: string;
-          price_per_night: number;
-          max_guests: number;
-          bedrooms: number;
-          bathrooms: number;
-          images: string[];
-          amenities: string[];
-          host_id: string;
-          host_name: string;
-          rating: number;
-          review_count: number;
-          cleaning_fee: number | null;
-          service_fee: number | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          title: string;
-          description: string;
-          location: string;
-          price_per_night: number;
-          max_guests: number;
-          bedrooms: number;
-          bathrooms: number;
-          images: string[];
-          amenities: string[];
-          host_id: string;
-          host_name: string;
-          rating?: number;
-          review_count?: number;
-          cleaning_fee?: number | null;
-          service_fee?: number | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          title?: string;
-          description?: string;
-          location?: string;
-          price_per_night?: number;
-          max_guests?: number;
-          bedrooms?: number;
-          bathrooms?: number;
-          images?: string[];
-          amenities?: string[];
-          host_id?: string;
-          host_name?: string;
-          rating?: number;
-          review_count?: number;
-          cleaning_fee?: number | null;
-          service_fee?: number | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      profiles: {
-        Row: {
-          id: string;
-          user_id: string;
-          email: string;
-          first_name: string | null;
-          last_name: string | null;
-          phone: string | null;
-          role: "guest" | "host" | "admin";
-          avatar_url: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          email: string;
-          first_name?: string | null;
-          last_name?: string | null;
-          phone?: string | null;
-          role?: "guest" | "host" | "admin";
-          avatar_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          email?: string;
-          first_name?: string | null;
-          last_name?: string | null;
-          phone?: string | null;
-          role?: "guest" | "host" | "admin";
-          avatar_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-}
-
-export type BookingCreateRequest = Database["public"]["Tables"]["bookings"]["Insert"];
+export type BookingCreateRequest =
+  Database["public"]["Tables"]["bookings"]["Insert"];
 export type BookingCreateResponse = {
   bookingId: string;
   checkoutUrl?: string;
@@ -202,4 +27,86 @@ export type PaymentVerificationRequest = {
 };
 export type PaymentVerificationResponse = {
   status: "paid" | "unpaid" | "no_session";
+};
+
+// Additional type definitions for new features
+export type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
+export type PropertyInsert =
+  Database["public"]["Tables"]["properties"]["Insert"];
+export type PropertyUpdate =
+  Database["public"]["Tables"]["properties"]["Update"];
+
+export type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
+export type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
+export type BookingUpdate = Database["public"]["Tables"]["bookings"]["Update"];
+
+export type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
+export type ProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
+export type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
+
+export type ReviewRow = Database["public"]["Tables"]["reviews"]["Row"];
+export type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
+export type ReviewUpdate = Database["public"]["Tables"]["reviews"]["Update"];
+
+// Property approval types
+export type PropertyApprovalAction = "approve" | "reject" | "flag";
+export type PropertyApprovalStatus =
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "flagged";
+
+// Payment status types
+export type PaymentStatus =
+  | "pending"
+  | "processing"
+  | "succeeded"
+  | "failed"
+  | "refunded"
+  | "partially_refunded"
+  | "disputed";
+
+// User role types
+export type UserRole = "user" | "host" | "admin" | "super_admin" | "moderator";
+
+// Review status types
+export type ReviewStatus = "pending" | "published" | "flagged" | "hidden";
+
+// API response types
+export type PropertyApprovalRequest = {
+  propertyId: string;
+  action: PropertyApprovalAction;
+  adminNotes?: string;
+  rejectionReason?: string;
+};
+
+export type ReviewCreationRequest = {
+  bookingId: string;
+  propertyId: string;
+  rating: number;
+  title?: string;
+  comment?: string;
+  cleanlinessRating?: number;
+  accuracyRating?: number;
+  communicationRating?: number;
+  locationRating?: number;
+  valueRating?: number;
+  reviewImages?: Array<{
+    url: string;
+    caption?: string;
+  }>;
+};
+
+export type UserRoleUpdateRequest = {
+  userId: string;
+  role: UserRole;
+  isVerified?: boolean;
+};
+
+export type BulkUserRoleUpdateRequest = {
+  updates: Array<{
+    userId: string;
+    role: UserRole;
+    isVerified?: boolean;
+  }>;
 };

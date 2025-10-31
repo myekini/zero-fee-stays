@@ -82,42 +82,70 @@ export class AuthUtils {
 
   /**
    * Determine user role based on metadata and email
+   * NOTE: This reads from metadata - for server-side checks, query profiles table directly
    */
   static determineUserRole(user: User): "user" | "host" | "admin" {
     const metadata = user.user_metadata || {};
-    const email = user.email?.toLowerCase() || "";
 
-    // Check for explicit role in metadata first
+    // Only trust explicit role flags from metadata
     if (metadata.role === "admin") {
       return "admin";
     }
 
-    // Check for specific admin email
-    if (email === "myekini1@gmail.com") {
-      return "admin";
-    }
-
-    // Check for default host email
-    if (email === "hiddy@zerofeestays.com") {
-      return "host";
-    }
-
-    // Check for admin email patterns
-    if (
-      email.includes("admin") ||
-      email.includes("@zerofeestays.com") ||
-      email.includes("@bookdirect.com") ||
-      email === "admin@bookdirect.com"
-    ) {
-      return "admin";
-    }
-
-    // Check for host role in metadata
-    if (metadata.role === "host" || metadata.is_host) {
+    if (metadata.role === "host" || (metadata as any).is_host) {
       return "host";
     }
 
     return "user";
+  }
+
+  /**
+   * Get user role from profiles table (server-side, source of truth)
+   * This is the preferred method for role checks in API routes and middleware
+   */
+  static async getUserRoleFromProfile(
+    supabase: any,
+    userId: string
+  ): Promise<{
+    role: "user" | "host" | "admin";
+    isHost: boolean;
+    error: Error | null;
+  }> {
+    try {
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("role, is_host")
+        .eq("user_id", userId)
+        .single();
+
+      if (error) {
+        return {
+          role: "user",
+          isHost: false,
+          error: new Error(`Failed to fetch role: ${error.message}`),
+        };
+      }
+
+      if (!profile) {
+        return {
+          role: "user",
+          isHost: false,
+          error: new Error("Profile not found"),
+        };
+      }
+
+      return {
+        role: profile.role as "user" | "host" | "admin",
+        isHost: profile.is_host,
+        error: null,
+      };
+    } catch (err) {
+      return {
+        role: "user",
+        isHost: false,
+        error: err as Error,
+      };
+    }
   }
 
   /**
@@ -134,6 +162,22 @@ export class AuthUtils {
     };
 
     return roleHierarchy[user.role] >= roleHierarchy[requiredRole];
+  }
+
+  /**
+   * Check if role meets requirement (static version)
+   */
+  static checkRolePermission(
+    userRole: "user" | "host" | "admin",
+    requiredRole: "user" | "host" | "admin"
+  ): boolean {
+    const roleHierarchy = {
+      user: 1,
+      host: 2,
+      admin: 3,
+    };
+
+    return roleHierarchy[userRole] >= roleHierarchy[requiredRole];
   }
 
   /**

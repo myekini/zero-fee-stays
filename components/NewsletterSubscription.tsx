@@ -107,7 +107,7 @@ export default function NewsletterSubscription({
   return (
     <Card className={`p-6 ${className}`}>
       <div className="flex items-center mb-4">
-        <Mail className="h-5 w-5 text-brand-600 mr-2" />
+        <Mail className="h-5 w-5 text-brand-600 dark:text-brand-300 mr-2" />
         <h4 className="text-lg font-semibold text-foreground">{title}</h4>
       </div>
 

@@ -125,8 +125,8 @@ class PaymentService {
         totalAmount: bookingData.total_amount,
         guestName: "Guest",
         guestEmail: "guest@example.com",
-        checkIn: bookingData.check_in,
-        checkOut: bookingData.check_out,
+        checkIn: bookingData.check_in_date,
+        checkOut: bookingData.check_out_date,
       };
 
       const sessionResponse = await this.createPaymentSession(sessionData);

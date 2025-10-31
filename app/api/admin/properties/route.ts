@@ -6,6 +6,20 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Simple in-memory rate limiter (per IP)
+const __rateLimit = new Map<string, { count: number; reset: number }>();
+function allowRequest(ip: string, max = 120, windowMs = 5 * 60 * 1000) {
+  const now = Date.now();
+  const entry = __rateLimit.get(ip);
+  if (!entry || now > entry.reset) {
+    __rateLimit.set(ip, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
+}
+
 // Helper function to verify admin
 async function verifyAdmin(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -42,6 +56,13 @@ async function verifyAdmin(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
     const auth = await verifyAdmin(request);
     if (!auth.isAdmin) {
       return NextResponse.json(
@@ -57,10 +78,8 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get("offset") || "0");
 
     // Build query
-    let query = supabase
-      .from("properties")
-      .select(
-        `
+    let query = supabase.from("properties").select(
+      `
         *,
         host:profiles!properties_host_id_fkey(
           id,
@@ -70,8 +89,8 @@ export async function GET(request: NextRequest) {
           email:user_id
         )
       `,
-        { count: "exact" }
-      );
+      { count: "exact" }
+    );
 
     // Apply filters
     if (status === "active") {
@@ -106,7 +125,7 @@ export async function GET(request: NextRequest) {
         total: count,
         limit,
         offset,
-        hasMore: (offset + limit) < (count || 0),
+        hasMore: offset + limit < (count || 0),
       },
     });
   } catch (error) {
@@ -125,6 +144,13 @@ export async function GET(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip, 60)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
     const auth = await verifyAdmin(request);
     if (!auth.isAdmin) {
       return NextResponse.json(

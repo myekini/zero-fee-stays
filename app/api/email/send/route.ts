@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         result = await unifiedEmailService.sendWelcomeEmail({
           name: data.name,
           email: data.email,
-          userId: data.userId,
+          role: data.role,
         });
         break;
 
@@ -90,19 +90,16 @@ export async function POST(request: NextRequest) {
           bookingId: data.bookingId,
           guestName: data.guestName,
           guestEmail: data.guestEmail,
-          hostName: data.hostName,
-          hostEmail: data.hostEmail,
-          propertyTitle: data.propertyTitle,
-          propertyLocation: data.propertyLocation,
+          propertyName: data.propertyTitle,
           checkInDate: data.checkInDate,
-          checkOutDate: data.checkOutDate,
-          guests: data.guests,
-          totalAmount: data.totalAmount,
-          specialRequests: data.specialRequests,
-          hostInstructions: data.hostInstructions,
           checkInTime: data.checkInTime,
-          hostPhone: data.hostPhone,
           propertyAddress: data.propertyAddress,
+          hostName: data.hostName,
+          hostPhone: data.hostPhone,
+          wifiNetwork: data.wifiNetwork,
+          wifiPassword: data.wifiPassword,
+          parkingInstructions: data.parkingInstructions,
+          entryInstructions: data.hostInstructions,
         });
         break;
 
@@ -130,16 +127,16 @@ export async function POST(request: NextRequest) {
           bookingId: data.bookingId,
           guestName: data.guestName,
           guestEmail: data.guestEmail,
-          hostName: data.hostName,
-          hostEmail: data.hostEmail,
-          propertyTitle: data.propertyTitle,
-          propertyLocation: data.propertyLocation,
-          checkInDate: data.checkInDate,
-          checkOutDate: data.checkOutDate,
-          guests: data.guests,
-          totalAmount: data.totalAmount,
-          amountPaid: data.amountPaid,
+          propertyName: data.propertyTitle,
+          transactionId: data.transactionId || data.bookingId,
           paymentDate: data.paymentDate,
+          paymentTime: data.paymentTime || new Date().toLocaleTimeString(),
+          paymentMethod: data.paymentMethod || 'Credit Card',
+          accommodationAmount: data.accommodationAmount || data.totalAmount,
+          cleaningFee: data.cleaningFee,
+          serviceFee: data.serviceFee || 0,
+          paymentProcessingFee: data.paymentProcessingFee || 0,
+          totalAmount: data.totalAmount,
           receiptUrl: data.receiptUrl,
         });
         break;

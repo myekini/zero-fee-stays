@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -25,9 +27,20 @@ import {
   Loader2,
   Camera,
   Edit3,
+  Calendar,
+  Star,
+  Shield,
+  Home,
+  Heart,
+  Settings,
+  Check,
+  X,
+  Clock,
+  Award,
 } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileData {
@@ -77,7 +90,7 @@ export default function ProfilePage() {
   }, [user]);
 
   const handleInputChange = (field: keyof ProfileData, value: string) => {
-    setProfileData((prev) => ({
+    setProfileData(prev => ({
       ...prev,
       [field]: value,
     }));
@@ -92,10 +105,10 @@ export default function ProfilePage() {
       // Update user metadata in Supabase Auth
       const { error: authError } = await supabase.auth.updateUser({
         data: {
-        first_name: profileData.firstName,
-        last_name: profileData.lastName,
-        phone: profileData.phone,
-        bio: profileData.bio,
+          first_name: profileData.firstName,
+          last_name: profileData.lastName,
+          phone: profileData.phone,
+          bio: profileData.bio,
         },
       });
 
@@ -169,58 +182,70 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sage-50 via-sand-50 to-terracotta-50 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23d4a574%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-brand-50/30 to-accent-50/20 dark:from-background dark:via-brand-950/20 dark:to-brand-900/10 relative overflow-hidden">
+      {/* Premium Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%231E3A5F%22%20fill-opacity%3D%220.03%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40 dark:opacity-20"></div>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-sage-200/20 rounded-full blur-xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-20 w-40 h-40 bg-terracotta-200/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+      <div className="absolute top-20 left-20 w-32 h-32 bg-brand-200/20 dark:bg-brand-800/10 rounded-full blur-xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-20 w-40 h-40 bg-accent-200/20 dark:bg-accent-800/10 rounded-full blur-xl animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-brand-300/10 dark:bg-brand-700/10 rounded-full blur-lg animate-pulse delay-500"></div>
 
       <div className="container mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
+        {/* Premium Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <Link href="/">
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 hover:bg-brand-50 dark:hover:bg-brand-950/50 transition-all duration-200"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Home</span>
               </Button>
             </Link>
             <div className="flex items-center space-x-3">
-              <Logo className="h-8 w-8" />
-              <h1 className="text-3xl font-bold text-warm-gray-800">
-                My Profile
-              </h1>
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg">
+                <User className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">
+                  My Profile
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Manage your account settings
+                </p>
+              </div>
             </div>
           </div>
 
-          {!isEditing && (
-            <Button
-              onClick={() => setIsEditing(true)}
-              className="flex items-center space-x-2"
-            >
-              <Edit3 className="h-4 w-4" />
-              <span>Edit Profile</span>
-            </Button>
-          )}
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            {!isEditing && (
+              <Button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center space-x-2 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <Edit3 className="h-4 w-4" />
+                <span>Edit Profile</span>
+              </Button>
+            )}
+          </div>
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-xl">
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Profile Header Card */}
+          <Card className="shadow-2xl border-0 bg-card/95 backdrop-blur-xl dark:bg-card/90 hover:shadow-3xl transition-all duration-500">
             <CardHeader className="text-center pb-6">
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative">
-                  <Avatar className="h-24 w-24 ring-4 ring-brand-100">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="relative group">
+                  <Avatar className="h-32 w-32 ring-4 ring-brand-100 dark:ring-brand-900 shadow-xl group-hover:ring-brand-200 dark:group-hover:ring-brand-800 transition-all duration-300">
                     <AvatarImage
                       src={user.user_metadata?.avatar_url}
                       alt={`${profileData.firstName} ${profileData.lastName}`}
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-brand-500 to-accent-500 text-white text-2xl font-bold">
+                    <AvatarFallback className="bg-gradient-to-br from-brand-500 to-accent-500 text-white text-3xl font-bold">
                       {profileData.firstName?.[0] ||
                         profileData.email?.[0] ||
                         "U"}
@@ -229,37 +254,116 @@ export default function ProfilePage() {
                   {isEditing && (
                     <Button
                       size="sm"
-                      className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
+                      className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full p-0 bg-white dark:bg-card border-2 border-brand-200 dark:border-brand-800 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200"
                       variant="secondary"
                     >
                       <Camera className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
-                <div>
-                  <CardTitle className="text-2xl text-warm-gray-800">
+                <div className="space-y-2">
+                  <CardTitle className="text-3xl text-foreground">
                     {profileData.firstName && profileData.lastName
                       ? `${profileData.firstName} ${profileData.lastName}`
                       : profileData.email?.split("@")[0] || "User"}
                   </CardTitle>
-                  <CardDescription className="text-warm-gray-600">
-                    {authUser?.role === "admin"
-                      ? "Administrator"
-                      : authUser?.role === "host"
-                        ? "Host"
-                        : "Guest"}
-                  </CardDescription>
+                  <div className="flex items-center justify-center space-x-2">
+                    <Badge
+                      variant="secondary"
+                      className="bg-gradient-to-r from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900 text-brand-700 dark:text-brand-300 px-4 py-1"
+                    >
+                      {authUser?.role === "admin" ? (
+                        <>
+                          <Shield className="h-3 w-3 mr-1" />
+                          Administrator
+                        </>
+                      ) : authUser?.role === "host" ? (
+                        <>
+                          <Home className="h-3 w-3 mr-1" />
+                          Host
+                        </>
+                      ) : (
+                        <>
+                          <Heart className="h-3 w-3 mr-1" />
+                          Guest
+                        </>
+                      )}
+                    </Badge>
+                  </div>
+                  {profileData.bio && (
+                    <p className="text-muted-foreground max-w-md text-center leading-relaxed">
+                      {profileData.bio}
+                    </p>
+                  )}
                 </div>
               </div>
             </CardHeader>
+          </Card>
 
-            <CardContent className="space-y-6">
+          {/* Profile Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="bg-gradient-to-br from-brand-50 to-brand-100/50 dark:from-brand-950/50 dark:to-brand-900/30 border-brand-200/50 dark:border-brand-800/50 hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-brand-500 rounded-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Calendar className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-brand-700 dark:text-brand-300">
+                  12
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Total Bookings
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-accent-50 to-accent-100/50 dark:from-accent-950/50 dark:to-accent-900/30 border-accent-200/50 dark:border-accent-800/50 hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-accent-500 rounded-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Star className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-accent-700 dark:text-accent-300">
+                  4.9
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Average Rating
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30 border-green-200/50 dark:border-green-800/50 hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Award className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-green-700 dark:text-green-300">
+                  Premium
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Member Since 2024
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Profile Form */}
+          <Card className="shadow-2xl border-0 bg-card/95 backdrop-blur-xl dark:bg-card/90 hover:shadow-3xl transition-all duration-500">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Settings className="h-5 w-5 text-brand-600" />
+                <span>Profile Information</span>
+              </CardTitle>
+              <CardDescription>
+                Update your personal information and preferences
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Name */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="firstName"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-sm font-medium"
                   >
                     <User className="h-4 w-4 text-brand-600" />
                     <span>First Name</span>
@@ -267,12 +371,12 @@ export default function ProfilePage() {
                   <Input
                     id="firstName"
                     value={profileData.firstName}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleInputChange("firstName", e.target.value)
                     }
                     disabled={!isEditing}
                     placeholder="Enter your first name"
-                    className="bg-white/50"
+                    className="bg-background/50 dark:bg-background/30 border-border/50 focus:border-brand-500 focus:ring-brand-500/20 transition-all duration-200"
                   />
                 </div>
 
@@ -280,7 +384,7 @@ export default function ProfilePage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="lastName"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-sm font-medium"
                   >
                     <User className="h-4 w-4 text-brand-600" />
                     <span>Last Name</span>
@@ -288,12 +392,12 @@ export default function ProfilePage() {
                   <Input
                     id="lastName"
                     value={profileData.lastName}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleInputChange("lastName", e.target.value)
                     }
                     disabled={!isEditing}
                     placeholder="Enter your last name"
-                    className="bg-white/50"
+                    className="bg-background/50 dark:bg-background/30 border-border/50 focus:border-brand-500 focus:ring-brand-500/20 transition-all duration-200"
                   />
                 </div>
 
@@ -301,7 +405,7 @@ export default function ProfilePage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-sm font-medium"
                   >
                     <Mail className="h-4 w-4 text-brand-600" />
                     <span>Email</span>
@@ -310,10 +414,10 @@ export default function ProfilePage() {
                     id="email"
                     value={profileData.email}
                     disabled
-                    className="bg-gray-100 text-gray-600"
+                    className="bg-muted/50 text-muted-foreground border-border/50"
                   />
-                  <p className="text-xs text-gray-500">
-                    Email cannot be changed
+                  <p className="text-xs text-muted-foreground">
+                    Email cannot be changed for security reasons
                   </p>
                 </div>
 
@@ -321,7 +425,7 @@ export default function ProfilePage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="phone"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-sm font-medium"
                   >
                     <Phone className="h-4 w-4 text-brand-600" />
                     <span>Phone</span>
@@ -329,10 +433,10 @@ export default function ProfilePage() {
                   <Input
                     id="phone"
                     value={profileData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    onChange={e => handleInputChange("phone", e.target.value)}
                     disabled={!isEditing}
                     placeholder="Enter your phone number"
-                    className="bg-white/50"
+                    className="bg-background/50 dark:bg-background/30 border-border/50 focus:border-brand-500 focus:ring-brand-500/20 transition-all duration-200"
                   />
                 </div>
 
@@ -340,7 +444,7 @@ export default function ProfilePage() {
                 <div className="space-y-2 md:col-span-2">
                   <Label
                     htmlFor="location"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-sm font-medium"
                   >
                     <MapPin className="h-4 w-4 text-brand-600" />
                     <span>Location</span>
@@ -348,49 +452,55 @@ export default function ProfilePage() {
                   <Input
                     id="location"
                     value={profileData.location}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleInputChange("location", e.target.value)
                     }
                     disabled={!isEditing}
                     placeholder="Enter your location"
-                    className="bg-white/50"
+                    className="bg-background/50 dark:bg-background/30 border-border/50 focus:border-brand-500 focus:ring-brand-500/20 transition-all duration-200"
                   />
                 </div>
 
                 {/* Bio */}
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="bio">Bio</Label>
+                  <Label htmlFor="bio" className="text-sm font-medium">
+                    Bio
+                  </Label>
                   <textarea
                     id="bio"
                     value={profileData.bio}
-                    onChange={(e) => handleInputChange("bio", e.target.value)}
+                    onChange={e => handleInputChange("bio", e.target.value)}
                     disabled={!isEditing}
                     placeholder="Tell us about yourself..."
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600"
+                    className="w-full px-3 py-2 border border-border/50 rounded-md bg-background/50 dark:bg-background/30 resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 disabled:bg-muted/50 disabled:text-muted-foreground transition-all duration-200"
                   />
                 </div>
               </div>
 
+              <Separator className="my-6" />
+
               {/* Action Buttons */}
               {isEditing && (
-                <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <div className="flex justify-end space-x-3 pt-6">
                   <Button
                     variant="outline"
                     onClick={handleCancel}
                     disabled={isLoading}
+                    className="flex items-center space-x-2 border-border/50 hover:bg-muted/50 transition-all duration-200"
                   >
-                    Cancel
+                    <X className="h-4 w-4" />
+                    <span>Cancel</span>
                   </Button>
                   <Button
                     onClick={handleSave}
                     disabled={isLoading}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                   >
                     {isLoading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Save className="h-4 w-4" />
+                      <Check className="h-4 w-4" />
                     )}
                     <span>{isLoading ? "Saving..." : "Save Changes"}</span>
                   </Button>

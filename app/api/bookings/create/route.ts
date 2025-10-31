@@ -206,6 +206,8 @@ export async function POST(request: NextRequest) {
         guest_phone: guestInfo.phone,
         special_requests: guestInfo.specialRequests || null,
         status: "pending",
+        payment_status: "pending",
+        currency: "USD",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
@@ -295,20 +297,34 @@ export async function POST(request: NextRequest) {
       }
     }
 
-// Send email notification to guest (booking confirmation)
+    // Send email notification to guest (booking confirmation)
     if (guestInfo.email) {
       try {
-        const { unifiedEmailService } = await import("@/lib/unified-email-service");
+        const { unifiedEmailService } = await import(
+          "@/lib/unified-email-service"
+        );
         await unifiedEmailService.sendBookingConfirmation({
           bookingId: booking.id,
           guestName: guestInfo.name,
           guestEmail: guestInfo.email,
-          hostName: `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() || "Host",
+          hostName:
+            `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() ||
+            "Host",
           hostEmail: hostEmail || "",
           propertyTitle: propertyDetails?.title || "Property",
           propertyLocation: propertyDetails?.address || "",
-          checkInDate: new Date(checkIn).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
-          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          checkInDate: new Date(checkIn).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
           guests: guests,
           totalAmount: totalAmount,
         });
@@ -319,20 +335,34 @@ export async function POST(request: NextRequest) {
       }
     }
 
-// Send email notification to host (new booking alert)
+    // Send email notification to host (new booking alert)
     if (hostEmail) {
       try {
-        const { unifiedEmailService } = await import("@/lib/unified-email-service");
+        const { unifiedEmailService } = await import(
+          "@/lib/unified-email-service"
+        );
         await unifiedEmailService.sendHostNotification({
           bookingId: booking.id,
           guestName: guestInfo.name,
           guestEmail: guestInfo.email,
-          hostName: `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() || "Host",
+          hostName:
+            `${hostProfile?.first_name || ""} ${hostProfile?.last_name || ""}`.trim() ||
+            "Host",
           hostEmail: hostEmail,
           propertyTitle: propertyDetails?.title || "Property",
           propertyLocation: propertyDetails?.address || "",
-          checkInDate: new Date(checkIn).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
-          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+          checkInDate: new Date(checkIn).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          checkOutDate: new Date(checkOut).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
           guests: guests,
           totalAmount: totalAmount,
           specialRequests: guestInfo.specialRequests || "",

@@ -185,21 +185,26 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
   };
 
   return (
-    <div className={cn("relative w-full h-screen", className)}>
+    <div className={cn("relative w-full h-screen md:h-screen sm:h-[90vh]", className)}>
       {/* Hero Background with Carousel */}
       <div className="absolute inset-0 w-full h-full">
         <HeroCarousel />
+        {/* Gradient Overlay for Better Text Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
       </div>
 
       {/* Content Container */}
-      <div className="relative z-30 container mx-auto px-4 sm:px-8 h-full flex flex-col justify-end pb-12 pt-24">
+      <div className="relative z-30 container mx-auto px-4 sm:px-8 h-full flex flex-col justify-end pb-8 sm:pb-12 pt-20 sm:pt-24">
         {/* Hero Text */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-3 drop-shadow-2xl"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-3"
+            style={{
+              textShadow: '0 4px 20px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)',
+            }}
           >
             Hey Buddy! where are you <br />
             <span className="font-bold">Staying</span> tonight?
@@ -210,7 +215,10 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-white hover:text-white/80 transition-colors inline-flex items-center gap-2 text-sm font-medium group drop-shadow-lg"
+            className="text-white hover:text-white/90 transition-colors inline-flex items-center gap-2 text-sm font-medium group"
+            style={{
+              textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+            }}
           >
             Explore Now
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -226,7 +234,7 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
           className="max-w-6xl w-full"
         >
           {/* Property Type Tabs */}
-          <div className="flex gap-0 mb-0">
+          <div className="flex gap-0 mb-0 overflow-x-auto">
             {PROPERTY_TYPES.map((type, index) => {
               const Icon = type.icon;
               return (
@@ -234,26 +242,27 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
                   key={type.value}
                   onClick={() => setPropertyType(type.value)}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all",
+                    "flex items-center gap-2 px-4 sm:px-6 py-3 text-sm font-medium transition-all whitespace-nowrap",
                     index === 0 && "rounded-tl-lg",
                     propertyType === type.value
-                      ? "bg-white text-gray-900"
-                      : "bg-gray-800/70 backdrop-blur-sm text-white hover:bg-gray-700/70"
+                      ? "bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
+                      : "bg-gray-800/70 dark:bg-slate-900/70 backdrop-blur-sm text-white hover:bg-gray-700/70 dark:hover:bg-slate-800/70"
                   )}
                 >
-                  <Icon className="w-5 h-5" />
-                  {type.label}
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">{type.label}</span>
+                  <span className="sm:hidden">{type.label.split(' ')[0]}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Search Form */}
-          <div className="bg-white rounded-b-lg rounded-tr-lg shadow-2xl p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div className="bg-white dark:bg-slate-800 rounded-b-lg rounded-tr-lg shadow-2xl p-4 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4">
               {/* Destination */}
               <div className="lg:col-span-4">
-                <label className="text-xs text-gray-600 uppercase mb-2 block font-semibold">
+                <label className="text-xs text-gray-600 dark:text-gray-300 uppercase mb-2 block font-semibold">
                   Destination
                 </label>
                 <DestinationSearch
@@ -268,7 +277,7 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
 
               {/* Check-in Date */}
               <div className="lg:col-span-3">
-                <label className="text-xs text-gray-600 uppercase mb-2 block font-semibold">
+                <label className="text-xs text-gray-600 dark:text-gray-300 uppercase mb-2 block font-semibold">
                   Check In
                 </label>
                 <div className="flex items-center gap-1">
@@ -320,7 +329,7 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
 
               {/* Check-out Date */}
               <div className="lg:col-span-3">
-                <label className="text-xs text-gray-600 uppercase mb-2 block font-semibold">
+                <label className="text-xs text-gray-600 dark:text-gray-300 uppercase mb-2 block font-semibold">
                   Check Out
                 </label>
                 <div className="flex items-center gap-1">
@@ -375,7 +384,7 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
 
               {/* Guests Dropdown */}
               <div className="lg:col-span-2">
-                <label className="text-xs text-gray-600 uppercase mb-2 block font-semibold">
+                <label className="text-xs text-gray-600 dark:text-gray-300 uppercase mb-2 block font-semibold">
                   Guests
                 </label>
                 <DropdownMenu open={isGuestsOpen} onOpenChange={setIsGuestsOpen}>
@@ -483,11 +492,11 @@ export function StreamlinedHero({ className }: StreamlinedHeroProps) {
             </div>
 
             {/* Search Button */}
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <Button
                 onClick={handleSearch}
                 disabled={!locationQuery || !checkInDate || !checkOutDate || isSearching}
-                className="w-full h-12 bg-gray-900 hover:bg-gray-800 text-white font-semibold text-base"
+                className="w-full h-11 sm:h-12 bg-gray-900 hover:bg-gray-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold text-sm sm:text-base transition-colors"
               >
                 {isSearching ? (
                   <>

@@ -146,18 +146,18 @@ const AdminBookingManagement: React.FC = () => {
         .select(
           `
           *,
-          profiles!bookings_guest_id_fkey(
+          guest:profiles!guest_id(
             id,
             first_name,
             last_name,
             email
           ),
-          properties!bookings_property_id_fkey(
+          property:properties!property_id(
             id,
             title,
             location,
             price_per_night,
-            profiles!properties_host_id_fkey(
+            host:profiles!host_id(
               id,
               first_name,
               last_name,
@@ -168,7 +168,10 @@ const AdminBookingManagement: React.FC = () => {
         )
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase query error:", error);
+        throw error;
+      }
 
       // Transform data
       const transformedBookings: Booking[] = (bookingsData || []).map(
@@ -183,20 +186,20 @@ const AdminBookingManagement: React.FC = () => {
           created_at: booking.created_at,
           updated_at: booking.updated_at,
           guest: {
-            id: booking.profiles?.id || "",
-            name: `${booking.profiles?.first_name || ""} ${booking.profiles?.last_name || ""}`.trim(),
-            email: booking.profiles?.email || "",
+            id: booking.guest?.id || "",
+            name: `${booking.guest?.first_name || ""} ${booking.guest?.last_name || ""}`.trim(),
+            email: booking.guest?.email || "",
           },
           host: {
-            id: booking.properties?.profiles?.id || "",
-            name: `${booking.properties?.profiles?.first_name || ""} ${booking.properties?.profiles?.last_name || ""}`.trim(),
-            email: booking.properties?.profiles?.email || "",
+            id: booking.property?.host?.id || "",
+            name: `${booking.property?.host?.first_name || ""} ${booking.property?.host?.last_name || ""}`.trim(),
+            email: booking.property?.host?.email || "",
           },
           property: {
-            id: booking.properties?.id || "",
-            title: booking.properties?.title || "",
-            location: booking.properties?.location || "",
-            price_per_night: booking.properties?.price_per_night || 0,
+            id: booking.property?.id || "",
+            title: booking.property?.title || "",
+            location: booking.property?.location || "",
+            price_per_night: booking.property?.price_per_night || 0,
           },
           payment_intent_id: booking.payment_intent_id,
           refund_amount: booking.refund_amount,

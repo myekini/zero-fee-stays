@@ -1,13 +1,65 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { unifiedEmailService } from "@/lib/unified-email-service";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Simple in-memory rate limiter (per IP)
+const __rateLimit = new Map<string, { count: number; reset: number }>();
+function allowRequest(ip: string, max = 60, windowMs = 5 * 60 * 1000) {
+  const now = Date.now();
+  const entry = __rateLimit.get(ip);
+  if (!entry || now > entry.reset) {
+    __rateLimit.set(ip, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
+}
+
 export async function GET(request: NextRequest) {
   try {
+    // Rate limit per IP
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
+    // Require Authorization: Bearer <token>
+    const authHeader = request.headers.get("authorization");
+    if (!authHeader || !authHeader.toLowerCase().startsWith("bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const token = authHeader.slice(7);
+
+    // Validate token and get user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    // Get profile (for role and profile.id)
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("id, role")
+      .eq("user_id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return NextResponse.json({ error: "Profile not found" }, { status: 403 });
+    }
+
     const { searchParams } = new URL(request.url);
     const hostId = searchParams.get("host_id");
     const guestId = searchParams.get("guest_id");
@@ -42,13 +94,27 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log(`Fetching bookings with filters:`, {
-      hostId,
-      guestId,
-      propertyId,
-      status,
-    });
+    // Get payment_status filter
+    const paymentStatus = searchParams.get("payment_status");
+    const validPaymentStatuses = [
+      "pending",
+      "processing",
+      "succeeded",
+      "failed",
+      "refunded",
+      "partially_refunded",
+      "disputed",
+    ];
+    if (paymentStatus && !validPaymentStatuses.includes(paymentStatus)) {
+      return NextResponse.json(
+        {
+          error: `Invalid payment_status. Must be one of: ${validPaymentStatuses.join(", ")}`,
+        },
+        { status: 400 }
+      );
+    }
 
+    // Base query
     let query = supabase
       .from("bookings")
       .select(
@@ -81,18 +147,30 @@ export async function GET(request: NextRequest) {
       )
       .order("created_at", { ascending: false });
 
-    // Apply filters
-    if (hostId) {
-      query = query.eq("host_id", hostId);
+    const isAdmin = profile.role === "admin";
+    const isHost = profile.role === "host";
+
+    // Apply role-based scoping
+    if (isAdmin) {
+      // Admin can filter freely
+      if (hostId) query = query.eq("host_id", hostId);
+      if (guestId) query = query.eq("guest_id", guestId);
+    } else if (isHost) {
+      // Host can only see their own hosted bookings
+      query = query.eq("host_id", profile.id);
+    } else {
+      // Guest (regular user) can only see their own bookings
+      query = query.eq("guest_id", profile.id);
     }
-    if (guestId) {
-      query = query.eq("guest_id", guestId);
-    }
+
     if (propertyId) {
       query = query.eq("property_id", propertyId);
     }
     if (status) {
       query = query.eq("status", status);
+    }
+    if (paymentStatus) {
+      query = query.eq("payment_status", paymentStatus);
     }
 
     // Apply pagination
@@ -107,7 +185,7 @@ export async function GET(request: NextRequest) {
 
     // Transform the data to include property images
     const transformedBookings =
-      bookings?.map((booking) => ({
+      bookings?.map(booking => ({
         ...booking,
         property: {
           ...booking.properties,
@@ -252,6 +330,39 @@ export async function PUT(request: NextRequest) {
         },
         is_read: false,
       });
+
+      // Send booking confirmation emails
+      try {
+        const emailData = {
+          bookingId: booking.id,
+          guestName:
+            `${booking.guest?.first_name || ""} ${booking.guest?.last_name || ""}`.trim(),
+          guestEmail: booking.guest?.email || "",
+          hostName:
+            `${booking.host?.first_name || ""} ${booking.host?.last_name || ""}`.trim(),
+          hostEmail: booking.host?.email || "",
+          propertyTitle: booking.properties?.title || "",
+          propertyLocation: booking.properties?.address || "",
+          propertyAddress: booking.properties?.address || "",
+          checkInDate: booking.check_in_date,
+          checkInTime: "3:00 PM", // Default check-in time
+          checkOutDate: booking.check_out_date,
+          checkOutTime: "11:00 AM", // Default check-out time
+          guests: booking.num_guests,
+          totalAmount: booking.total_amount,
+          specialRequests: booking.special_requests,
+          hostInstructions: booking.host_instructions,
+        };
+
+        // Send emails in parallel
+        await Promise.allSettled([
+          unifiedEmailService.sendBookingConfirmation(emailData),
+          unifiedEmailService.sendHostNotification(emailData),
+        ]);
+      } catch (emailError) {
+        console.error("Error sending booking confirmation emails:", emailError);
+        // Don't fail the booking update if emails fail
+      }
     } else if (status === "cancelled") {
       await supabase.from("notifications").insert({
         user_id: booking.guest_id,

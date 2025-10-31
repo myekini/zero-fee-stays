@@ -2,17 +2,46 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { authenticateUser, createAuthResponse } from "@/lib/auth-middleware";
 
+// Use anon key for public reads so RLS applies
 const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+
+// Simple in-memory rate limiter (per IP)
+const __rateLimit = new Map<string, { count: number; reset: number }>();
+function allowRequest(ip: string, max = 120, windowMs = 5 * 60 * 1000) {
+  const now = Date.now();
+  const entry = __rateLimit.get(ip);
+  if (!entry || now > entry.reset) {
+    __rateLimit.set(ip, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
+}
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate limit per IP (public endpoint)
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
     const { searchParams } = new URL(request.url);
     const hostId = searchParams.get("host_id");
     const status = searchParams.get("status");
-    const limit = parseInt(searchParams.get("limit") || "50");
+    const approvalStatus = searchParams.get("approval_status");
+
+    // Pagination parameters
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 100); // Max 100
+    const offset = (page - 1) * limit;
 
     // Search and filter parameters
     const location = searchParams.get("location");
@@ -20,6 +49,11 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get("max_price");
     const guests = searchParams.get("guests");
     const propertyType = searchParams.get("property_type");
+    const amenities = searchParams.get("amenities");
+    const checkIn = searchParams.get("check_in");
+    const checkOut = searchParams.get("check_out");
+    const sortBy = searchParams.get("sort_by") || "created_at"; // created_at, price_asc, price_desc, rating
+    const minRating = searchParams.get("min_rating");
 
     console.log(`Fetching properties with filters:`, {
       hostId,
@@ -29,6 +63,12 @@ export async function GET(request: NextRequest) {
       minPrice,
       guests,
       propertyType,
+      amenities,
+      checkIn,
+      checkOut,
+      page,
+      limit,
+      sortBy,
     });
 
     let query = supabase
@@ -36,23 +76,22 @@ export async function GET(request: NextRequest) {
       .select(
         `
         *,
-        property_images!property_images_property_id_fkey(*),
-        bookings!bookings_property_id_fkey(
+        property_images!property_images_property_id_fkey(
           id,
-          status,
-          check_in_date,
-          check_out_date,
-          total_amount
+          public_url,
+          is_primary,
+          display_order
         ),
         profiles!properties_host_id_fkey(
           user_id,
           first_name,
-          last_name
+          last_name,
+          avatar_url
         )
-      `
+      `,
+        { count: "exact" }
       )
-      .eq("is_active", true) // Only show active properties by default
-      .order("created_at", { ascending: false });
+      .eq("is_active", true); // Only show active properties by default
 
     // Apply filters
     if (hostId) {
@@ -61,6 +100,24 @@ export async function GET(request: NextRequest) {
 
     if (status) {
       query = query.eq("status", status);
+    }
+
+    if (approvalStatus) {
+      const validApprovalStatuses = [
+        "pending",
+        "approved",
+        "rejected",
+        "flagged",
+      ];
+      if (validApprovalStatuses.includes(approvalStatus)) {
+        query = query.eq("approval_status", approvalStatus);
+      }
+    } else {
+      // By default, only show approved properties to public users
+      // Hosts and admins can see all their properties regardless of approval status
+      if (!hostId) {
+        query = query.eq("approval_status", "approved");
+      }
     }
 
     // Search location in address or city
@@ -87,73 +144,121 @@ export async function GET(request: NextRequest) {
       query = query.eq("property_type", propertyType);
     }
 
-    if (limit) {
-      query = query.limit(limit);
+    // Rating filter
+    if (minRating) {
+      query = query.gte("rating", parseFloat(minRating));
     }
 
-    const { data: properties, error } = await query;
+    // SERVER-SIDE amenities filter (moved from client-side)
+    if (amenities) {
+      const requiredAmenities = amenities.split(",").map(a => a.trim());
+      requiredAmenities.forEach(amenity => {
+        query = query.contains("amenities", [amenity]);
+      });
+    }
+
+    // Sorting
+    if (sortBy === "price_asc") {
+      query = query.order("price_per_night", { ascending: true });
+    } else if (sortBy === "price_desc") {
+      query = query.order("price_per_night", { ascending: false });
+    } else if (sortBy === "rating") {
+      query = query.order("rating", { ascending: false, nullsFirst: false });
+    } else {
+      query = query.order("created_at", { ascending: false });
+    }
+
+    // Apply pagination
+    query = query.range(offset, offset + limit - 1);
+
+    const { data: properties, error, count } = await query;
 
     if (error) {
       throw error;
     }
 
-    // Fetch host emails from auth.users (profiles table doesn't have email)
-    const hostUserIds = properties?.map((p) => p.profiles?.user_id).filter(Boolean) || [];
-    const emailMap = new Map<string, string>();
+    let filteredProperties = properties || [];
 
-    if (hostUserIds.length > 0) {
-      for (const userId of hostUserIds) {
-        const { data: authUser } = await supabase.auth.admin.getUserById(userId);
-        if (authUser?.user?.email) {
-          emailMap.set(userId, authUser.user.email);
-        }
-      }
+    // SERVER-SIDE availability check using database function
+    if (checkIn && checkOut && filteredProperties.length > 0) {
+      const availabilityPromises = filteredProperties.map(async property => {
+        const { data: availCheck } = await supabase.rpc(
+          "check_property_availability",
+          {
+            property_uuid: property.id,
+            check_in_date: checkIn,
+            check_out_date: checkOut,
+          }
+        );
+
+        return {
+          property,
+          isAvailable: availCheck?.[0]?.is_available || false,
+        };
+      });
+
+      const availabilityResults = await Promise.all(availabilityPromises);
+      filteredProperties = availabilityResults
+        .filter(r => r.isAvailable)
+        .map(r => r.property);
     }
 
     // Calculate additional metrics for each property
-    const propertiesWithMetrics = properties?.map((property) => {
-      const confirmedBookings =
-        property.bookings?.filter(
-          (booking: any) => booking.status === "confirmed"
-        ) || [];
-
-      const totalRevenue = confirmedBookings.reduce(
-        (sum: number, booking: any) => sum + (booking.total_amount || 0),
-        0
-      );
-
-      // Use property rating if available, otherwise default rating
-      const avgRating = property.rating || 4.5; // Default rating for new properties
+    const propertiesWithMetrics = filteredProperties.map(property => {
+      // Use property rating if available
+      const avgRating = property.rating || null;
       const reviewCount = property.review_count || 0;
 
-      // Add host email from auth.users
-      const hostEmail = property.profiles?.user_id
-        ? emailMap.get(property.profiles.user_id)
-        : null;
+      // Get primary image or first image
+      const primaryImage = property.property_images?.find(
+        (img: any) => img.is_primary
+      );
+      const images =
+        property.property_images
+          ?.sort((a: any, b: any) => a.display_order - b.display_order)
+          ?.map((img: any) => img.public_url) || [];
 
       return {
-        ...property,
-        profiles: {
-          ...property.profiles,
-          email: hostEmail,
+        id: property.id,
+        title: property.title,
+        description: property.description,
+        address: property.address,
+        city: property.city,
+        country: property.country,
+        price_per_night: parseFloat(property.price_per_night),
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        max_guests: property.max_guests,
+        property_type: property.property_type,
+        amenities: property.amenities || [],
+        house_rules: property.house_rules || [],
+        cancellation_policy: property.cancellation_policy,
+        min_nights: property.min_nights,
+        max_nights: property.max_nights,
+        created_at: property.created_at,
+        host: {
+          id: property.profiles?.user_id,
+          name:
+            `${property.profiles?.first_name || ""} ${property.profiles?.last_name || ""}`.trim() ||
+            "Host",
+          avatar: property.profiles?.avatar_url,
         },
-        metrics: {
-          total_bookings: property.bookings?.length || 0,
-          confirmed_bookings: confirmedBookings.length,
-          total_revenue: totalRevenue,
-          avg_rating: Math.round(avgRating * 10) / 10, // Round to 1 decimal
-          review_count: reviewCount,
-          occupancy_rate: calculateOccupancyRate(property.bookings || []),
-          images:
-            property.property_images?.map((img: any) => img.image_url) || [],
-        },
+        rating: avgRating ? Math.round(avgRating * 10) / 10 : null,
+        review_count: reviewCount,
+        images: images,
+        primary_image: primaryImage?.public_url || images[0] || null,
       };
     });
 
     return NextResponse.json({
       success: true,
       properties: propertiesWithMetrics,
-      count: propertiesWithMetrics?.length || 0,
+      pagination: {
+        page,
+        limit,
+        total: count || 0,
+        pages: Math.ceil((count || 0) / limit),
+      },
     });
   } catch (error) {
     console.error("Error fetching properties:", error);

@@ -30,6 +30,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { EnhancedBookingModal } from "@/components/EnhancedBookingModal";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar";
+import { PropertyReviews } from "@/components/PropertyReviews";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Property {
@@ -581,6 +582,11 @@ const PropertyDetailPage: React.FC = () => {
         }}
         initialDateRange={dateRange}
       />
+
+      {/* Reviews Section */}
+      <div className="container mx-auto px-4 py-12">
+        <PropertyReviews propertyId={property.id} />
+      </div>
     </div>
   );
 };

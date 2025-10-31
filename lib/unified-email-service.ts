@@ -2,6 +2,7 @@ import { render } from "@react-email/components";
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 import { EmailTemplates } from "./email-templates";
+import { HiddyStaysEmailTemplates } from "./email-templates/hiddystays-templates";
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
@@ -32,16 +33,64 @@ export interface BookingEmailData {
   propertyLocation: string;
   checkInDate: string;
   checkOutDate: string;
+  checkInTime?: string;
+  checkOutTime?: string;
   guests: number;
   totalAmount: number;
   specialRequests?: string;
   hostInstructions?: string;
+  propertyImage?: string;
+  hostAvatar?: string;
+  propertyAddress?: string;
+  googleMapsLink?: string;
+  stripeFee?: number;
+  netAmount?: number;
+  guestPhone?: string;
 }
 
 export interface NewsletterSubscriptionData {
   email: string;
   name?: string;
   source?: string;
+}
+
+export interface PaymentReceiptData {
+  guestName: string;
+  guestEmail: string;
+  propertyName: string;
+  transactionId: string;
+  paymentDate: string;
+  paymentTime: string;
+  paymentMethod: string;
+  accommodationAmount: number;
+  cleaningFee?: number;
+  serviceFee: number;
+  paymentProcessingFee: number;
+  totalAmount: number;
+  bookingId: string;
+  receiptUrl?: string;
+}
+
+export interface CheckInReminderData {
+  guestName: string;
+  guestEmail: string;
+  propertyName: string;
+  checkInDate: string;
+  checkInTime: string;
+  propertyAddress: string;
+  hostName: string;
+  hostPhone: string;
+  bookingId: string;
+  wifiNetwork?: string;
+  wifiPassword?: string;
+  parkingInstructions?: string;
+  entryInstructions?: string;
+}
+
+export interface WelcomeEmailData {
+  name: string;
+  email: string;
+  role?: "host" | "guest";
 }
 
 class UnifiedEmailService {
@@ -136,17 +185,22 @@ class UnifiedEmailService {
   /**
    * Send welcome email to new users
    */
-  async sendWelcomeEmail(userData: UserData): Promise<EmailResult> {
-    const template = EmailTemplates.WelcomeEmail({
-      name: userData.name,
-      email: userData.email,
+  async sendWelcomeEmail(userData: WelcomeEmailData): Promise<EmailResult> {
+    const template = HiddyStaysEmailTemplates.HostWelcomeTemplate({
+      hostName: userData.name,
+      hostEmail: userData.email,
     });
+
+    const subject =
+      userData.role === "host"
+        ? "Welcome to HiddyStays - List your property and keep 100%! 👋"
+        : "Welcome to HiddyStays - Discover your next stay! 👋";
 
     const result = await this.sendEmail(
       userData.email,
-      "🎉 Welcome to HiddyStays - Your Journey Begins!",
+      subject,
       template,
-      "HiddyStays Welcome <welcome@hiddystays.com>"
+      "HiddyStays <admin@hiddystays.com>"
     );
 
     if (result.success && result.emailId) {
@@ -156,7 +210,7 @@ class UnifiedEmailService {
         userData.email,
         "welcome",
         {
-          userId: userData.userId,
+          role: userData.role || "host",
         }
       );
     }
@@ -168,21 +222,29 @@ class UnifiedEmailService {
    * Send booking confirmation to guest
    */
   async sendBookingConfirmation(data: BookingEmailData): Promise<EmailResult> {
-    const template = EmailTemplates.BookingConfirmationEmail({
+    const template = HiddyStaysEmailTemplates.BookingConfirmationTemplate({
       guestName: data.guestName,
-      propertyTitle: data.propertyTitle,
+      propertyName: data.propertyTitle,
+      propertyImage: data.propertyImage,
+      hostName: data.hostName,
+      hostAvatar: data.hostAvatar,
       checkInDate: data.checkInDate,
+      checkInTime: data.checkInTime || "3:00 PM",
       checkOutDate: data.checkOutDate,
+      checkOutTime: data.checkOutTime || "11:00 AM",
       guests: data.guests,
       totalAmount: data.totalAmount,
       bookingId: data.bookingId,
+      propertyAddress: data.propertyAddress || data.propertyLocation,
+      hostInstructions: data.hostInstructions,
+      googleMapsLink: data.googleMapsLink,
     });
 
     const result = await this.sendEmail(
       data.guestEmail,
-      `🎉 Booking Confirmed - ${data.propertyTitle}`,
+      `Your stay at ${data.propertyTitle} is confirmed! 🏠`,
       template,
-      "HiddyStays Reservations <bookings@hiddystays.com>"
+      "HiddyStays <admin@hiddystays.com>"
     );
 
     if (result.success && result.emailId) {
@@ -205,22 +267,29 @@ class UnifiedEmailService {
    * Send booking notification to host
    */
   async sendHostNotification(data: BookingEmailData): Promise<EmailResult> {
-    const template = EmailTemplates.HostNotificationEmail({
+    const template = HiddyStaysEmailTemplates.HostNotificationTemplate({
       hostName: data.hostName,
       guestName: data.guestName,
-      propertyTitle: data.propertyTitle,
+      propertyName: data.propertyTitle,
       checkInDate: data.checkInDate,
+      checkInTime: data.checkInTime || "3:00 PM",
       checkOutDate: data.checkOutDate,
+      checkOutTime: data.checkOutTime || "11:00 AM",
       guests: data.guests,
       totalAmount: data.totalAmount,
+      stripeFee: data.stripeFee || 0,
+      netAmount: data.netAmount || data.totalAmount,
       bookingId: data.bookingId,
+      guestEmail: data.guestEmail,
+      guestPhone: data.guestPhone,
+      specialRequests: data.specialRequests,
     });
 
     const result = await this.sendEmail(
       data.hostEmail,
-      `🎉 New Booking - ${data.guestName} booked your ${data.propertyTitle}`,
+      `New booking for ${data.propertyTitle} - You earned $${data.netAmount || data.totalAmount}! 🎉`,
       template,
-      "HiddyStays Notifications <notifications@hiddystays.com>"
+      "HiddyStays <admin@hiddystays.com>"
     );
 
     if (result.success && result.emailId) {
@@ -332,23 +401,27 @@ class UnifiedEmailService {
   /**
    * Send check-in reminder email
    */
-  async sendCheckInReminder(data: BookingEmailData & { checkInTime?: string; hostName?: string; hostPhone?: string; propertyAddress?: string; }): Promise<EmailResult> {
-    const template = EmailTemplates.CheckInReminderEmail({
+  async sendCheckInReminder(data: CheckInReminderData): Promise<EmailResult> {
+    const template = HiddyStaysEmailTemplates.CheckInReminderTemplate({
       guestName: data.guestName,
-      propertyTitle: data.propertyTitle,
+      propertyName: data.propertyName,
       checkInDate: data.checkInDate,
-      checkInTime: (data as any).checkInTime,
-      hostName: (data as any).hostName,
-      hostPhone: (data as any).hostPhone,
-      propertyAddress: (data as any).propertyAddress,
+      checkInTime: data.checkInTime,
+      propertyAddress: data.propertyAddress,
+      hostName: data.hostName,
+      hostPhone: data.hostPhone,
       bookingId: data.bookingId,
+      wifiNetwork: data.wifiNetwork,
+      wifiPassword: data.wifiPassword,
+      parkingInstructions: data.parkingInstructions,
+      entryInstructions: data.entryInstructions,
     });
 
     const result = await this.sendEmail(
       data.guestEmail,
-      `🎒 Check-in Tomorrow - ${data.propertyTitle}`,
+      `Your stay begins tomorrow at ${data.propertyName}! 🗓️`,
       template,
-      "HiddyStays Reminders <reminders@hiddystays.com>"
+      "HiddyStays <admin@hiddystays.com>"
     );
 
     if (result.success && result.emailId) {
@@ -359,7 +432,7 @@ class UnifiedEmailService {
         "check_in_reminder",
         {
           bookingId: data.bookingId,
-          propertyTitle: data.propertyTitle,
+          propertyName: data.propertyName,
         }
       );
     }
@@ -409,7 +482,13 @@ class UnifiedEmailService {
   /**
    * Send booking cancellation email
    */
-  async sendBookingCancellation(data: BookingEmailData & { refundAmount?: number; refundPercentage?: number; cancellationReason?: string; }): Promise<EmailResult> {
+  async sendBookingCancellation(
+    data: BookingEmailData & {
+      refundAmount?: number;
+      refundPercentage?: number;
+      cancellationReason?: string;
+    }
+  ): Promise<EmailResult> {
     const template = EmailTemplates.BookingCancellationEmail({
       guestName: data.guestName,
       propertyTitle: data.propertyTitle,
@@ -444,21 +523,28 @@ class UnifiedEmailService {
   /**
    * Send payment receipt email
    */
-  async sendPaymentReceipt(data: BookingEmailData & { amountPaid: number; paymentDate?: string; receiptUrl?: string; }): Promise<EmailResult> {
-    const template = EmailTemplates.PaymentReceiptEmail({
+  async sendPaymentReceipt(data: PaymentReceiptData): Promise<EmailResult> {
+    const template = HiddyStaysEmailTemplates.PaymentReceiptTemplate({
       guestName: data.guestName,
-      propertyTitle: data.propertyTitle,
-      amountPaid: (data as any).amountPaid,
-      paymentDate: (data as any).paymentDate,
+      propertyName: data.propertyName,
+      transactionId: data.transactionId,
+      paymentDate: data.paymentDate,
+      paymentTime: data.paymentTime,
+      paymentMethod: data.paymentMethod,
+      accommodationAmount: data.accommodationAmount,
+      cleaningFee: data.cleaningFee || 0,
+      serviceFee: data.serviceFee,
+      paymentProcessingFee: data.paymentProcessingFee,
+      totalAmount: data.totalAmount,
       bookingId: data.bookingId,
-      receiptUrl: (data as any).receiptUrl,
+      receiptUrl: data.receiptUrl,
     });
 
     const result = await this.sendEmail(
       data.guestEmail,
-      `🧾 Payment Receipt - ${data.propertyTitle}`,
+      `Payment Receipt - Booking at ${data.propertyName}`,
       template,
-      "HiddyStays Billing <billing@hiddystays.com>"
+      "HiddyStays <admin@hiddystays.com>"
     );
 
     if (result.success && result.emailId) {

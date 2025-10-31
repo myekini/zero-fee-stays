@@ -1,223 +1,183 @@
-# 🏠 HiddyStays - Zero Fee Property Rental Platform
+# Supabase CLI
 
-A modern, full-stack property rental platform built with **Next.js 15**, designed by hosts, for hosts. Helping Canadian property owners keep 100% of their earnings with zero platform fees.
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-## 🚀 **Why Next.js?**
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-✅ **Single Codebase** - Frontend + Backend in one project  
-✅ **Better Performance** - Server-side rendering + API routes  
-✅ **Lower Costs** - Single deployment instead of separate services  
-✅ **Zero Platform Fees** - Optimized infrastructure costs  
-✅ **Modern Stack** - React 18 + TypeScript + Tailwind CSS  
+This repository contains all the functionality for Supabase CLI.
 
-## 📁 **Project Structure**
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-```
-hiddystays/
-├── 📁 app/                          # Next.js App Router
-│   ├── 📁 api/                      # API Routes (Backend)
-│   │   ├── 📁 payments/            # Stripe payment processing
-│   │   ├── 📁 bookings/            # Booking management
-│   │   ├── 📁 properties/           # Property management
-│   │   └── 📁 admin/               # Admin functions
-│   ├── 📁 (auth)/                  # Authentication pages
-│   ├── 📁 booking/                 # Booking flow pages
-│   ├── 📁 host-dashboard/          # Host management
-│   ├── 📁 properties/              # Property pages
-│   ├── 📄 layout.tsx               # Root layout
-│   ├── 📄 page.tsx                 # Home page
-│   └── 📄 globals.css              # Global styles
-├── 📁 components/                   # React components
-│   ├── 📁 ui/                      # Reusable UI components
-│   ├── 📁 auth/                    # Authentication components
-│   ├── 📁 booking/                 # Booking components
-│   └── 📁 property/                # Property components
-├── 📁 lib/                         # Utilities and configuration
-├── 📁 hooks/                       # Custom React hooks
-├── 📁 services/                    # API service layer
-├── 📁 public/                      # Static assets
-├── 📄 package.json                 # Dependencies
-├── 📄 next.config.js              # Next.js configuration
-├── 📄 tailwind.config.ts          # Tailwind CSS
-└── 📄 tsconfig.json               # TypeScript configuration
-```
+## Getting started
 
-## 🛠️ **Tech Stack**
+### Install the CLI
 
-### **Frontend**
-- **Next.js 15** with App Router
-- **React 18** with TypeScript
-- **Tailwind CSS** for styling
-- **Radix UI** for accessible components
-- **TanStack Query** for data fetching
-- **Stripe Elements** for payments
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
-### **Backend (API Routes)**
-- **Next.js API Routes** (replaces Express)
-- **Stripe** for payment processing
-- **Supabase** for database and auth
-- **Resend** for email services
-- **TypeScript** for type safety
-
-### **Infrastructure**
-- **Vercel** (recommended deployment)
-- **Supabase** for database and auth
-- **Stripe** for payments
-- **Resend** for emails
-
-## 🚀 **Quick Start**
-
-### **1. Install Dependencies**
 ```bash
-npm install
+npm i supabase --save-dev
 ```
 
-### **2. Environment Setup**
-Copy the environment template:
+To install the beta release channel:
+
 ```bash
-cp env.template .env.local
+npm i supabase@beta --save-dev
 ```
 
-Fill in your credentials in `.env.local`:
-```env
-# Stripe (get from https://dashboard.stripe.com/apikeys)
-STRIPE_SECRET_KEY=sk_test_your_key_here
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
-# Supabase (get from https://supabase.com/dashboard)
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
-
-# Email (get from https://resend.com/api-keys)
-RESEND_API_KEY=your_resend_api_key_here
+```
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
 ```
 
-### **3. Start Development Server**
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+
+<details>
+  <summary><b>macOS</b></summary>
+
+  Available via [Homebrew](https://brew.sh). To install:
+
+  ```sh
+  brew install supabase/tap/supabase
+  ```
+
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Windows</b></summary>
+
+  Available via [Scoop](https://scoop.sh). To install:
+
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
+
+  To upgrade:
+
+  ```powershell
+  scoop update supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Linux</b></summary>
+
+  Available via [Homebrew](https://brew.sh) and Linux packages.
+
+  #### via Homebrew
+
+  To install:
+
+  ```sh
+  brew install supabase/tap/supabase
+  ```
+
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
+  ```
+
+  #### via Linux packages
+
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
+
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
+
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
+
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
+
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
+
+<details>
+  <summary><b>Other Platforms</b></summary>
+
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
+
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
+
+  Add a symlink to the binary in `$PATH` for easier access:
+
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
+
+  This works on other non-standard Linux distros.
+</details>
+
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
+
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
+
+  ```bash
+  pkgx install supabase
+  ```
+
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
+
 ```bash
-npm run dev
+supabase bootstrap
 ```
 
-- **Frontend**: http://localhost:3000
-- **API**: http://localhost:3000/api
+Or using npx:
 
-## 📚 **API Endpoints**
-
-### **Payments**
-- `POST /api/payments/create-payment-intent` - Create Stripe payment intent
-- `POST /api/payments/create-session` - Create checkout session
-- `POST /api/payments/verify-payment` - Verify payment status
-
-### **Bookings**
-- `POST /api/bookings/create` - Create new booking
-- `GET /api/bookings/[id]` - Get booking details
-- `PUT /api/bookings/[id]` - Update booking
-- `DELETE /api/bookings/[id]` - Cancel booking
-
-### **Properties**
-- `GET /api/properties` - List properties with filters
-- `POST /api/properties` - Create property
-- `GET /api/properties/[id]` - Get property details
-
-### **Admin**
-- `GET /api/admin/dashboard` - Admin dashboard stats
-- `GET /api/admin/users` - Manage users
-- `GET /api/admin/bookings` - Manage bookings
-
-## 🎨 **Features**
-
-### **For Guests**
-- 🔍 **Property Search** with filters
-- 📅 **Real-time Availability** checking
-- 💳 **Secure Payments** via Stripe
-- 📱 **Mobile-optimized** interface
-- 📧 **Email Confirmations** for bookings
-
-### **For Hosts**
-- 🏠 **Property Management** dashboard
-- 📊 **Analytics** and insights
-- 💰 **Zero Platform Fees** - keep 100%
-- 📧 **Automated Notifications**
-- 📱 **Mobile-friendly** management
-
-### **For Admins**
-- 👥 **User Management**
-- 🏠 **Property Moderation**
-- 📊 **Platform Analytics**
-- 💳 **Payment Monitoring**
-
-## 🚀 **Deployment**
-
-### **Vercel (Recommended)**
 ```bash
-npm run build
-vercel --prod
+npx supabase bootstrap
 ```
 
-### **Other Platforms**
-- **Railway**: Connect GitHub repo
-- **Netlify**: Build command `npm run build`
-- **AWS Amplify**: Next.js preset
-- **DigitalOcean App Platform**: Next.js template
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
 
-## 🔧 **Development**
+## Docs
 
-### **Available Scripts**
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript check
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+
+## Breaking changes
+
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
+
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
+
+## Developing
+
+To run from source:
+
+```sh
+# Go >= 1.22
+go run . help
 ```
-
-### **Environment Variables**
-All environment variables are documented in `env.template`. Key variables:
-
-- `STRIPE_SECRET_KEY` - Stripe secret key for payments
-- `SUPABASE_URL` - Supabase project URL
-- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
-- `RESEND_API_KEY` - Resend API key for emails
-
-## 🎯 **Migration from Vite + Express**
-
-This project was successfully migrated from:
-- ❌ **Vite + Express** (two separate projects)
-- ✅ **Next.js** (single full-stack project)
-
-### **Benefits of Migration:**
-- 🚀 **Better Performance** - Server-side rendering
-- 💰 **Lower Costs** - Single deployment
-- 🔧 **Easier Maintenance** - One codebase
-- 🎯 **Better SEO** - Server-side rendering
-- 📱 **Mobile Optimized** - Built-in optimizations
-
-## 🆘 **Support**
-
-### **Documentation**
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Stripe Documentation](https://stripe.com/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-
-### **Getting Help**
-- Check the API documentation at `/api/docs` (development only)
-- Review error logs in the console
-- Check environment variable configuration
-- Verify all service credentials are correct
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 **Acknowledgments**
-
-- Built with ❤️ for Canadian property owners
-- Zero platform fees philosophy
-- Modern web technologies for the best user experience
-- Next.js for optimal performance and developer experience
-
----
-
-**Ready to launch your zero-fee property rental platform! 🚀**

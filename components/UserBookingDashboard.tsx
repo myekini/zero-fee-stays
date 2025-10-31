@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { ReviewForm } from "@/components/ReviewForm";
 
 interface UserBooking {
   id: string;
@@ -77,6 +78,7 @@ export function UserBookingDashboard({ userId }: UserBookingDashboardProps) {
   );
   const [showDetails, setShowDetails] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const [cancellationPolicy, setCancellationPolicy] = useState<any>(null);
   const [loadingCancellation, setLoadingCancellation] = useState(false);
   const [filters, setFilters] = useState({
@@ -280,6 +282,13 @@ export function UserBookingDashboard({ userId }: UserBookingDashboardProps) {
   const canCancelBooking = (booking: UserBooking) => {
     const daysUntilCheckIn = getDaysUntilCheckIn(booking.check_in_date);
     return booking.status === "confirmed" && daysUntilCheckIn > 1;
+  };
+
+  const canReviewBooking = (booking: UserBooking) => {
+    // Can review if booking is completed and checkout date has passed
+    const checkoutDate = new Date(booking.check_out_date);
+    const now = new Date();
+    return booking.status === "completed" && checkoutDate < now;
   };
 
   if (loading) {
@@ -502,6 +511,21 @@ export function UserBookingDashboard({ userId }: UserBookingDashboardProps) {
                         </Button>
                       )}
 
+                      {canReviewBooking(booking) && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-amber-600 hover:text-amber-700"
+                          onClick={() => {
+                            setSelectedBooking(booking);
+                            setShowReviewForm(true);
+                          }}
+                        >
+                          <Star className="w-4 h-4 mr-2" />
+                          Write Review
+                        </Button>
+                      )}
+
                       <Button variant="ghost" size="sm">
                         <MessageSquare className="w-4 h-4 mr-2" />
                         Contact Host
@@ -719,6 +743,26 @@ export function UserBookingDashboard({ userId }: UserBookingDashboardProps) {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Review Form Dialog */}
+      {selectedBooking && (
+        <ReviewForm
+          bookingId={selectedBooking.id}
+          propertyId={selectedBooking.property_id}
+          propertyTitle={selectedBooking.property.title}
+          isOpen={showReviewForm}
+          onClose={() => {
+            setShowReviewForm(false);
+            setSelectedBooking(null);
+          }}
+          onSuccess={() => {
+            toast({
+              title: "Review Submitted! ⭐",
+              description: "Thank you for sharing your experience",
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -50,6 +50,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PropertyForm } from "@/components/PropertyForm";
 import { CalendarManagement } from "@/components/CalendarManagement";
 import { BookingManagement } from "@/components/BookingManagement";
+import { HostAnalyticsDashboard } from "@/components/HostAnalyticsDashboard";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Property {
@@ -795,28 +796,7 @@ function HostDashboard() {
 
           {/* Analytics Tab */}
           <TabsContent value="analytics">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5" />
-                  Analytics
-                </CardTitle>
-                <CardDescription>
-                  Detailed insights and performance metrics
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Activity className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Analytics Coming Soon
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Detailed analytics and insights will be available here.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            {hostProfileId && <HostAnalyticsDashboard hostId={hostProfileId} />}
           </TabsContent>
         </Tabs>
 

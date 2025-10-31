@@ -57,17 +57,18 @@
     --sidebar-border: oklch(0.92 0.004 286.32);
     --sidebar-ring: oklch(0.623 0.164 158.5);
 
-    /* Brand Color Variables - HSL for compatibility */
-    --brand-50: 240 253 244;
-    --brand-100: 220 252 231;
-    --brand-200: 187 247 208;
-    --brand-300: 134 239 172;
-    --brand-400: 74 222 128;
-    --brand-500: 5 150 105;
-    --brand-600: 4 120 87;
-    --brand-700: 6 95 70;
-    --brand-800: 6 78 59;
-    --brand-900: 6 78 59;
+    /* Brand Color Variables - RGB (Premium Navy Palette) */
+    --brand-50: 242 246 250;   /* #F2F6FA */
+    --brand-100: 230 238 247;  /* #E6EEF7 */
+    --brand-200: 203 220 240;  /* #CBDCF0 */
+    --brand-300: 175 201 232;  /* #AFC9E8 */
+    --brand-400: 123 163 210;  /* #7BA3D2 */
+    --brand-500: 43 79 126;    /* #2B4F7E */
+    --brand-600: 30 58 95;     /* #1E3A5F */
+    --brand-700: 22 45 74;     /* #162D4A */
+    --brand-800: 15 34 56;     /* #0F2238 */
+    --brand-900: 10 24 40;     /* #0A1828 */
+    --brand-950: 7 15 26;      /* #070F1A */
 
     /* Accent Color Variables - HSL for compatibility */
     --accent-50: 255 251 235;
@@ -133,17 +134,18 @@
     --sidebar-border: oklch(0.25 0.002 285.823);
     --sidebar-ring: oklch(0.68 0.2 158.5);
 
-    /* Brand Color Variables - Premium Dark Mode (HSL for compatibility) */
-    --brand-50: 6 78 59;
-    --brand-100: 6 95 70;
-    --brand-200: 4 120 87;
-    --brand-300: 5 150 105;
-    --brand-400: 74 222 128;
-    --brand-500: 134 239 172;
-    --brand-600: 187 247 208;
-    --brand-700: 220 252 231;
-    --brand-800: 240 253 244;
-    --brand-900: 240 253 244;
+    /* Brand Color Variables - Premium Dark Mode (RGB Navy Palette) */
+    --brand-50: 242 246 250;   /* #F2F6FA */
+    --brand-100: 230 238 247;  /* #E6EEF7 */
+    --brand-200: 203 220 240;  /* #CBDCF0 */
+    --brand-300: 175 201 232;  /* #AFC9E8 */
+    --brand-400: 123 163 210;  /* #7BA3D2 */
+    --brand-500: 43 79 126;    /* #2B4F7E */
+    --brand-600: 30 58 95;     /* #1E3A5F */
+    --brand-700: 22 45 74;     /* #162D4A */
+    --brand-800: 15 34 56;     /* #0F2238 */
+    --brand-900: 10 24 40;     /* #0A1828 */
+    --brand-950: 7 15 26;      /* #070F1A */
 
     /* Accent Color Variables - Premium Dark Mode (HSL for compatibility) */
     --accent-50: 120 53 15;
@@ -596,8 +598,8 @@ body {
 }
 
 .dark .search-modern:focus-within {
-  @apply bg-background shadow-glow border-brand-400;
-  border: 1px solid hsl(var(--brand-400) / 0.5);
+  @apply bg-background shadow-glow;
+  border: 1px solid rgb(var(--primary) / 0.5);
 }
 
 .search-dropdown-modern {

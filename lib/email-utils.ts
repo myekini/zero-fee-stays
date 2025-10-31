@@ -94,8 +94,25 @@ export const sendCheckInReminder = async (bookingData: {
   totalAmount: number;
   specialRequests?: string;
   hostInstructions?: string;
+  checkInTime?: string;
+  propertyAddress?: string;
+  hostPhone?: string;
 }) => {
-  return unifiedEmailService.sendCheckInReminder(bookingData);
+  return unifiedEmailService.sendCheckInReminder({
+    guestName: bookingData.guestName,
+    guestEmail: bookingData.guestEmail,
+    propertyName: bookingData.propertyTitle,
+    checkInDate: bookingData.checkInDate,
+    checkInTime: bookingData.checkInTime || '3:00 PM',
+    propertyAddress: bookingData.propertyAddress || bookingData.propertyLocation,
+    hostName: bookingData.hostName,
+    hostPhone: bookingData.hostPhone || '',
+    bookingId: bookingData.bookingId,
+    wifiNetwork: undefined,
+    wifiPassword: undefined,
+    parkingInstructions: undefined,
+    entryInstructions: bookingData.hostInstructions,
+  });
 };
 
 // Send post-stay follow-up

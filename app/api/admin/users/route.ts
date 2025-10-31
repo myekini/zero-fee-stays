@@ -6,6 +6,20 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Simple in-memory rate limiter (per IP)
+const __rateLimit = new Map<string, { count: number; reset: number }>();
+function allowRequest(ip: string, max = 120, windowMs = 5 * 60 * 1000) {
+  const now = Date.now();
+  const entry = __rateLimit.get(ip);
+  if (!entry || now > entry.reset) {
+    __rateLimit.set(ip, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
+}
+
 /**
  * GET /api/admin/users
  * Get all users with their profiles and activity
@@ -13,6 +27,13 @@ const supabase = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
     // Get the user from the request headers
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {
@@ -60,10 +81,8 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get("offset") || "0");
 
     // Build query
-    let query = supabase
-      .from("profiles")
-      .select(
-        `
+    let query = supabase.from("profiles").select(
+      `
         id,
         user_id,
         first_name,
@@ -80,8 +99,8 @@ export async function GET(request: NextRequest) {
         created_at,
         updated_at
       `,
-        { count: "exact" }
-      );
+      { count: "exact" }
+    );
 
     // Apply filters
     if (role) {
@@ -107,12 +126,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Get auth users data
-    const userIds = profiles?.map((p) => p.user_id) || [];
+    const userIds = profiles?.map(p => p.user_id) || [];
     const { data: authData } = await supabase.auth.admin.listUsers();
 
     // Merge auth data with profiles
-    const usersWithAuth = profiles?.map((profile) => {
-      const authUser = authData?.users?.find((u) => u.id === profile.user_id);
+    const usersWithAuth = profiles?.map(profile => {
+      const authUser = authData?.users?.find(u => u.id === profile.user_id);
       return {
         ...profile,
         email: authUser?.email,
@@ -128,7 +147,7 @@ export async function GET(request: NextRequest) {
         total: count,
         limit,
         offset,
-        hasMore: (offset + limit) < (count || 0),
+        hasMore: offset + limit < (count || 0),
       },
     });
   } catch (error) {
@@ -147,6 +166,13 @@ export async function GET(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    if (!allowRequest(ip, 60)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
     const body = await request.json();
     const { userId, updates } = body;
 

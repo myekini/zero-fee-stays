@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const isDev = process.env.NODE_ENV !== "production";
 
   // Rate limiting for authentication attempts
   const authRateLimiter = AuthUtils.createRateLimiter(5, 15 * 60 * 1000); // 5 attempts per 15 minutes
@@ -52,14 +53,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session?.user?.email);
-      console.log("Session details:", {
-        event,
-        hasUser: !!session?.user,
-        userEmail: session?.user?.email,
-        userId: session?.user?.id,
-        sessionExpiry: session?.expires_at,
-      });
+      if (isDev) {
+        console.log("Auth state changed:", event, session?.user?.email);
+        console.log("Session details:", {
+          event,
+          hasUser: !!session?.user,
+          userEmail: session?.user?.email,
+          userId: session?.user?.id,
+          sessionExpiry: session?.expires_at,
+        });
+      }
 
       setSession(session);
       setUser(session?.user ?? null);
@@ -67,7 +70,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Convert to AuthUser and validate session
       if (session?.user) {
         const validatedUser = AuthUtils.validateSession(session);
-        console.log("Validated user:", validatedUser);
+        if (isDev) {
+          console.log("Validated user:", validatedUser);
+        }
         setAuthUser(validatedUser);
 
         // Store session data
@@ -79,7 +84,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           );
         }
       } else {
-        console.log("No session or user, clearing auth state");
+        if (isDev) {
+          console.log("No session or user, clearing auth state");
+        }
         setAuthUser(null);
         SessionManager.clearSession();
         if (event === "SIGNED_OUT") {
@@ -113,7 +120,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     initializeAuth();
 
-    return () => subscription.unsubscribe();
+    // Auto-refresh session every 5 minutes if token needs refresh
+    const refreshInterval = setInterval(async () => {
+      const {
+        data: { session: currentSession },
+      } = await supabase.auth.getSession();
+
+      if (currentSession?.access_token) {
+        const needsRefresh = AuthUtils.needsTokenRefresh(currentSession.access_token);
+
+        if (needsRefresh) {
+          if (isDev) {
+            console.log("Token needs refresh, refreshing session...");
+          }
+
+          const {
+            data: { session: newSession },
+            error,
+          } = await supabase.auth.refreshSession();
+
+          if (error) {
+            console.error("Error auto-refreshing session:", error);
+          } else if (newSession && isDev) {
+            console.log("Session auto-refreshed successfully");
+          }
+        }
+      }
+    }, 5 * 60 * 1000); // Check every 5 minutes
+
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(refreshInterval);
+    };
   }, [toast]);
 
   const signUp = async (
@@ -122,82 +160,125 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     firstName?: string,
     lastName?: string
   ) => {
-    // Rate limiting check
-    if (!authRateLimiter(email)) {
-      return {
-        error: {
-          message: "Too many signup attempts. Please try again later.",
+    try {
+      // Rate limiting check
+      if (!authRateLimiter(email)) {
+        return {
+          error: {
+            message: "Too many signup attempts. Please try again later.",
+          },
+        };
+      }
+
+      // Validate email and password
+      if (!AuthUtils.isValidEmail(email)) {
+        return { error: { message: "Please enter a valid email address." } };
+      }
+
+      const passwordValidation = AuthUtils.validatePassword(password);
+      if (!passwordValidation.isValid) {
+        return {
+          error: {
+            message:
+              "Password requirements not met: " +
+              passwordValidation.errors.join(", "),
+          },
+        };
+      }
+
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+
+      console.log("Attempting signup for:", email);
+      console.log("Redirect URL:", redirectUrl);
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            role: "user", // Default role, can be updated by admin later
+          },
         },
-      };
-    }
+      });
 
-    // Validate email and password
-    if (!AuthUtils.isValidEmail(email)) {
-      return { error: { message: "Please enter a valid email address." } };
-    }
+      if (error) {
+        console.error("Signup error:", error);
 
-    const passwordValidation = AuthUtils.validatePassword(password);
-    if (!passwordValidation.isValid) {
-      return {
-        error: {
-          message:
-            "Password requirements not met: " +
-            passwordValidation.errors.join(", "),
-        },
-      };
-    }
+        // Handle specific error cases
+        if (error.message.includes("User already registered")) {
+          toast({
+            title: "Account already exists",
+            description:
+              "An account with this email already exists. Please try signing in instead.",
+            variant: "destructive",
+          });
+        } else if (error.message.includes("Password should be at least")) {
+          toast({
+            title: "Password too weak",
+            description:
+              "Please choose a stronger password with at least 8 characters.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Sign up failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
+      } else {
+        console.log("Signup successful:", data);
 
-    const redirectUrl = `${window.location.origin}/auth/callback`;
+        if (data.user && !data.user.email_confirmed_at) {
+          toast({
+            title: "📧 Verification Email Sent!",
+            description:
+              "We've sent you a confirmation link to complete your registration. Please check your email inbox and spam folder.",
+            variant: "default",
+            duration: 8000,
+          });
+        } else {
+          toast({
+            title: "Account created successfully!",
+            description: "You can now sign in with your credentials.",
+            variant: "default",
+            duration: 5000,
+          });
+        }
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          role: "user", // Default role, can be updated by admin later
-        },
-      },
-    });
+        // Send welcome email asynchronously via unified email API (don't block on it)
+        if (firstName && data.user) {
+          fetch("/api/email/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "welcome",
+              data: { name: firstName, email, userId: data.user.id },
+            }),
+          })
+            .then(() => {
+              console.log("✅ Welcome email requested successfully");
+            })
+            .catch(err => {
+              console.error("❌ Failed to request welcome email:", err);
+              // Don't show error to user - this is non-critical
+            });
+        }
+      }
 
-    if (error) {
+      return { error };
+    } catch (catchError) {
+      console.error("Unexpected signup error:", catchError);
       toast({
         title: "Sign up failed",
-        description: error.message,
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "📧 Verification Email Sent!",
-        description:
-          "We've sent you a confirmation link to complete your registration. Please check your email inbox and spam folder.",
-        variant: "success",
-        duration: 6000,
-      });
-
-// Send welcome email asynchronously via unified email API (don't block on it)
-      if (firstName) {
-        fetch("/api/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: "welcome",
-            data: { name: firstName, email, userId: undefined },
-          }),
-        })
-          .then(() => {
-            console.log("✅ Welcome email requested successfully");
-          })
-          .catch((err) => {
-            console.error("❌ Failed to request welcome email:", err);
-            // Don't show error to user - this is non-critical
-          });
-      }
+      return { error: catchError };
     }
-
-    return { error };
   };
 
   const signIn = async (email: string, password: string) => {
@@ -216,21 +297,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (error) {
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Handle specific error cases
+      if (error.message.includes("Invalid login credentials")) {
+        toast({
+          title: "Sign in failed",
+          description:
+            "Invalid email or password. Please check your credentials and try again.",
+          variant: "destructive",
+        });
+      } else if (error.message.includes("Email not confirmed")) {
+        toast({
+          title: "Email not verified",
+          description:
+            "Please verify your email before signing in. Check your inbox for the verification link.",
+          variant: "destructive",
+          duration: 6000,
+        });
+      } else {
+        toast({
+          title: "Sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
       return { error };
     }
 
-    // Check if email is verified
+    // Check if email is verified (additional check)
     if (data.user && !data.user.email_confirmed_at) {
+      console.log("User email not confirmed, signing out...");
+
       // Sign out the user immediately
       await supabase.auth.signOut();
 
       const verificationError = {
-        message: "Please verify your email before signing in. Check your inbox for the verification link.",
+        message:
+          "Please verify your email before signing in. Check your inbox for the verification link.",
       };
 
       toast({
@@ -243,7 +345,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: verificationError };
     }
 
-    return { error };
+    // Success case - user is signed in and email is verified
+    console.log("Sign in successful for:", data.user?.email);
+    return { error: null };
   };
 
   const signOut = async () => {
@@ -277,10 +381,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const testSupabaseConnection = async () => {
-    console.log("Testing Supabase connection...");
+    if (isDev) {
+      console.log("Testing Supabase connection...");
+    }
     try {
       const { data, error } = await supabase.auth.getSession();
-      console.log("Supabase connection test:", { data, error });
+      if (isDev) {
+        console.log("Supabase connection test:", { data, error });
+      }
 
       return { success: !error, error };
     } catch (err) {
@@ -290,10 +398,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithGoogle = async () => {
-    console.log("Starting Google OAuth sign-in...");
-    console.log("Current origin:", window.location.origin);
-    console.log("Current URL:", window.location.href);
-    console.log("Redirect URL:", `${window.location.origin}/auth/callback`);
+    if (isDev) {
+      console.log("Starting Google OAuth sign-in...");
+      console.log("Current origin:", window.location.origin);
+      console.log("Current URL:", window.location.href);
+      console.log("Redirect URL:", `${window.location.origin}/auth/callback`);
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -320,9 +430,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           variant: "destructive",
         });
       } else {
-        console.log("Google OAuth initiated successfully", data);
-        if (data?.url) {
-          console.log("OAuth URL:", data.url);
+        if (isDev) {
+          console.log("Google OAuth initiated successfully", data);
+          if (data?.url) {
+            console.log("OAuth URL:", data.url);
+          }
         }
       }
 
@@ -339,7 +451,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithGitHub = async () => {
-    console.log("Starting GitHub OAuth sign-in...");
+    if (isDev) {
+      console.log("Starting GitHub OAuth sign-in...");
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -357,7 +471,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           variant: "destructive",
         });
       } else {
-        console.log("GitHub OAuth initiated successfully", data);
+        if (isDev) {
+          console.log("GitHub OAuth initiated successfully", data);
+        }
       }
 
       return { error };
@@ -373,7 +489,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithTwitter = async () => {
-    console.log("Starting Twitter OAuth sign-in...");
+    if (isDev) {
+      console.log("Starting Twitter OAuth sign-in...");
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -391,7 +509,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           variant: "destructive",
         });
       } else {
-        console.log("Twitter OAuth initiated successfully", data);
+        if (isDev) {
+          console.log("Twitter OAuth initiated successfully", data);
+        }
       }
 
       return { error };
@@ -407,7 +527,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithApple = async () => {
-    console.log("Starting Apple OAuth sign-in...");
+    if (isDev) {
+      console.log("Starting Apple OAuth sign-in...");
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -425,7 +547,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           variant: "destructive",
         });
       } else {
-        console.log("Apple OAuth initiated successfully", data);
+        if (isDev) {
+          console.log("Apple OAuth initiated successfully", data);
+        }
       }
 
       return { error };
@@ -524,28 +648,74 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateProfile = async (updates: Partial<AuthUser>) => {
-    const { error } = await supabase.auth.updateUser({
-      data: {
-        first_name: updates.firstName,
-        last_name: updates.lastName,
-        role: updates.role,
-      },
-    });
-
-    if (error) {
-      AuthNotifications.showProfileUpdateError(error.message);
-    } else {
-      AuthNotifications.showProfileUpdated();
+    if (!user) {
+      return { error: { message: "No user logged in" } };
     }
 
-    return { error };
+    try {
+      // Update user metadata first
+      const { error: authError } = await supabase.auth.updateUser({
+        data: {
+          first_name: updates.firstName,
+          last_name: updates.lastName,
+          avatar_url: updates.avatarUrl,
+        },
+      });
+
+      if (authError) {
+        AuthNotifications.showProfileUpdateError(authError.message);
+        return { error: authError };
+      }
+
+      // Update profiles table
+      const profileUpdates: any = {};
+      if (updates.firstName !== undefined) profileUpdates.first_name = updates.firstName;
+      if (updates.lastName !== undefined) profileUpdates.last_name = updates.lastName;
+      if (updates.avatarUrl !== undefined) profileUpdates.avatar_url = updates.avatarUrl;
+      if (updates.role !== undefined) profileUpdates.role = updates.role;
+
+      const { error: dbError } = await supabase
+        .from("profiles")
+        .update(profileUpdates)
+        .eq("user_id", user.id);
+
+      if (dbError) {
+        console.error("Error updating profile in database:", dbError);
+        AuthNotifications.showProfileUpdateError(dbError.message);
+        return { error: dbError };
+      }
+
+      // Refresh session to get updated user data
+      await refreshSession();
+
+      AuthNotifications.showProfileUpdated();
+      return { error: null };
+    } catch (error: any) {
+      console.error("Unexpected error updating profile:", error);
+      AuthNotifications.showProfileUpdateError(error.message || "An unexpected error occurred");
+      return { error };
+    }
   };
 
-  const hasPermission = async (requiredRole: "user" | "host" | "admin"): Promise<boolean> => {
+  const hasPermission = async (
+    requiredRole: "user" | "host" | "admin"
+  ): Promise<boolean> => {
     if (!user) return false;
 
     try {
-      // Fetch role from database instead of relying on JWT metadata
+      // First try to get role from the current authUser if available
+      if (authUser && authUser.role) {
+        const roleHierarchy: Record<string, number> = {
+          user: 1,
+          host: 2,
+          admin: 3,
+        };
+        const userRoleValue = roleHierarchy[authUser.role] || 1;
+        const requiredRoleValue = roleHierarchy[requiredRole] || 1;
+        return userRoleValue >= requiredRoleValue;
+      }
+
+      // Fallback: Fetch role from database
       const { data: profile, error } = await supabase
         .from("profiles")
         .select("role")
@@ -559,11 +729,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Type guard to ensure profile has role property
-      const userRole = (profile as any)?.role as "user" | "host" | "admin" | undefined;
+      const userRole = (profile as any)?.role as
+        | "user"
+        | "host"
+        | "admin"
+        | undefined;
 
       if (!userRole || !["user", "host", "admin"].includes(userRole)) {
         console.error("Invalid user role:", userRole);
-        return false;
+        return requiredRole === "user";
       }
 
       // Role hierarchy: admin > host > user
@@ -573,14 +747,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         admin: 3,
       };
 
-      // TypeScript assertion: userRole is guaranteed to be valid at this point
-      const userRoleValue = roleHierarchy[userRole as "user" | "host" | "admin"]!;
-      const requiredRoleValue = roleHierarchy[requiredRole]!;
+      const userRoleValue = roleHierarchy[userRole] || 1;
+      const requiredRoleValue = roleHierarchy[requiredRole] || 1;
 
       return userRoleValue >= requiredRoleValue;
     } catch (error) {
       console.error("Error in hasPermission:", error);
-      return false;
+      return requiredRole === "user"; // Default to user role on error
     }
   };
 
